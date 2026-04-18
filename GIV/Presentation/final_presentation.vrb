@@ -1,5 +1,5 @@
 \frametitle{Constructing the GIV in Python}
-\begin{lstlisting}
+    \begin{lstlisting}
 def construct_giv(df, size_col, outcome_col):
     # 1. Weights
     df['S'] = df[size_col] / df.groupby('year')[size_col].transform('sum')

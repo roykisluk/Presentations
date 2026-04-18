@@ -80,23 +80,28 @@
 
 \begin{frame}
     \title{Granular Instrumental Variables}
-    \subtitle{Gabaix 2022}
+    \subtitle{Gabaix and Koijen (2022)}
     \author{Roy Kisluk}
     \date{}
     \titlepage
 \end{frame}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Introduction
+
 \begin{frame}
-    \frametitle{Do shocks to superstar firms drive aggregate wage dynamics?}
+    \frametitle{The Law of Large Numbers fails in modern economies}
 
     \vspace{1cm}
     {\Large
-        When a dominant employer experiences an unexpected surge in productivity, wages often respond.
+        In a standard economy, micro-shocks cancel out at a rate of $1/\sqrt{N}$.
+
     }
 
     \vspace{1cm}
     {\Large
-        How much of that response is causal, and how much is driven by common macroeconomic trends?
+        In a \textbf{granular} economy, where the size distribution of firms follows a power law, a few firms are so large that their idiosyncratic luck drives aggregate volatility.
     }
 
 \end{frame}
@@ -114,22 +119,31 @@
         The fundamental challenge:
     }
     \vspace{0.5cm}
-
     \begin{center}
-        \begin{tikzpicture}[node distance=2.5cm, align=center]
-            \node (common) [font=\Large, text=WarmOrange, minimum width=3cm, minimum height=1cm] {Aggregate Shocks};
-            \node (wages) [below left=of common, font=\Large, minimum width=2cm, minimum height=1cm] {Wages};
-            \node (demand) [below right=of common, font=\Large, minimum width=3cm, minimum height=1cm] {Labor Demand};
+        \begin{adjustbox}{max width=\textwidth}
+            \begin{tikzpicture}[node distance=3cm, font=\Large]
+                % Nodes
+                \node (agg) [text=WarmOrange] {Aggregate Shocks ($\eta_t, \varepsilon_t$)};
+                \node (wage) [below left=of agg] {Aggregate Wage ($p_t$)};
+                \node (demand) [below right=of agg] {Labor Demand ($y_{St}$)};
 
-            \draw[->, thick, WarmOrange] (common) -- (wages);
-            \draw[->, thick, WarmOrange] (common) -- (demand);
-            \draw[->, thick, dashed] (demand) -- (wages) node[midway, below] {?};
-        \end{tikzpicture}
+                % Paths
+                \draw[->, thick, WarmOrange] (agg) -- (wage);
+                \draw[->, thick, WarmOrange] (agg) -- (demand);
+                \draw[->, thick, dashed] (demand) -- (wage);
+                \node[below=0.4cm of $(wage)!0.5!(demand)$] (elasticity) {\textbf{Causal Elasticity $\psi$?}};
+
+                % Label for confusion
+                \node at ($(wage)!0.5!(demand) + (0, 1.5)$) [text=DeepRed, font=\bfseries] {};
+            \end{tikzpicture}
+        \end{adjustbox}
     \end{center}
 
 \end{frame}
 
-\transitionslide{A Simple Model}{Section III.A of Gabaix and Koijen (2022)}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THE SIMPLE MODEL
+\transitionslide{The Simple Model}{Difference-in-averages as an instrument}
 
 \begin{frame}
     \frametitle{A simple model of aggregate and idiosyncratic shocks}
@@ -207,7 +221,7 @@
     \vspace{0.5cm}
     The common components ($\phi^d p_t + \eta_t$) difference out:
     \begin{equation}
-        z_t = u_{\Gamma t} = u_{St} - u_{Et} \tag{42}
+        z_t = u_{\Gamma t} = u_{St} - u_{Et} =\underbrace{\sum S_i y_{it}}_{\text{Size-Weighted}} - \underbrace{\frac{1}{N} \sum y_{it}}_{\text{Equal-Weighted}} \tag{42}
     \end{equation}
 
     \vspace{0.5cm}
@@ -237,8 +251,87 @@
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THE FULL MODEL
+\transitionslide{The Full Model}{Handling heterogeneous factor loadings}
 
 
+
+\begin{frame}
+    \frametitle{Superstar firms respond differently to macro trends}
+    \vspace{1cm}
+    {\Large
+        The simple GIV ($y_{St} - y_{Et}$) assumes every firm has the same loading $\lambda_i = 1$.
+    }
+    \vspace{1cm}
+    {\Large
+        If large firms are more sensitive to the Fed, the simple GIV is \textbf{"leaky"}—it correlates with $\eta_t$.
+    }
+\end{frame}
+
+
+
+\begin{frame}
+    \frametitle{The Full Factor Model for granular firms}
+    \vspace{0.5cm}
+    We now allow for heterogeneous loadings $\lambda_i$:
+    \vspace{0.5cm}
+    \begin{equation}
+        y_{it} = \phi p_t + \lambda_i \eta_t + u_{it} \tag{full}
+    \end{equation}
+    \vspace{0.5cm}
+    The simple GIV becomes:
+    \begin{equation*}
+        z_t = (\lambda_S - \lambda_E) \eta_t + (u_{St} - u_{Et})
+    \end{equation*}
+    \vspace{0.5cm}
+    {\Large
+        If $\lambda_S \neq \lambda_E$, the instrument is \textbf{invalid} ($\mathbb{E}[z_t \eta_t] \neq 0$).
+    }
+\end{frame}
+
+\begin{frame}
+    \frametitle{The Solution: Orthogonal Optimal Weights $\Gamma$}
+    \vspace{0.5cm}
+    {\Large
+        We need weights $\Gamma$ such that the factor components \textbf{cancel exactly}.
+    }
+    \vspace{1cm}
+    \begin{equation*}
+        \sum_{i=1}^N \Gamma_i \lambda_i = 0 \quad \text{(Orthogonality Condition)}
+    \end{equation*}
+    \vspace{0.5cm}
+    {\Large
+        This ensures $z_t = \sum \Gamma_i u_{it}$ is purely idiosyncratic.
+    }
+\end{frame}
+
+\begin{frame}
+    \frametitle{Geometry of GIV: Projecting away from the macro trend}
+    \vspace{0.5cm}
+    \begin{center}
+        \begin{adjustbox}{max width=\textwidth}
+            \begin{tikzpicture}[scale=0.8]
+                % Vectors
+                \draw[->, ultra thick, WarmOrange] (0,0) -- (4,3) node[right] {Factor Loadings $\lambda$};
+                \draw[->, ultra thick, DeepNavy] (0,0) -- (2,5) node[above] {Size Weights $S$};
+
+                % Projection
+                \draw[dashed] (2,5) -- (0.8, 0.6);
+                \draw[->, ultra thick, Teal] (0,0) -- (-1.2, 1.6) node[left] {Optimal $\Gamma$};
+
+                % Right angle
+                \draw (0.2,0.15) -- (0.05, 0.35) -- (-0.1, 0.2);
+
+                \node at (1,-1) [font=\small] {$\Gamma$ is the component of $S$ orthogonal to $\lambda$.};
+            \end{tikzpicture}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Implementation and Assumptions
+\transitionslide{Implementation and Assumptions}{Identifying wage spillovers from superstar firms}
 \begin{frame}
     \frametitle{Identifying wage spillovers from superstar firms}
 
@@ -259,17 +352,42 @@
 \begin{frame}
     \frametitle{GIV precision relies on concentrated labor markets and volatile micro-shocks}
 
-    \vspace{0.5cm}
-    {\Large
-        For the instrument to be strong, we need:
-    }
+    \begin{columns}[T]
+        \begin{column}{0.55\textwidth}
+            \vspace{0.5cm}
+            {\Large
+                For the instrument to be strong, we need:
+            }
 
-    \vspace{1cm}
-    \begin{enumerate}
-        \item \textbf{A large excess Herfindahl index ($h$):} A few superstar firms must account for a substantial fraction of total employment.
-              \vspace{0.5cm}
-        \item \textbf{Volatile idiosyncratic shocks ($\sigma_u$):} Firm-specific shocks must be large relative to aggregate macroeconomic volatility ($\sigma_\varepsilon$).
-    \end{enumerate}
+            \vspace{0.8cm}
+            \begin{enumerate}
+                \item \textbf{A large excess Herfindahl index ($h$):} A few superstar firms must account for a substantial fraction of total employment.
+                      \vspace{0.4cm}
+                \item \textbf{Volatile idiosyncratic shocks ($\sigma_u$):} Firm-specific shocks must be large relative to aggregate macroeconomic volatility ($\sigma_\varepsilon$).
+            \end{enumerate}
+        \end{column}
+
+        \begin{column}{0.45\textwidth}
+            \vspace{1.5cm}
+            \begin{tikzpicture}
+                \begin{axis}[
+                        width=\textwidth, height=6cm,
+                        axis lines=left,
+                        xlabel={Firm Rank},
+                        ylabel={Employment Share},
+                        xmin=0, xmax=10,
+                        ymin=0, ymax=1,
+                        ticks=none
+                    ]
+                    \addplot[Teal, ultra thick, domain=1:10, samples=50] {1/x^1.2};
+                    \node[Teal] at (axis cs: 5, 0.6) {Granular};
+
+                    \addplot[WarmGray, thick, dashed, domain=1:10, samples=50] {0.2};
+                    \node[WarmGray, anchor=south] at (axis cs: 7, 0.2) {Non-Granular};
+                \end{axis}
+            \end{tikzpicture}
+        \end{column}
+    \end{columns}
 
 \end{frame}
 

@@ -1,0 +1,14 @@
+\frametitle{Constructing the GIV in Python}
+    \begin{lstlisting}
+def construct_giv(df, size_col, outcome_col):
+    # 1. Weights
+    df['S'] = df[size_col] / df.groupby('year')[size_col].transform('sum')
+    df['E'] = 1.0 / df.groupby('year')['id'].transform('count')
+
+    # 2. Simple GIV
+    y_S = (df[outcome_col] * df['S']).groupby('year').sum()
+    y_E = (df[outcome_col] * df['E']).groupby('year').sum()
+    z = y_S - y_E
+
+    return z
+\end{lstlisting}

@@ -1,0 +1,44 @@
+\contentsline {section}{\numberline {1}Visual Guide}{3}{}%
+\contentsline {subsection}{\numberline {1.1}The Anatomy of a Firm Shock}{3}{}%
+\contentsline {subsection}{\numberline {1.2}The "Differencing" Mechanism}{3}{}%
+\contentsline {subsection}{\numberline {1.3}Why Granularity Matters (The Power Law)}{4}{}%
+\contentsline {subsection}{\numberline {1.4}Conceptual Flow of Identification}{4}{}%
+\contentsline {section}{\numberline {2}Derivation of equation 41}{4}{}%
+\contentsline {subsection}{\numberline {2.1}The Base Model}{4}{}%
+\contentsline {subsection}{\numberline {2.2}Deriving the Size-Weighted Aggregate ($y_{St}$)}{5}{}%
+\contentsline {subsection}{\numberline {2.3}Deriving the Equal-Weighted Aggregate ($y_{Et}$)}{5}{}%
+\contentsline {subsection}{\numberline {2.4}Result (Equation 41)}{6}{}%
+\contentsline {section}{\numberline {3}Derivation of equation on slide 9}{6}{}%
+\contentsline {subsection}{\numberline {3.1}Introduction}{6}{}%
+\contentsline {subsection}{\numberline {3.2}The Core Model and the GIV}{6}{}%
+\contentsline {subsection}{\numberline {3.3}The Exogeneity Condition}{6}{}%
+\contentsline {subsection}{\numberline {3.4}Identifying Supply Elasticity ($\psi $)}{6}{}%
+\contentsline {subsection}{\numberline {3.5}Identifying Demand Elasticity ($\phi ^d$)}{7}{}%
+\contentsline {section}{\numberline {4}Full model deep dive}{7}{}%
+\contentsline {subsection}{\numberline {4.1}Introduction}{7}{}%
+\contentsline {subsection}{\numberline {4.2}Slide 11: The Full Factor Model}{7}{}%
+\contentsline {subsection}{\numberline {4.3}The Equation}{7}{}%
+\contentsline {subsection}{\numberline {4.4}Intuition: What is a Factor Loading?}{8}{}%
+\contentsline {subsection}{\numberline {4.5}Derivation: Why the Simple GIV Fails}{8}{}%
+\contentsline {subsection}{\numberline {4.6}Slide 12: The Solution (Optimal Weights)}{8}{}%
+\contentsline {subsection}{\numberline {4.7}The Goal: Orthogonality}{8}{}%
+\contentsline {subsection}{\numberline {4.8}Derivation of the Orthogonality Condition}{8}{}%
+\contentsline {subsection}{\numberline {4.9}Why not just Firm Size ($S_i$)?}{9}{}%
+\contentsline {subsection}{\numberline {4.10}Mathematical Solution (Projection)}{9}{}%
+\contentsline {subsection}{\numberline {4.11}Summary}{9}{}%
+\contentsline {section}{\numberline {5}Gamma intuition}{9}{}%
+\contentsline {subsection}{\numberline {5.1}Recap: The Simple vs. The Full Model}{9}{}%
+\contentsline {subsection}{\numberline {5.2}Intuition: $\Gamma $ as "De-biased" Firm Size}{10}{}%
+\contentsline {subsection}{\numberline {5.3}The Simple GIV as a Special Case}{10}{}%
+\contentsline {subsection}{\numberline {5.4}The Problem with Raw Size}{10}{}%
+\contentsline {subsection}{\numberline {5.5}The Logic of $\Gamma $}{10}{}%
+\contentsline {subsection}{\numberline {5.6}The Math: $\Gamma $ as a Projection Residual}{10}{}%
+\contentsline {subsection}{\numberline {5.7}General Matrix Formula}{10}{}%
+\contentsline {subsection}{\numberline {5.8}Summary}{11}{}%
+\contentsline {section}{\numberline {6}Derivation of Gamma}{11}{}%
+\contentsline {subsection}{\numberline {6.1}The Optimization Problem}{11}{}%
+\contentsline {subsection}{\numberline {6.2}Lagrangian Setup}{11}{}%
+\contentsline {subsection}{\numberline {6.3}First Order Conditions (FOCs)}{11}{}%
+\contentsline {subsection}{\numberline {6.4}Equivalence to Linear Regression}{11}{}%
+\contentsline {subsection}{\numberline {6.5}Why the Constraints Matter}{12}{}%
+\contentsline {subsection}{\numberline {6.6}Conclusion}{12}{}%

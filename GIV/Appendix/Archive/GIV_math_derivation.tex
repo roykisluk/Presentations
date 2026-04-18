@@ -18,7 +18,7 @@
 
 \maketitle
 
-\section{The Optimization Problem}
+\subsection{The Optimization Problem}
 The goal of finding optimal GIV weights $\Gamma$ is to stay as close as possible to the power-maximizing size weights $S$, while ensuring orthogonality to common factors (captured by loadings $\Lambda$) and a constant (to ensure the weights sum to zero).
 
 Mathematically, we solve:
@@ -31,13 +31,13 @@ subject to:
 \sum_{i=1}^N \Gamma_i \lambda_i &= 0 \tag{Constraint 2: Orthogonality to $\lambda$}
 \end{align}
 
-\section{Lagrangian Setup}
+\subsection{Lagrangian Setup}
 We define the Lagrangian $\mathcal{L}$ with multipliers $\mu_1$ and $\mu_2$:
 \begin{equation}
 \mathcal{L}(\Gamma, \mu_1, \mu_2) = \frac{1}{2} \sum_{i=1}^N (\Gamma_i - S_i)^2 + \mu_1 \left( \sum_{i=1}^N \Gamma_i \right) + \mu_2 \left( \sum_{i=1}^N \Gamma_i \lambda_i \right)
 \end{equation}
 
-\section{First Order Conditions (FOCs)}
+\subsection{First Order Conditions (FOCs)}
 Differentiating with respect to the decision variable $\Gamma_i$:
 \begin{equation}
 \frac{\partial \mathcal{L}}{\partial \Gamma_i} = (\Gamma_i - S_i) + \mu_1 + \mu_2 \lambda_i = 0
@@ -47,7 +47,7 @@ Rearranging for $\Gamma_i$, we get the structure of the solution:
 \Gamma_i = S_i - (\mu_1 + \mu_2 \lambda_i)
 \end{equation}
 
-\section{Equivalence to Linear Regression}
+\subsection{Equivalence to Linear Regression}
 Recall the standard OLS model where we regress $S_i$ on a constant and $\lambda_i$:
 \begin{equation}
 S_i = \alpha + \beta \lambda_i + \epsilon_i
@@ -66,7 +66,7 @@ The "Normal Equations" that solve OLS are:
 \end{enumerate}
 These are exactly our two constraints! Therefore, the values of $\mu_1$ and $\mu_2$ that satisfy our constraints are precisely the OLS coefficients $\hat{\alpha}$ and $\hat{\beta}$.
 
-\section{Conclusion}
+\subsection{Conclusion}
 Solving for the optimal weights $\Gamma$ is equivalent to regressing the vector of sizes $S$ on the factor loadings (and a constant) and taking the residuals. 
 \begin{equation}
 \Gamma = \text{Residuals of } (S \sim 1 + \Lambda)
