@@ -1,0 +1,124 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{titlesec}
+\usepackage{listings}
+
+\geometry{a4paper, margin=1in}
+
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+\definecolor{WarmGray}{HTML}{6C757D}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{DeepNavy}\bfseries,
+    commentstyle=\color{WarmGray}\itshape,
+    stringstyle=\color{Teal},
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    breaklines=true,
+    showstringspaces=false
+}
+
+\title{\color{DeepNavy}\huge Deep Dive: Granular Instrumental Variables\\ \large Understanding the Optimal Weights $\Gamma$}
+\author{Macro Lab Group — Technical Supplement}
+\date{April 15, 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Recap: The Simple vs. The Full Model}
+In the simple model, we assume all firms respond identically to macro shocks. The GIV was simply:
+\begin{equation}
+z_t^{simple} = \sum (S_i - 1/N) y_{it}
+\end{equation}
+This works because $S_i - 1/N$ is orthogonal to a constant factor (where every firm has $\lambda_i = 1$). However, when firms have heterogeneous sensitivities $\lambda_i$, the simple weights fail. We need $\Gamma$.
+
+\section{Intuition: $\Gamma$ as "De-biased" Firm Size}
+
+\subsection{The Simple GIV as a Special Case}
+Think of the simple GIV weights as $\Gamma_i^{simple} = S_i - \bar{S}$. We take the raw size and subtract the mean size. This "centers" the weights around zero, which kills any factor that hits everyone equally.
+
+\subsection{The Problem with Raw Size}
+If large firms are systematically more sensitive to interest rates (a common factor $\eta_t$), then the size-weighted outcome $y_{St}$ will move whenever interest rates move. If we use $y_{St}$ as an instrument, we are accidentally instrumenting with interest rate shocks, not idiosyncratic firm shocks.
+
+\subsection{The Logic of $\Gamma$}
+$\Gamma$ is the part of firm size that is \textbf{unrelated} to macro-sensitivity.
+\begin{itemize}
+    \item We ask: "How much of this firm's size is explained by its factor loading $\lambda_i$?"
+    \item We subtract that "explained" part from the actual size.
+    \item The result, $\Gamma_i$, is the "Pure Granular Weight."
+\end{itemize}
+If $\lambda_i$ is completely uncorrelated with $S_i$, then $\Gamma$ will look almost exactly like the simple GIV weights. If they are correlated, $\Gamma$ "tilts" the weights to protect the instrument's validity.
+
+\section{The Math: $\Gamma$ as a Projection Residual}
+
+Mathematically, we want to find weights $\Gamma$ that are as close as possible to the size weights $S$ (for power), but are orthogonal to the loadings $\lambda$ (for validity).
+
+We solve the following optimization problem:
+\begin{equation}
+\min_{\Gamma} \sum_{i=1}^N (\Gamma_i - S_i)^2 \quad \text{subject to} \quad \sum \Gamma_i = 0, \quad \sum \Gamma_i \lambda_i = 0
+\end{equation}
+
+The solution to this problem is equivalent to the **residual** of a linear regression. If we regress the vector of sizes $S$ on a constant and the vector of loadings $\lambda$:
+\begin{equation}
+S_i = \alpha + \beta \lambda_i + \text{residual}_i
+\end{equation}
+Then the optimal weight $\Gamma_i$ is exactly that residual. 
+
+\subsection{General Matrix Formula}
+If there are multiple factors (a matrix $\Lambda$), the formula is:
+\begin{equation}
+\Gamma = M_{\tilde{\Lambda}} S = (I - \tilde{\Lambda} (\tilde{\Lambda}' \tilde{\Lambda})^{-1} \tilde{\Lambda}') S
+\end{equation}
+where $\tilde{\Lambda} = [\mathbf{1}, \Lambda]$ is the matrix of loadings plus a constant. $M_{\tilde{\Lambda}}$ is the "annihilator matrix" that projects $S$ into the space orthogonal to the factors.
+
+\section{Python Implementation}
+
+The following code demonstrates how to calculate $\Gamma$ using `numpy`.
+
+\begin{lstlisting}
+import numpy as np
+
+def calculate_gamma(S, Lambda):
+    """
+    S: Vector of firm sizes (N x 1)
+    Lambda: Matrix of factor loadings (N x K)
+    """
+    N = len(S)
+    # Add a constant (ones) to the loadings to satisfy sum(Gamma) = 0
+    ones = np.ones((N, 1))
+    X = np.hstack([ones, Lambda])
+    
+    # Standard OLS Projection: Gamma = S - X(X'X)^-1 X'S
+    # This is equivalent to the residuals of S regressed on X
+    beta = np.linalg.inv(X.T @ X) @ X.T @ S
+    prediction = X @ beta
+    gamma = S - prediction
+    
+    return gamma
+
+# Example: 5 firms, 1 factor
+S = np.array([0.4, 0.3, 0.15, 0.1, 0.05])
+Lambda = np.array([1.2, 0.8, 1.0, 1.1, 0.9]) # Factor loadings
+
+gamma = calculate_gamma(S, Lambda.reshape(-1, 1))
+
+print(f"Simple weights (S - mean): {S - 0.2}")
+print(f"Optimal weights (Gamma):   {gamma}")
+print(f"Sum of Gamma (should be 0): {np.sum(gamma):.4f}")
+print(f"Gamma . Lambda (should be 0): {np.dot(gamma, Lambda):.4f}")
+\end{lstlisting}
+
+\section{Summary}
+The transition from $z^{simple}$ to $z^{\Gamma}$ is a move from **demeaning** to **orthogonalizing**. In the simple model, we demean by subtracting $1/N$. In the full model, we orthogonalize by subtracting the projection of size onto macro-loadings.
+
+\end{document}

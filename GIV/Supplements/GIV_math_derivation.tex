@@ -1,0 +1,80 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{xcolor}
+
+\geometry{a4paper, margin=1in}
+
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+
+\title{\color{DeepNavy}\huge Mathematical Derivation: \\ \Large Why Optimal GIV Weights are Regression Residuals}
+\author{Technical Note for Graduate Econometrics Review}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{The Optimization Problem}
+The goal of finding optimal GIV weights $\Gamma$ is to stay as close as possible to the power-maximizing size weights $S$, while ensuring orthogonality to common factors (captured by loadings $\Lambda$) and a constant (to ensure the weights sum to zero).
+
+Mathematically, we solve:
+\begin{equation}
+\min_{\Gamma} \frac{1}{2} \sum_{i=1}^N (\Gamma_i - S_i)^2 
+\end{equation}
+subject to:
+\begin{align}
+\sum_{i=1}^N \Gamma_i &= 0 \tag{Constraint 1: Sum to Zero} \\
+\sum_{i=1}^N \Gamma_i \lambda_i &= 0 \tag{Constraint 2: Orthogonality to $\lambda$}
+\end{align}
+
+\section{Lagrangian Setup}
+We define the Lagrangian $\mathcal{L}$ with multipliers $\mu_1$ and $\mu_2$:
+\begin{equation}
+\mathcal{L}(\Gamma, \mu_1, \mu_2) = \frac{1}{2} \sum_{i=1}^N (\Gamma_i - S_i)^2 + \mu_1 \left( \sum_{i=1}^N \Gamma_i \right) + \mu_2 \left( \sum_{i=1}^N \Gamma_i \lambda_i \right)
+\end{equation}
+
+\section{First Order Conditions (FOCs)}
+Differentiating with respect to the decision variable $\Gamma_i$:
+\begin{equation}
+\frac{\partial \mathcal{L}}{\partial \Gamma_i} = (\Gamma_i - S_i) + \mu_1 + \mu_2 \lambda_i = 0
+\end{equation}
+Rearranging for $\Gamma_i$, we get the structure of the solution:
+\begin{equation} \label{eq:gamma_sol}
+\Gamma_i = S_i - (\mu_1 + \mu_2 \lambda_i)
+\end{equation}
+
+\section{Equivalence to Linear Regression}
+Recall the standard OLS model where we regress $S_i$ on a constant and $\lambda_i$:
+\begin{equation}
+S_i = \alpha + \beta \lambda_i + \epsilon_i
+\end{equation}
+The OLS estimator $(\hat{\alpha}, \hat{\beta})$ minimizes the sum of squared residuals $\sum \epsilon_i^2$. The resulting residuals are defined as:
+\begin{equation}
+\hat{\epsilon}_i = S_i - (\hat{\alpha} + \hat{\beta} \lambda_i)
+\end{equation}
+Comparing this to Equation \ref{eq:gamma_sol}, we see that $\Gamma_i$ has the exact same functional form as the OLS residual $\hat{\epsilon}_i$, where the Lagrange multipliers $\mu_1$ and $\mu_2$ play the roles of the OLS coefficients $\hat{\alpha}$ and $\hat{\beta}$.
+
+\subsection{Why the Constraints Matter}
+The "Normal Equations" that solve OLS are:
+\begin{enumerate}
+    \item $\sum \hat{\epsilon}_i = 0$ (The sum of residuals is zero if an intercept is included).
+    \item $\sum \hat{\epsilon}_i \lambda_i = 0$ (Residuals are orthogonal to the regressors).
+\end{enumerate}
+These are exactly our two constraints! Therefore, the values of $\mu_1$ and $\mu_2$ that satisfy our constraints are precisely the OLS coefficients $\hat{\alpha}$ and $\hat{\beta}$.
+
+\section{Conclusion}
+Solving for the optimal weights $\Gamma$ is equivalent to regressing the vector of sizes $S$ on the factor loadings (and a constant) and taking the residuals. 
+\begin{equation}
+\Gamma = \text{Residuals of } (S \sim 1 + \Lambda)
+\end{equation}
+In matrix notation, this is the projection:
+\begin{equation}
+\Gamma = M_X S = (I - X(X'X)^{-1}X')S
+\end{equation}
+where $X = [\mathbf{1}, \Lambda]$. This projection removes the "macro-contaminated" portion of the firm size, leaving only the idiosyncratic granular component.
+
+\end{document}

@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{Derivation of Equation 41: Granular Instrumental Variables}
+\author{Derivation Note}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{The Base Model}
+We start with the demand equation for firm $i$ at time $t$, as given by Equation 39:
+\begin{equation}
+y_{it} = \phi^d p_t + \eta_t + u_{it} \tag{39}
+\end{equation}
+where:
+\begin{itemize}
+    \item $y_{it}$ is the outcome for firm $i$.
+    \item $p_t$ is the common price (or wage).
+    \item $\phi^d$ is the demand elasticity.
+    \item $\eta_t$ is a common aggregate shock.
+    \item $u_{it}$ is the idiosyncratic shock to firm $i$.
+\end{itemize}
+
+\section{Deriving the Size-Weighted Aggregate ($y_{St}$)}
+The size-weighted outcome is defined as $y_{St} = \sum_{i=1}^N S_i y_{it}$, where $S_i$ are weights such that $\sum S_i = 1$. 
+
+Substituting Equation 39 into this definition:
+\begin{align*}
+y_{St} &= \sum_{i=1}^N S_i (\phi^d p_t + \eta_t + u_{it}) \\
+y_{St} &= \sum_{i=1}^N S_i \phi^d p_t + \sum_{i=1}^N S_i \eta_t + \sum_{i=1}^N S_i u_{it}
+\end{align*}
+
+Since $\phi^d$, $p_t$, and $\eta_t$ do not depend on the index $i$, we can pull them out of the summations:
+\begin{align*}
+y_{St} &= \phi^d p_t \left( \sum_{i=1}^N S_i \right) + \eta_t \left( \sum_{i=1}^N S_i \right) + \sum_{i=1}^N S_i u_{it}
+\end{align*}
+
+Using the property $\sum S_i = 1$ and defining the size-weighted idiosyncratic shock as $u_{St} = \sum S_i u_{it}$, we get:
+\begin{equation}
+y_{St} = \phi^d p_t + \eta_t + u_{St}
+\end{equation}
+
+\section{Deriving the Equal-Weighted Aggregate ($y_{Et}$)}
+The equal-weighted outcome is defined as $y_{Et} = \frac{1}{N} \sum_{i=1}^N y_{it}$.
+
+Substituting Equation 39:
+\begin{align*}
+y_{Et} &= \frac{1}{N} \sum_{i=1}^N (\phi^d p_t + \eta_t + u_{it}) \\
+y_{Et} &= \frac{1}{N} \sum_{i=1}^N \phi^d p_t + \frac{1}{N} \sum_{i=1}^N \eta_t + \frac{1}{N} \sum_{i=1}^N u_{it}
+\end{align*}
+
+Again, pulling constants out of the summations:
+\begin{align*}
+y_{Et} &= \phi^d p_t \left( \frac{1}{N} \sum_{i=1}^N 1 \right) + \eta_t \left( \frac{1}{N} \sum_{i=1}^N 1 \right) + \frac{1}{N} \sum_{i=1}^N u_{it}
+\end{align*}
+
+Since $\frac{1}{N} \sum_{i=1}^N 1 = \frac{1}{N} \cdot N = 1$, and defining the equal-weighted idiosyncratic shock as $u_{Et} = \frac{1}{N} \sum u_{it}$, we get:
+\begin{equation}
+y_{Et} = \phi^d p_t + \eta_t + u_{Et}
+\end{equation}
+
+\section{Result (Equation 41)}
+Combining these two results, we obtain Equation 41:
+\begin{align}
+y_{St} &= \phi^d p_t + \eta_t + u_{St} \notag \\
+y_{Et} &= \phi^d p_t + \eta_t + u_{Et} \tag{41}
+\end{align}
+
+\end{document}

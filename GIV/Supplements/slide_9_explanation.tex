@@ -1,0 +1,73 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{Detailed Explanation of Slide 9: GIV Supply and Demand Elasticities}
+\author{Granular Instrumental Variables (Gabaix and Koijen, 2022)}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+Slide 9 of the presentation demonstrates how the Granular Instrumental Variable ($z_t$) can be used to identify both the supply elasticity ($\psi$) and the demand elasticity ($\phi^d$). This document provides the underlying derivations and the statistical assumptions required for these results.
+
+\section{The Core Model and the GIV}
+Recall the system of equations from slide 5:
+\begin{align}
+p_t &= \psi y_{St} + \epsilon_t \label{eq:supply} \tag{38} \\
+y_{it} &= \phi^d p_t + \eta_t + u_{it} \label{eq:demand_firm} \tag{39}
+\end{align}
+where $y_{St} = \sum S_i y_{it}$ is the size-weighted aggregate outcome. From slide 8, we define the Granular Instrumental Variable ($z_t$) as the difference between size-weighted and equal-weighted aggregate outcomes:
+\begin{equation}
+z_t = y_{St} - y_{Et} = u_{St} - u_{Et} \label{eq:giv_def} \tag{42}
+\end{equation}
+where $u_{St} = \sum S_i u_{it}$ and $u_{Et} = \frac{1}{N} \sum u_{it}$. 
+
+\section{The Exogeneity Condition}
+The fundamental assumption of the GIV approach is that the idiosyncratic shocks $u_{it}$ are independent of the aggregate shocks $\epsilon_t$ and $\eta_t$. Since $z_t$ is a linear combination of only idiosyncratic shocks, it follows that:
+\begin{equation}
+\mathbb{E}[z_t \epsilon_t] = 0 \quad \text{and} \quad \mathbb{E}[z_t \eta_t] = 0 \label{eq:exogeneity}
+\end{equation}
+This exogeneity allows $z_t$ to serve as a valid instrument.
+
+\section{Identifying Supply Elasticity ($\psi$)}
+To find $\psi$, we use $z_t$ as an instrument for $y_{St}$ in the supply equation (\ref{eq:supply}). We take the expectation of the product of the supply equation and the instrument:
+\begin{align*}
+\mathbb{E}[p_t z_t] &= \mathbb{E}[(\psi y_{St} + \epsilon_t) z_t] \\
+\mathbb{E}[p_t z_t] &= \psi \mathbb{E}[y_{St} z_t] + \mathbb{E}[\epsilon_t z_t]
+\end{align*}
+By the exogeneity condition in (\ref{eq:exogeneity}), $\mathbb{E}[\epsilon_t z_t] = 0$. Thus:
+\begin{equation}
+\psi = \frac{\mathbb{E}[p_t z_t]}{\mathbb{E}[y_{St} z_t]}
+\end{equation}
+This is the standard IV formula where $z_t$ instruments for $y_{St}$.
+
+\section{Identifying Demand Elasticity ($\phi^d$)}
+To find $\phi^d$, we use the equal-weighted aggregate demand equation derived on slide 8:
+\begin{equation}
+y_{Et} = \phi^d p_t + \eta_t + u_{Et} \tag{41}
+\end{equation}
+We aim to show that $\mathbb{E}[(y_{Et} - \phi^d p_t) z_t] = 0$. Substituting the demand equation:
+\begin{equation}
+\mathbb{E}[(y_{Et} - \phi^d p_t) z_t] = \mathbb{E}[(\eta_t + u_{Et}) z_t] = \mathbb{E}[\eta_t z_t] + \mathbb{E}[u_{Et} z_t]
+\end{equation}
+We already know $\mathbb{E}[\eta_t z_t] = 0$. Now we examine $\mathbb{E}[u_{Et} z_t]$. Under the assumption that $u_{it}$ are i.i.d. with variance $\sigma_u^2$:
+\begin{align*}
+\mathbb{E}[u_{Et} z_t] &= \mathbb{E}[u_{Et} (u_{St} - u_{Et})] \\
+&= \mathbb{E}[u_{Et} u_{St}] - \mathbb{E}[u_{Et}^2] \\
+&= \mathbb{E} \left[ \left( \frac{1}{N} \sum_{i} u_{it} \right) \left( \sum_{j} S_j u_{jt} \right) \right] - \mathbb{E} \left[ \left( \frac{1}{N} \sum_{i} u_{it} \right)^2 \right] \\
+&= \frac{1}{N} \sum_{i} S_i \sigma_u^2 - \frac{1}{N^2} \sum_{i} \sigma_u^2 \\
+&= \frac{1}{N} \sigma_u^2 (1) - \frac{1}{N} \sigma_u^2 = 0
+\end{align*}
+Since $\mathbb{E}[u_{Et} z_t] = 0$, it follows that $\mathbb{E}[(y_{Et} - \phi^d p_t) z_t] = 0$. Rearranging:
+\begin{align*}
+\mathbb{E}[y_{Et} z_t] &= \phi^d \mathbb{E}[p_t z_t] \\
+\phi^d &= \frac{\mathbb{E}[y_{Et} z_t]}{\mathbb{E}[p_t z_t]}
+\end{align*}
+This identifies the demand elasticity using the same granular instrument $z_t$.
+
+\end{document}

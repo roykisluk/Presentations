@@ -1,0 +1,105 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{titlesec}
+
+\geometry{a4paper, margin=1in}
+
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+
+\title{\color{DeepNavy}\huge Deep Dive: Granular Instrumental Variables\\ \large Heterogeneous Loadings and Optimal Weighting}
+\author{Macro Lab Group — Technical Supplement}
+\date{April 15, 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+Slides 11 and 12 move from the "Simple Model" (where every firm responds identically to the macroeconomy) to the "Full Model." This is crucial because, in reality, superstar firms often have different sensitivities to interest rates, exchange rates, or global demand than small firms.
+
+\section{Slide 11: The Full Factor Model}
+
+\subsection{The Equation}
+We start with the demand equation for firm $i$:
+\begin{equation}
+y_{it} = \phi p_t + \lambda_i \eta_t + u_{it} \label{eq:full}
+\end{equation}
+where $\lambda_i$ is the \textbf{factor loading}.
+
+\subsection{Intuition: What is a Factor Loading?}
+A factor loading $\lambda_i$ measures firm $i$'s \textit{sensitivity} to a common macro shock $\eta_t$. 
+\begin{itemize}
+    \item \textbf{Example:} If $\eta_t$ is a surge in energy prices, an airline like Delta might have a high $\lambda_i$ (very sensitive), while a software firm like Microsoft might have a low $\lambda_i$.
+    \item \textbf{Heterogeneity:} In the simple model, we assumed $\lambda_i = 1$ for everyone. In the full model, we acknowledge that large firms might be more (or less) sensitive to macro trends than the average firm.
+\end{itemize}
+
+\subsection{Derivation: Why the Simple GIV Fails}
+The simple GIV is defined as $z_t^{simple} = y_{St} - y_{Et}$. Let's derive its components using Equation \ref{eq:full}:
+
+1. \textbf{Size-weighted average ($y_{St}$):}
+\begin{align*}
+y_{St} &= \sum S_i y_{it} = \sum S_i (\phi p_t + \lambda_i \eta_t + u_{it}) \\
+&= \phi p_t \underbrace{\sum S_i}_{1} + \eta_t \underbrace{\sum S_i \lambda_i}_{\lambda_S} + \underbrace{\sum S_i u_{it}}_{u_{St}} \\
+&= \phi p_t + \lambda_S \eta_t + u_{St}
+\end{align*}
+
+2. \textbf{Equal-weighted average ($y_{Et}$):}
+\begin{align*}
+y_{Et} &= \frac{1}{N} \sum y_{it} = \phi p_t + \eta_t \underbrace{\frac{1}{N} \sum \lambda_i}_{\lambda_E} + u_{Et} \\
+&= \phi p_t + \lambda_E \eta_t + u_{Et}
+\end{align*}
+
+3. \textbf{The Resulting GIV:}
+\begin{equation}
+z_t^{simple} = y_{St} - y_{Et} = \mathbf{(\lambda_S - \lambda_E) \eta_t} + (u_{St} - u_{Et})
+\end{equation}
+
+\textbf{The Problem:} If large firms have different macro-sensitivities than small firms ($\lambda_S \neq \lambda_E$), then the instrument $z_t^{simple}$ is correlated with the common shock $\eta_t$. It is no longer a "pure" idiosyncratic shock; it is "leaky."
+
+\section{Slide 12: The Solution (Optimal Weights)}
+
+\subsection{The Goal: Orthogonality}
+We want to choose a new set of weights, $\Gamma_i$, to construct a valid GIV: $z_t = \sum \Gamma_i y_{it}$. For this to be a valid instrument for the supply equation, it must be uncorrelated with the macro shock $\eta_t$.
+
+\subsection{Derivation of the Orthogonality Condition}
+Substitute Equation \ref{eq:full} into the definition of the weighted GIV:
+\begin{align*}
+z_t &= \sum \Gamma_i (\phi p_t + \lambda_i \eta_t + u_{it}) \\
+&= \phi p_t (\sum \Gamma_i) + \eta_t (\sum \Gamma_i \lambda_i) + \sum \Gamma_i u_{it}
+\end{align*}
+To ensure $z_t$ contains \textit{only} idiosyncratic shocks ($u_{it}$), we must satisfy two conditions:
+\begin{enumerate}
+    \item $\sum \Gamma_i = 0$: This removes the endogenous price $p_t$.
+    \item $\sum \Gamma_i \lambda_i = 0$: This removes the common macro shock $\eta_t$.
+\end{enumerate}
+
+\subsection{Why not just Firm Size ($S_i$)?}
+You asked: "Aren't weights given by firm size?"
+\begin{itemize}
+    \item \textbf{Power vs. Validity:} Firm size ($S_i$) gives the instrument its \textbf{power}. We want the instrument to be large, and only large firms can create aggregate "granular" ripples.
+    \item \textbf{The Conflict:} If we use $z_t = \sum (S_i - 1/N) y_{it}$, we have power, but we lack validity if $S_i$ is correlated with $\lambda_i$ (e.g., if big firms are more sensitive to macro shocks).
+    \item \textbf{The "Tilt":} We start with firm sizes $S_i$ but then "tilt" or project them until they are perpendicular (orthogonal) to the macro-sensitivities $\lambda_i$.
+\end{itemize}
+
+\subsection{Mathematical Solution (Projection)}
+In matrix form, we want $\Gamma$ to be as close as possible to $S$ but satisfy $\Gamma \perp \lambda$. This is a standard projection problem:
+\begin{equation}
+\Gamma = S - \lambda (\lambda' \lambda)^{-1} \lambda' S
+\end{equation}
+\textbf{Intuition:} We take the firm sizes and subtract the portion of size that is explained by macro-sensitivity. What remains is "Pure Granular Weight."
+
+\section{Summary}
+\begin{itemize}
+    \item \textbf{Factor Loadings ($\lambda_i$)}: Firm-specific sensitivities to the macroeconomy.
+    \item \textbf{Validity}: We cannot use raw size if size correlates with macro-sensitivity.
+    \item \textbf{Optimal Weights ($\Gamma_i$)}: The "tilted" versions of size weights that satisfy $\sum \Gamma_i \lambda_i = 0$.
+\end{itemize}
+
+\end{document}
