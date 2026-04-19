@@ -6,7 +6,6 @@ This repository is an AI-powered factory for creating beautiful, rhetorically ef
 
 ## 🛠 Project Components
 
-*   **`JambroBeamerTheme/`**: The core Beamer theme used for these presentations.
 *   **`.claude/`**: Specialized AI skills (in markdown format) that codify the presentation-creation pipeline.
 *   **`presentations/`**: The intellectual foundation, detailed guides, and examples.
     *   `rhetoric_of_decks.md`: Practical principles for effective decks.
