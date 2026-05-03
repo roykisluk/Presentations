@@ -1,0 +1,150 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{ragged2e}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, backgrounds, decorations.pathreplacing, shadows, fadings}
+\pgfplotsset{compat=1.18}
+
+% --- Color Palette: Warm Professional ---
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+\definecolor{SoftPurple}{HTML}{9D4EDD}
+\definecolor{WarmGray}{HTML}{6C757D}
+\definecolor{LightGray}{HTML}{E9ECEF}
+\definecolor{Cream}{HTML}{FBF8F1}
+\definecolor{DeepRed}{HTML}{D62828}
+\definecolor{Gold}{HTML}{D4A03A}
+\definecolor{SoftWhite}{HTML}{FAFAFA}
+
+% Beamer colors
+\setbeamercolor{normal text}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{structure}{fg=DeepNavy}
+\setbeamercolor{alerted text}{fg=DeepRed}
+\setbeamercolor{example text}{fg=Teal}
+\setbeamercolor{frametitle}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{title}{fg=DeepNavy}
+\setbeamercolor{subtitle}{fg=WarmGray}
+\setbeamercolor{block title}{bg=DeepNavy, fg=SoftWhite}
+\setbeamercolor{block body}{bg=LightGray, fg=DeepNavy}
+\setbeamercolor{itemize item}{fg=WarmOrange}
+\setbeamercolor{itemize subitem}{fg=Gold}
+
+% Fonts
+\usefonttheme{professionalfonts}
+\setbeamerfont{title}{size=\huge, series=\bfseries}
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+
+% Strip chrome
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+
+% Minimal footline
+\setbeamertemplate{footline}{%
+    \hfill
+    \begin{beamercolorbox}[wd=3cm,ht=2.5ex,dp=1ex,right,rightskip=0.6cm]{page number}
+        \usebeamercolor[fg]{WarmGray}\scriptsize\insertframenumber
+    \end{beamercolorbox}
+    \vspace{0.3cm}
+}
+
+% Bullets
+\setbeamertemplate{itemize item}{\footnotesize\raisebox{0.3ex}{\tikz\fill[WarmOrange] (0,0) circle (0.45ex);}}
+\setbeamertemplate{itemize subitem}{\footnotesize\raisebox{0.3ex}{\tikz\fill[Gold] (0,0) circle (0.35ex);}}
+
+% Custom commands
+\newcommand{\transitionslide}[2]{%
+    {\setbeamercolor{normal text}{fg=SoftWhite,bg=DeepNavy}
+    \begin{frame}[plain]\vfill\begin{center}
+        {\huge\bfseries\textcolor{Gold}{#1}}\\[0.6cm]
+        {\large\textcolor{LightGray}{#2}}
+    \end{center}\vfill\end{frame}}
+}
+
+\begin{document}
+
+\begin{frame}
+    \title{Appendix}
+    \subtitle{Optimal Weights ($\Gamma$) and Factor Estimation}
+    \author{Roy Kisluk}
+    \date{}
+    \titlepage
+\end{frame}
+
+\begin{frame}
+    \frametitle{The Need for $\Gamma$: Leaky Instruments}
+    
+    \vspace{0.5cm}
+    {\Large
+        If large firms respond differently to macro trends, the simple GIV fails.
+    }
+    
+    \vspace{1cm}
+    \begin{itemize}
+        \item \textbf{The Simple Model:} Assumes all firms have the same sensitivity ($\lambda_i = 1$) to macroeconomic shocks ($\eta_t$).
+        \item \textbf{The Reality:} Superstar firms (e.g., Apple, Delta) often have very different macro-sensitivities than the average firm.
+        \item \textbf{The Problem:} If big firms are more sensitive to $\eta_t$, then the size-weighted outcome ($y_{St}$) becomes highly correlated with the macro shock.
+        \item \textbf{The Result:} The simple GIV instrument ($z_t = y_{St} - y_{Et}$) becomes "leaky"—it inadvertently instruments with aggregate shocks rather than just idiosyncratic ones.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[shrink=20]
+    \frametitle{Deriving $\Gamma$: Orthogonal Projection}
+    
+    \vspace{0.5cm}
+    {\Large
+        $\Gamma$ is the "pure granular weight", orthogonal to macro-sensitivities.
+    }
+    
+    \vspace{0.5cm}
+    We want weights $\Gamma_i$ that maximize power (by staying close to firm sizes $S_i$) while ensuring orthogonality to the common factors ($\lambda_i$) and a constant (to sum to zero).
+    
+    \vspace{0.5cm}
+    \textbf{Optimization Problem:}
+    \begin{equation*}
+        \min_{\Gamma} \sum_{i=1}^N (\Gamma_i - S_i)^2 \quad \text{subject to} \quad \sum \Gamma_i = 0, \quad \sum \Gamma_i \lambda_i = 0
+    \end{equation*}
+    
+    \vspace{0.5cm}
+    \textbf{Solution (Linear Projection):}
+    \begin{equation*}
+        \Gamma = S - \lambda (\lambda' \lambda)^{-1} \lambda' S
+    \end{equation*}
+    \vspace{0.2cm}
+    $\Gamma$ is simply the residual of regressing firm sizes ($S$) onto the factor loadings ($\lambda$). It removes the macro-contaminated portion of size.
+\end{frame}
+
+\begin{frame}[shrink=5]
+    \frametitle{Estimating Latent Factors with PCA}
+    
+    {\large
+        What if the true factor loadings ($\lambda_i$) are unobserved?
+    }
+    
+    \vspace{0.1cm}
+    In practice, we often do not know exactly how each firm responds to every macro trend. We must estimate the common factors ($\eta_t$) and their loadings ($\lambda_i$) from the data itself.
+    
+    \begin{itemize}
+        \item \textbf{Principal Component Analysis (PCA):} We apply PCA to the panel data of firm outcomes ($y_{it}$) to extract the largest sources of common variance.
+        \item \textbf{The First Principal Components:} The first $K$ principal components represent the dominant macroeconomic factors ($\eta_t$).
+        \item \textbf{Factor Loadings:} The firm-specific sensitivities to these components become our estimated $\hat{\lambda}_i$.
+        \item \textbf{Calculating $\Gamma$:} We then project firm size $S$ orthogonal to $\hat{\lambda}$ to find the optimal, bias-free GIV weights ($\Gamma$).
+    \end{itemize}
+\end{frame}
+
+\end{document}

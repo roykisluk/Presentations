@@ -1,0 +1,82 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{adjustbox}
+
+% --- Color Palette: Warm Professional ---
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+\definecolor{WarmGray}{HTML}{6C757D}
+\definecolor{SoftWhite}{HTML}{FAFAFA}
+\definecolor{DeepRed}{HTML}{D62828}
+\definecolor{Gold}{HTML}{D4A03A}
+
+\setbeamercolor{normal text}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{structure}{fg=DeepNavy}
+\setbeamercolor{frametitle}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{itemize item}{fg=WarmOrange}
+
+\setbeamertemplate{itemize item}{\footnotesize\raisebox{0.3ex}{\tikz\fill[WarmOrange] (0,0) circle (0.45ex);}}
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+
+\begin{document}
+
+\begin{frame}
+    \frametitle{GIV estimates elasticities via Two-Stage Least Squares}
+
+    \vspace{0.3cm}
+    {\Large
+        To estimate the causal effect of labor demand on wages ($\psi$), we use $z_t$ in a standard 2SLS framework.
+    }
+
+    \vspace{0.8cm}
+    \textbf{First Stage: Isolate exogenous variation in labor demand}
+    \vspace{0.2cm}
+    \begin{equation*}
+        L_{St} = \beta z_t + \text{Controls} + \nu_t
+    \end{equation*}
+    \vspace{0.1cm}
+    We regress aggregate labor demand ($L_{St}$) on the Granular Instrument ($z_t$). This extracts $\widehat{L}_{St}$, the variation driven \emph{only} by the idiosyncratic shocks of superstar firms.
+
+    \vspace{0.8cm}
+    \textbf{Second Stage: Estimate the causal elasticity}
+    \vspace{0.2cm}
+    \begin{equation*}
+        w_t = \psi \widehat{L}_{St} + \text{Controls} + \varepsilon_t
+    \end{equation*}
+    \vspace{0.1cm}
+    We regress aggregate wages ($w_t$) on the predicted labor demand from the First Stage ($\widehat{L}_{St}$) to obtain an unbiased estimate of $\psi$.
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Validating the Instrument: Relevance and Exclusion}
+
+    \vspace{0.3cm}
+    {\Large
+        For $z_t$ to be a valid instrument, two fundamental assumptions must hold in a granular economy.
+    }
+
+    \vspace{0.8cm}
+    \begin{itemize}
+        \item \textbf{Relevance ($\text{Cov}(L_{St}, z_t) \neq 0$):}\\
+        \vspace{0.2cm}
+        The granular shocks must actually move the aggregate market. This requires a \emph{concentrated market} (e.g., high Herfindahl index) where the idiosyncratic shocks of the largest firms are volatile enough to shift total labor demand.
+
+        \vspace{0.6cm}
+        \item \textbf{Exclusion Restriction ($\text{Cov}(z_t, \varepsilon_t) = 0$):}\\
+        \vspace{0.2cm}
+        The idiosyncratic shocks of large firms ($z_t$) must not directly affect aggregate wages ($w_t$) through any channel other than aggregate labor demand ($L_{St}$). They must be truly orthogonal to macro aggregate supply shocks ($\varepsilon_t$).
+    \end{itemize}
+
+\end{frame}
+
+\end{document}

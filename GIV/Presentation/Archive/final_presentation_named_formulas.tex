@@ -82,7 +82,7 @@
     \title{Granular Instrumental Variables}
     \subtitle{Gabaix and Koijen (2022)}
     \author{Roy Kisluk}
-    \date{\today}
+    \date{}
     \titlepage
 \end{frame}
 
@@ -95,7 +95,7 @@
 
     \vspace{1cm}
     {\Large
-        In a standard economy, micro-shocks cancel out at a rate of $1/\sqrt{N}$\hyperlink{sqrtn}{\beamergotobutton{Note}}.
+        In a standard economy, micro-shocks cancel out at a rate of $1/\sqrt{N}$\hyperlink{sqrtn}{\beamergotobutton{Proof}}.
 
     }
 
@@ -144,29 +144,29 @@
 \begin{frame}
     \frametitle{Endogenous aggregate shocks confound the effect of large firms}
 
-    \vspace{0.5cm}
+    \vspace{0.1cm}
     {\Large
         The Goal: Estimate the causal elasticity of wages to labor demand ($\psi$).
     }
 
-    \vspace{0.8cm}
+    \vspace{0.1cm}
     {\Large
         The Identification Challenge: \textbf{Simultaneity}
     }
 
-    \vspace{0.4cm}
+    \vspace{0.1cm}
     \begin{itemize}
-        \item \textbf{Supply Equation:} Wages respond to labor demand and macro supply shocks.
-        \item \textbf{Demand Equation:} Labor demand responds to wages and macro demand shocks.
+        \item \textbf{Supply Equation:} Aggregate wages respond to labor demand and macro supply shocks ($\varepsilon_t$).
+        \item \textbf{Demand Equation:} Labor demand depends on wages and macro demand shocks ($\eta_t$).
     \end{itemize}
 
-    % \begin{center}
-    %     \renewcommand{\arraystretch}{1.5}
-    %     \begin{tabular}{l p{8cm}}
-    %         {\textbf{The Problem}} & \Large $\text{Cov}(L_{St}, \varepsilon_t) \neq 0$                                                                                          \\
-    %         {\textbf{The Reason}}  & Common macro shocks $(\eta_t, \varepsilon_t)$ drive both variables simultaneously, making OLS estimates of $\psi$ biased and inconsistent.
-    %     \end{tabular}
-    % \end{center}
+    \begin{center}
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabular}{l p{8cm}}
+            {\textbf{The Problem}} & \Large $\text{Cov}(L_{St}, \varepsilon_t) \neq 0$                                                                                          \\
+            {\textbf{The Reason}}  & Common macro shocks $(\eta_t, \varepsilon_t)$ drive both variables simultaneously, making OLS estimates of $\psi$ biased and inconsistent.
+        \end{tabular}
+    \end{center}
 
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -176,25 +176,19 @@
 \begin{frame}
     \frametitle{A simple model of aggregate and idiosyncratic shocks}
 
-    Consider an economy with $N$ firms.
+    Consider an economy with $N$ firms and a single common factor ($\eta_t$).
 
-    \vspace{0.2cm}
+    \vspace{0.8cm}
     The system is given by:
 
     \vspace{0.5cm}
     \begin{align}
-        w_t    & = \psi L_{St} + \varepsilon_t \tag{Supply}  \\[0.5cm]
-        L_{it} & = \phi^d w_t + \eta_t + u_{it} \tag{Demand}
+        w_t    & = \psi L_{St} + \varepsilon_t \tag{38}  \\[0.5cm]
+        L_{it} & = \phi^d w_t + \eta_t + u_{it} \tag{39}
     \end{align}
 
-    Where:
-    \begin{itemize}
-        \item $w_t$ is the wage
-        \item $L_{St} = \sum_i S_i L_{it}$ is the size-weighted aggregate outcome (number of workers)
-        \item $\eta_t$ and $\varepsilon_t$ are aggregate shocks
-        \item $\psi$ is the labor supply elasticity, $\phi^d$ is the labor demand elasticity
-        \item $u_{it}$ is the idiosyncratic shock to firm $i$
-    \end{itemize}
+    \vspace{0.8cm}
+    Where $w_t$ is the wage, $L_{St} = \sum_i S_i L_{it}$ is the size-weighted aggregate outcome (number of workers), $\eta_t$ and $\varepsilon_t$ are aggregate shocks, and $u_{it}$ is the idiosyncratic shock to firm $i$.
 
 \end{frame}
 
@@ -224,19 +218,30 @@
 
 
 
-\begin{frame}
+\begin{frame}[shrink=20]
     \frametitle{GIV estimates elasticities via Two-Stage Least Squares}
 
+    \vspace{0.3cm}
+    {\Large
+        To estimate the causal effect of labor demand on wages ($\psi$), we use $z_t$ in a standard 2SLS framework.
+    }
+
+    \vspace{0.8cm}
     \textbf{First Stage: Isolate exogenous variation in labor demand}
+    \vspace{0.2cm}
     \begin{equation*}
         L_{St} = \beta z_t + \text{Controls} + \nu_t
     \end{equation*}
+    \vspace{0.1cm}
     We regress aggregate labor demand ($L_{St}$) on the Granular Instrument ($z_t$). This extracts $\widehat{L}_{St}$, the variation driven \emph{only} by the idiosyncratic shocks of superstar firms.
 
+    \vspace{0.8cm}
     \textbf{Second Stage: Estimate the causal elasticity}
+    \vspace{0.2cm}
     \begin{equation*}
         w_t = \psi \widehat{L}_{St} + \text{Controls} + \varepsilon_t
     \end{equation*}
+    \vspace{0.1cm}
     We regress aggregate wages ($w_t$) on the predicted labor demand from the First Stage ($\widehat{L}_{St}$) to obtain an unbiased estimate of $\psi$.
 
 \end{frame}
@@ -274,13 +279,13 @@
     \vspace{1cm}
     Define the equal-weighted average outcome:
     \begin{equation*}
-        L_{Et} = \frac{1}{N} \sum_{i=1}^N L_{it} \tag{Equal-Weighted Average}
+        L_{Et} = \frac{1}{N} \sum_{i=1}^N L_{it}
     \end{equation*}
 
     \vspace{0.5cm}
     The GIV is the size-weighted outcome minus the equal-weighted outcome:
     \begin{equation}
-        z_t := L_{\Gamma t} = L_{St} - L_{Et} \tag{GIV}
+        z_t := L_{\Gamma t} = L_{St} - L_{Et} \tag{40}
     \end{equation}
 
 \end{frame}
@@ -291,14 +296,14 @@
     \vspace{0.5cm}
     Substitute the demand equation into the aggregate definitions:
     \begin{align}
-        L_{St} & = \phi^d w_t + \eta_t + u_{St} \notag \\
-        L_{Et} & = \phi^d w_t + \eta_t + u_{Et} \notag
+        L_{St} & = \phi^d w_t + \eta_t + u_{St} \notag   \\
+        L_{Et} & = \phi^d w_t + \eta_t + u_{Et} \tag{41}
     \end{align}
 
     \vspace{0.5cm}
     The common components ($\phi^d w_t + \eta_t$) difference out:
     \begin{equation}
-        z_t = u_{\Gamma t} = u_{St} - u_{Et} =\underbrace{\sum S_i L_{it}}_{\text{Size-Weighted}} - \underbrace{\frac{1}{N} \sum L_{it}}_{\text{Equal-Weighted}} \notag
+        z_t = u_{\Gamma t} = u_{St} - u_{Et} =\underbrace{\sum S_i L_{it}}_{\text{Size-Weighted}} - \underbrace{\frac{1}{N} \sum L_{it}}_{\text{Equal-Weighted}} \tag{Idiosyncratic Filter}
     \end{equation}
 
     \vspace{0.5cm}
@@ -317,13 +322,13 @@
     \vspace{0.5cm}
     Using the supply equation (38), $\mathbb{E}[(w_t - \psi L_{St}) z_t] = 0$:
     \begin{equation*}
-        \psi = \frac{\mathbb{E}[w_t z_t]}{\mathbb{E}[L_{St} z_t]} \tag{Supply Elasticity}
+        \psi = \frac{\mathbb{E}[w_t z_t]}{\mathbb{E}[L_{St} z_t]}
     \end{equation*}
 
     \vspace{0.5cm}
     Using the equal-weighted demand equation, $\mathbb{E}[(L_{Et} - \phi^d w_t) z_t] = 0$:
     \begin{equation*}
-        \phi^d = \frac{\mathbb{E}[L_{Et} z_t]}{\mathbb{E}[w_t z_t]} \tag{Demand Elasticity}
+        \phi^d = \frac{\mathbb{E}[L_{Et} z_t]}{\mathbb{E}[w_t z_t]}
     \end{equation*}
 
 \end{frame}
@@ -354,7 +359,7 @@
     We now allow for heterogeneous loadings $\lambda_i$:
     \vspace{0.5cm}
     \begin{equation}
-        L_{it} = \phi w_t + \lambda_i \eta_t + u_{it} \notag
+        L_{it} = \phi w_t + \lambda_i \eta_t + u_{it} \tag{Full Factor Model}
     \end{equation}
     \vspace{0.5cm}
     The simple GIV becomes:
@@ -381,50 +386,6 @@
     {\Large
         This ensures $z_t = \sum \Gamma_i u_{it}$ is purely idiosyncratic.
     }
-\end{frame}
-
-\begin{frame}[shrink=20]
-    \frametitle{Deriving $\Gamma$: Orthogonal Projection}
-
-    \vspace{0.5cm}
-    {\Large
-        $\Gamma$ is the "pure granular weight", orthogonal to macro-sensitivities.
-    }
-
-    \vspace{0.5cm}
-    We want weights $\Gamma_i$ that maximize power (by staying close to firm sizes $S_i$) while ensuring orthogonality to the common factors ($\lambda_i$) and a constant (to sum to zero).
-
-    \vspace{0.5cm}
-    \textbf{Optimization Problem:}
-    \begin{equation*}
-        \min_{\Gamma} \sum_{i=1}^N (\Gamma_i - S_i)^2 \quad \text{subject to} \quad \sum \Gamma_i = 0, \quad \sum \Gamma_i \lambda_i = 0
-    \end{equation*}
-
-    \vspace{0.5cm}
-    \textbf{Solution (Linear Projection):}
-    \begin{equation*}
-        \Gamma = S - \lambda (\lambda' \lambda)^{-1} \lambda' S
-    \end{equation*}
-    \vspace{0.2cm}
-    $\Gamma$ is simply the residual of regressing firm sizes ($S$) onto the factor loadings ($\lambda$). It removes the macro-contaminated portion of size.
-\end{frame}
-
-\begin{frame}[shrink=5]
-    \frametitle{Estimating Latent Factors with PCA}
-
-    {\large
-        What if the true factor loadings ($\lambda_i$) are unobserved?
-    }
-
-    \vspace{0.1cm}
-    In practice, we often do not know exactly how each firm responds to every macro trend. We must estimate the common factors ($\eta_t$) and their loadings ($\lambda_i$) from the data itself.
-
-    \begin{itemize}
-        \item \textbf{Principal Component Analysis (PCA):} We apply PCA to the panel data of firm outcomes ($y_{it}$) to extract the largest sources of common variance.
-        \item \textbf{The First Principal Components:} The first $K$ principal components represent the dominant macroeconomic factors ($\eta_t$).
-        \item \textbf{Factor Loadings:} The firm-specific sensitivities to these components become our estimated $\hat{\lambda}_i$.
-        \item \textbf{Calculating $\Gamma$:} We then project firm size $S$ orthogonal to $\hat{\lambda}$ to find the optimal, bias-free GIV weights ($\Gamma$).
-    \end{itemize}
 \end{frame}
 
 % \begin{frame}
@@ -470,20 +431,20 @@
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[shrink=5]
     \frametitle{GIV precision relies on concentrated labor markets and volatile micro-shocks}
 
     \begin{columns}[T]
         \begin{column}{0.55\textwidth}
-            \vspace{0.5cm}
-            {\Large
+            \vspace{0.1cm}
+            {\large
                 For the instrument to be strong, we need:
             }
 
-            \vspace{0.8cm}
+            \vspace{0.3cm}
             \begin{enumerate}
                 \item \textbf{A large excess Herfindahl index ($h$):} A few superstar firms must account for a substantial fraction of total employment.
-                      \vspace{0.4cm}
+                      \vspace{0.2cm}
                 \item \textbf{Volatile idiosyncratic shocks ($\sigma_u$):} Firm-specific shocks must be large relative to aggregate macroeconomic volatility ($\sigma_\varepsilon$).
             \end{enumerate}
         \end{column}
@@ -518,20 +479,20 @@
     \label{sqrtn}
     \frametitle{Aggregate volatility decays at $1/\sqrt{N}$ under equal weights}
 
-    \vspace{0.4cm}
+    \vspace{0.2cm}
     Suppose there are $N$ firms, each receiving an independent idiosyncratic shock $u_{it}$.
     Assume these shocks have mean 0 and a common variance $\sigma^2$:
     \begin{equation*}
         \mathbb{E}[u_{it}] = 0, \quad \text{Var}(u_{it}) = \sigma^2, \quad \text{Cov}(u_{it}, u_{jt}) = 0 \text{ for } i \neq j
     \end{equation*}
 
-    \vspace{0.4cm}
+    \vspace{0.2cm}
     In a non-granular economy, the aggregate shock is an \textbf{equal-weighted} average:
     \begin{equation*}
         u_{Et} = \frac{1}{N} \sum_{i=1}^N u_{it}
     \end{equation*}
 
-    \vspace{0.4cm}
+    \vspace{0.2cm}
     The variance of the aggregate shock is:
     \begin{equation*}
         \text{Var}(u_{Et}) = \text{Var}\left( \frac{1}{N} \sum u_{it} \right) = \frac{1}{N^2} \sum \text{Var}(u_{it}) = \frac{N \sigma^2}{N^2} =
@@ -547,4 +508,4 @@
 
 
 
-\end{document}
+\end{document}}

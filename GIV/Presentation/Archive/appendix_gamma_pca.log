@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.28)  14 APR 2026 17:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.28)  3 MAY 2026 12:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**GIV_presentation.tex
-(./GIV_presentation.tex
+**appendix_gamma_pca.tex
+(./appendix_gamma_pca.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
 (/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamer.cls
@@ -1123,8 +1123,8 @@ File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count363
 \l__pdf_internal_box=\box89
 )
-(./GIV_presentation.aux)
-\openout1 = `GIV_presentation.aux'.
+(./appendix_gamma_pca.aux)
+\openout1 = `appendix_gamma_pca.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 79.
 LaTeX Font Info:    ... okay on input line 79.
@@ -1203,9 +1203,9 @@ e
 ))
 Package hyperref Info: Link coloring OFF on input line 79.
 
-(./GIV_presentation.out) (./GIV_presentation.out)
+(./appendix_gamma_pca.out) (./appendix_gamma_pca.out)
 \@outlinefile=\write5
-\openout5 = `GIV_presentation.out'.
+\openout5 = `appendix_gamma_pca.out'.
 
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-basic-dicti
@@ -1256,24 +1256,13 @@ Package microtype Info: Loading generic protrusion settings for font family
 Package pgfplots notification 'compat/show suggested version=true': document ha
 s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
-(./GIV_presentation.nav)
+(./appendix_gamma_pca.nav)
 
 Package hyperref Warning: Option `pdfauthor' has already been used,
 (hyperref)                setting the option has no effect on input line 87.
 
-[1
-
-{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
-al/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}] [2
-
-] [3
-
-] [4
-
-]
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
-51.
-
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 8
+7.
 (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1281,32 +1270,32 @@ File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-51.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 8
+7.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-151.
+87.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-151.
+87.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 151.
+(Font)              <10.95> on input line 87.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 151.
+(Font)              <8> on input line 87.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 151.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 151
-.
+(Font)              <6> on input line 87.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 87.
+
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -1314,82 +1303,77 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2024/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 151
-.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 87.
+
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 (/usr/local/texlive/2024/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-) [5
+) [1
+
+{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
+al/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/202
+4/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <14.4> on input line 104.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 104.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 104.
+ [2
 
 {/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/loca
-l/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2024
-/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
+l/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}] [3
+
+{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 173.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 173.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 173.
- [6
-
-] [7
-
-{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <14.4> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 218.
- [8
-
-] [9
-
-] [10
-
-] [11
+(Font)              <12> on input line 148.
+ [4
 
 ]
 \tf@nav=\write6
-\openout6 = `GIV_presentation.nav'.
+\openout6 = `appendix_gamma_pca.nav'.
 
 \tf@toc=\write7
-\openout7 = `GIV_presentation.toc'.
+\openout7 = `appendix_gamma_pca.toc'.
 
 \tf@snm=\write8
-\openout8 = `GIV_presentation.snm'.
+\openout8 = `appendix_gamma_pca.snm'.
 
- (./GIV_presentation.aux)
+ (./appendix_gamma_pca.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
-Package rerunfilecheck Info: File `GIV_presentation.out' has not changed.
+Package rerunfilecheck Info: File `appendix_gamma_pca.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 39290 strings out of 474116
- 919219 string characters out of 5743681
- 1934187 words of memory out of 5000000
- 60801 multiletter control sequences out of 15000+600000
- 621075 words of font info for 122 fonts, out of 8000000 for 9000
+ 39199 strings out of 474116
+ 917858 string characters out of 5743681
+ 1937187 words of memory out of 5000000
+ 60729 multiletter control sequences out of 15000+600000
+ 621976 words of font info for 124 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 128i,14n,123p,1013b,730s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,14n,123p,1015b,715s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/lo
 cal/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texliv
 e/2024/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></usr/local/texlive/2024/tex
 mf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2024/texmf-dist/fon
 ts/type1/public/lm/lmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/pu
-blic/lm/lmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmss
-10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmss12.pfb></u
-sr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmss8.pfb></usr/local/te
-xlive/2024/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/20
-24/texmf-dist/fonts/type1/public/lm/lmsso12.pfb></usr/local/texlive/2024/texmf-
-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts
-/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on GIV_presentation.pdf (11 pages, 191587 bytes).
+blic/lm/lmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr
+8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmss10.pfb></us
+r/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmss12.pfb></usr/local/te
+xlive/2024/texmf-dist/fonts/type1/public/lm/lmss8.pfb></usr/local/texlive/2024/
+texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2024/texmf-di
+st/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/t
+ype1/public/lm/lmsy8.pfb>
+Output written on appendix_gamma_pca.pdf (4 pages, 176922 bytes).
 PDF statistics:
- 174 PDF objects out of 1000 (max. 8388607)
- 111 compressed objects within 2 object streams
- 23 named destinations out of 1000 (max. 500000)
+ 134 PDF objects out of 1000 (max. 8388607)
+ 79 compressed objects within 1 object stream
+ 9 named destinations out of 1000 (max. 500000)
  37003 words of extra memory for PDF output out of 42996 (max. 10000000)
 

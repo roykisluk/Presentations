@@ -1,0 +1,57 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% Packages (Matching final_presentation.tex)
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{xcolor}
+
+% --- Color Palette: Warm Professional ---
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+\definecolor{WarmGray}{HTML}{6C757D}
+\definecolor{SoftWhite}{HTML}{FAFAFA}
+
+\setbeamercolor{normal text}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{structure}{fg=DeepNavy}
+\setbeamercolor{frametitle}{fg=DeepNavy, bg=SoftWhite}
+
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+
+\begin{document}
+
+\begin{frame}
+    \frametitle{Aggregate volatility decays at $1/\sqrt{N}$ under equal weights}
+    
+    \vspace{0.4cm}
+    Suppose there are $N$ firms, each receiving an independent idiosyncratic shock $u_{it}$.
+    Assume these shocks have mean 0 and a common variance $\sigma^2$:
+    \begin{equation*}
+        \mathbb{E}[u_{it}] = 0, \quad \text{Var}(u_{it}) = \sigma^2, \quad \text{Cov}(u_{it}, u_{jt}) = 0 \text{ for } i \neq j
+    \end{equation*}
+
+    \vspace{0.4cm}
+    In a non-granular economy, the aggregate shock is an \textbf{equal-weighted} average:
+    \begin{equation*}
+        u_{Et} = \frac{1}{N} \sum_{i=1}^N u_{it}
+    \end{equation*}
+
+    \vspace{0.4cm}
+    The variance of the aggregate shock is:
+    \begin{equation*}
+        \text{Var}(u_{Et}) = \text{Var}\left( \frac{1}{N} \sum u_{it} \right) = \frac{1}{N^2} \sum \text{Var}(u_{it}) = \frac{N \sigma^2}{N^2} = \frac{\sigma^2}{N}
+    \end{equation*}
+
+    \vspace{0.4cm}
+    {\Large
+        The aggregate volatility (standard deviation) is therefore:
+        \textcolor{WarmOrange}{\boldmath $\sigma_{agg} = \frac{\sigma}{\sqrt{N}}$}
+    }
+
+\end{frame}
+
+\end{document}

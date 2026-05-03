@@ -1,0 +1,61 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{ragged2e}
+
+% --- Color Palette: Warm Professional ---
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+\definecolor{WarmGray}{HTML}{6C757D}
+\definecolor{LightGray}{HTML}{E9ECEF}
+\definecolor{DeepRed}{HTML}{D62828}
+\definecolor{SoftWhite}{HTML}{FAFAFA}
+
+% Beamer colors
+\setbeamercolor{normal text}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{structure}{fg=DeepNavy}
+\setbeamercolor{frametitle}{fg=DeepNavy, bg=SoftWhite}
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+
+% Bullets
+\setbeamertemplate{itemize item}{\small\color{WarmOrange}$\bullet$}
+
+\begin{document}
+
+\begin{frame}
+    \frametitle{Endogenous aggregate shocks confound the effect of large firms}
+
+    \vspace{0.5cm}
+    {\Large
+        The Goal: Estimate the causal elasticity of wages to labor demand ($\psi$).
+    }
+
+    \vspace{0.8cm}
+    {\Large
+        The Identification Challenge: \textbf{Simultaneity}
+    }
+
+    \vspace{0.4cm}
+    \begin{itemize}
+        \item \textbf{Supply Equation:} Aggregate wages respond to labor demand and macro supply shocks ($\varepsilon_t$).
+        \item \textbf{Demand Equation:} Labor demand depends on wages and macro demand shocks ($\eta_t$).
+    \end{itemize}
+
+    \vspace{0.6cm}
+    \begin{center}
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabular}{l p{8cm}}
+            \textcolor{DeepRed}{\textbf{The Problem}} & \Large $\text{Cov}(L_{St}, \varepsilon_t) \neq 0$ \\
+            \textcolor{WarmGray}{\textbf{The Reason}}  & Common macro shocks $(\eta_t, \varepsilon_t)$ drive both variables simultaneously, making OLS estimates of $\psi$ biased and inconsistent.
+        \end{tabular}
+    \end{center}
+
+\end{frame}
+
+\end{document}
