@@ -1,0 +1,32 @@
+\begin{frame}{Identification relies on the orthogonality of idiosyncratic shocks}
+    \vspace{-0.5em}
+    \begin{block}{The Central Identification Assumption}
+        Individual shocks $u_{it}$ are truly idiosyncratic—uncorrelated with aggregate shocks ($\eta_t, \epsilon_t$) and controls ($C_t^y, C_t^p$):
+        \begin{equation}
+            u_t \perp \eta_t, \epsilon_t, C_t^y, C_t^p
+        \end{equation}
+    \end{block}
+
+    \vfill
+
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \textbf{Baseline Simplifications}
+            \begin{description}
+                \item[A1] Factor loadings $\lambda_i$ are known (relaxed in §IV.B).
+                \item[A2] Controls have factor structure: $C_{it}^y = \lambda_i c_t^y$.
+            \end{description}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \textbf{Error Structure}
+            \begin{description}
+                \item[A3] Homoskedastic and uncorrelated across $i$: $\mathbb{E}[u_t u_t'] = \sigma_u^2 I$.
+                \item[A4] General heteroskedasticity $V^u$ (relaxed for optimality).
+            \end{description}
+        \end{column}
+    \end{columns}
+
+    \vfill
+    \footnotesize
+    \textit{Note: All random variables are assumed to have finite fourth moments and are i.i.d. across periods.}
+\end{frame}

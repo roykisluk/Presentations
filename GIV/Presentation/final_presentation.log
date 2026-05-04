@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.28)  4 MAY 2026 13:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.28)  4 MAY 2026 14:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -982,35 +982,35 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 {/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}] [4
 
 ]
-
-Class beamer Warning: Frame text is shrunk by a factor of 10.83221 percent instead of 0 percent on input line 179.
+Overfull \vbox (10.83275pt too high) detected at line 178
+ []
 
 [5
 
-{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
+]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 226.
+(Font)              <14.4> on input line 228.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 226.
+(Font)              <10> on input line 228.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 226.
+(Font)              <7> on input line 228.
  [6
 
-]
+{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <14.4> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 249.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 251.
  [7
 
 ]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 264.
+(Font)              <12> on input line 266.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <12> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 264.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 266.
  [8
 
 ]
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 286.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 288.
  [9
 
 ] [10
@@ -1034,40 +1034,43 @@ LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
 ] [19
 
 ]
-
-Class beamer Warning: Frame text is shrunk by a factor of 13.47656 percent instead of 0 percent on input line 580.
-
-[20
+LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <9> not available
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 590.
+ [20
 
 ]
-Overfull \vbox (14.0951pt too high) detected at line 600
+Overfull \vbox (2.40883pt too high) detected at line 620
  []
 
 [21
 
 ]
-Overfull \vbox (2.12276pt too high) detected at line 620
+Overfull \vbox (14.0951pt too high) detected at line 640
  []
 
 [22
 
-] [23
+]
+Overfull \vbox (2.12276pt too high) detected at line 660
+ []
+
+[23
 
 ] [24
 
-]
-Overfull \vbox (13.231pt too high) detected at line 667
- []
-
-[25
+] [25
 
 ]
-Overfull \vbox (21.54028pt too high) detected at line 691
+Overfull \vbox (13.231pt too high) detected at line 707
  []
 
 [26
 
-] [27
+]
+Overfull \vbox (21.54028pt too high) detected at line 731
+ []
+
+[27
 
 ] [28
 
@@ -1082,6 +1085,8 @@ Overfull \vbox (21.54028pt too high) detected at line 691
 ] [33
 
 ] [34
+
+] [35
 
 ]
 \tf@nav=\write6
@@ -1102,18 +1107,18 @@ Package rerunfilecheck Info: File `final_presentation.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 39899 strings out of 474116
- 934104 string characters out of 5743681
+ 39946 strings out of 474116
+ 935189 string characters out of 5743681
  1940187 words of memory out of 5000000
- 61302 multiletter control sequences out of 15000+600000
- 650591 words of font info for 161 fonts, out of 8000000 for 9000
+ 61343 multiletter control sequences out of 15000+600000
+ 653587 words of font info for 163 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  128i,16n,123p,1011b,2392s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmss12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmss8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsso10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsso12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on final_presentation.pdf (34 pages, 319069 bytes).
+</usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmss12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmss8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsso10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsso12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsso9.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on final_presentation.pdf (35 pages, 341705 bytes).
 PDF statistics:
- 342 PDF objects out of 1000 (max. 8388607)
- 245 compressed objects within 3 object streams
- 75 named destinations out of 1000 (max. 500000)
- 55435 words of extra memory for PDF output out of 61914 (max. 10000000)
+ 354 PDF objects out of 1000 (max. 8388607)
+ 254 compressed objects within 3 object streams
+ 78 named destinations out of 1000 (max. 500000)
+ 57483 words of extra memory for PDF output out of 61914 (max. 10000000)
 

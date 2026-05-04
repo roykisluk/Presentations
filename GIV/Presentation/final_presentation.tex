@@ -153,10 +153,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % THE SIMPLE MODEL
 \transitionslide{A Simple Model}{}
-\begin{frame}[shrink]
+\begin{frame}
     \frametitle{A simple model of aggregate and idiosyncratic shocks}
 
-    Consider an economy with $N$ firms.
+    Consider an economy with $N$ firms. \hyperlink{app:assumptions}{\beamergotobutton{Assumptions}}
 
     \vspace{0.2cm}
     The system is given by:
@@ -168,14 +168,13 @@
 
     Where:
     \begin{itemize}
-        \item $w_t$ is the wage
-        \item $L_{St} = \sum_i S_i L_{it}$ is the size-weighted average number of workers
-        \item $\eta_t$ and $\varepsilon_t$ are aggregate shocks
-        \item $\psi$ is the labor supply elasticity, $\phi^d$ is the labor demand elasticity
-        \item $u_{it}$ is the idiosyncratic shock to firm $i$
+        \item $w_t$ is the wage (observed)
+        \item $L_{it}$ is the number of workers at firm $i$ (observed)
+        \item $\eta_t$ and $\varepsilon_t$ are aggregate shocks (unobserved)
+        \item $u_{it}$ is the idiosyncratic shock to firm $i$ (unobserved)
     \end{itemize}
     \vspace{0.5cm}
-    We cannot estimate $\psi$ and $\phi^d$ by OLS (simultaneity).
+    We cannot estimate $\psi$ (labor supply elasticity) and $\phi^d$ (labor demand elasticity) by OLS, due to simultaneity.
 \end{frame}
 
 % \begin{frame}
@@ -206,15 +205,18 @@
 \begin{frame}
     \frametitle{Constructing the Granular Instrumental Variable ($z_t$)}
 
-    \vspace{0.5cm}
-    {\Large
+    {
         The GIV exploits the difference between size-weighted and equal-weighted averages.
     }
 
-    \vspace{1cm}
+    \vspace{0.2cm}
     Define the equal-weighted average outcome:
     \begin{equation*}
         L_{Et} = \frac{1}{N} \sum_{i=1}^N L_{it} \tag{Equal-Weighted Average}
+    \end{equation*}
+    Define the size-weighted average outcome:
+    \begin{equation*}
+        L_{St} = \sum_{i=1}^N S_i L_{it} \tag{Size-Weighted Average}
     \end{equation*}
 
     \vspace{0.5cm}
@@ -278,9 +280,9 @@
               The granular shocks must actually move the aggregate market. This requires a \emph{concentrated market} (e.g., high Herfindahl index) where the idiosyncratic shocks of the largest firms are volatile enough to shift total labor demand.
 
               \vspace{0.6cm}
-        \item \textbf{Exclusion Restriction ($\text{Cov}(z_t, \varepsilon_t) = 0$):}\\
+        \item \textbf{Exclusion Restriction ($\text{Cov}(z_t, \varepsilon_t) = 0$, $\text{Cov}(z_t, \eta_t) = 0$):}\\
               \vspace{0.2cm}
-              The idiosyncratic shocks of large firms ($z_t$) must not directly affect aggregate wages ($w_t$) through any channel other than aggregate labor demand ($L_{St}$). They must be truly orthogonal to macro aggregate supply shocks ($\varepsilon_t$).
+              The idiosyncratic shocks of large firms ($z_t$) must not directly affect aggregate wages ($w_t$) through any channel other than aggregate labor demand ($L_{St}$). They must be truly orthogonal to macro aggregate supply shocks ($z_t \perp \eta_t, \varepsilon_t$).
     \end{itemize}
 
 \end{frame}
@@ -312,38 +314,32 @@
 
 \begin{frame}
     \frametitle{The Full Factor Model for granular firms}
-    \vspace{0.5cm}
     We now allow for heterogeneous loadings $\lambda_i$:
-    \vspace{0.5cm}
     \begin{equation}
         L_{it} = \phi w_t + \lambda_i \eta_t + u_{it} \notag
     \end{equation}
-    {
     The simple GIV ($L_{St} - L_{Et}$) assumes every firm has the same loading $\lambda_i = 1$.
-    If large firms are more sensitive to the Fed, the simple GIV is \textbf{"leaky"}—it correlates with $\eta_t$.
-    }
-    \vspace{0.5cm}
+    If large firms are more sensitive to the Fed, the simple GIV is \textbf{"leaky"}—it correlates with $\eta_t$.\\[0.4cm]
     The simple GIV becomes: \hyperlink{app:simple_giv_fails}{\beamergotobutton{Proof}}
     \begin{equation*}
         z_t = (\lambda_S - \lambda_E) \eta_t + (u_{St} - u_{Et})
     \end{equation*}
-    \vspace{0.5cm}
     {
-        If $\lambda_S \neq \lambda_E$, the instrument is \textbf{invalid} ($\mathbb{E}[z_t \eta_t] \neq 0$).
+    If $\lambda_S \neq \lambda_E$, the instrument is \textbf{invalid} ($\mathbb{E}[z_t \eta_t] \neq 0$).
     }
 \end{frame}
 
-\begin{frame}
-    \frametitle{Why not just Firm Size ($S_i$)?}
-    \begin{itemize}
-        \item \textbf{Power vs. Validity:} Firm size ($S_i$) gives the instrument its \textbf{power}. We want the instrument to be large, and only large firms can create aggregate "granular" ripples.
-        \item \textbf{The Conflict:} If we use $z_t = \sum (S_i - 1/N) L_{it}$, we have power, but we lack validity if $S_i$ is correlated with $\lambda_i$ (e.g., if big firms are more sensitive to macro shocks).
-        \item \textbf{The "Tilt":} We start with firm sizes $S_i$ but then "tilt" or project them until they are perpendicular (orthogonal) to the macro-sensitivities $\lambda_i$.
-        \item \textbf{The math:} In matrix form, we want $\Gamma$ to be as close as possible to $S$ but satisfy $\Gamma \perp \lambda$. This is a standard projection problem: $\Gamma = S - \lambda (\lambda' \lambda)^{-1} \lambda' S$
-        \item \textbf{Intuition:} We take the firm sizes and subtract the portion of size that is explained by macro-sensitivity. What remains is "Pure Granular Weight."
-    \end{itemize}
+% \begin{frame}
+%     \frametitle{Why not just Firm Size ($S_i$)?}
+%     \begin{itemize}
+%         \item \textbf{Power vs. Validity:} Firm size ($S_i$) gives the instrument its \textbf{power}. We want the instrument to be large, and only large firms can create aggregate "granular" ripples.
+%         \item \textbf{The Conflict:} If we use $z_t = \sum (S_i - 1/N) L_{it}$, we have power, but we lack validity if $S_i$ is correlated with $\lambda_i$ (e.g., if big firms are more sensitive to macro shocks).
+%         \item \textbf{The "Tilt":} We start with firm sizes $S_i$ but then "tilt" or project them until they are perpendicular (orthogonal) to the macro-sensitivities $\lambda_i$.
+%         \item \textbf{The math:} In matrix form, we want $\Gamma$ to be as close as possible to $S$ but satisfy $\Gamma \perp \lambda$. This is a standard projection problem: $\Gamma = S - \lambda (\lambda' \lambda)^{-1} \lambda' S$
+%         \item \textbf{Intuition:} We take the firm sizes and subtract the portion of size that is explained by macro-sensitivity. What remains is "Pure Granular Weight."
+%     \end{itemize}
 
-\end{frame}
+% \end{frame}
 
 \begin{frame}
     \frametitle{The Solution: Orthogonal Optimal Weights $\Gamma$}
@@ -352,6 +348,7 @@
         z_t & = \sum \Gamma_i (\phi w_t + \lambda_i \eta_t + u_{it})                               \\
             & = \phi w_t (\sum \Gamma_i) + \eta_t (\sum \Gamma_i \lambda_i) + \sum \Gamma_i u_{it}
     \end{align*}
+    Where $\Gamma$ is the vector of weights that we want to find.\\
     To ensure $z_t$ contains \textit{only} idiosyncratic shocks ($u_{it}$), we must satisfy two conditions:
     \begin{enumerate}
         \item $\sum \Gamma_i = 0$: This removes the endogenous wage $w_t$.
@@ -359,14 +356,23 @@
     \end{enumerate}
     We need weights $\Gamma$ such that the factor components \textbf{cancel exactly}.
     This ensures $z_t = \sum \Gamma_i u_{it}$ is purely idiosyncratic.
+
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Choosing Optimal Weights $\Gamma$}
     For this, we use the $N \times N$ projection matrix $Q$ that is orthogonal to the factor loadings—that is, $Q \lambda = 0$:
     \begin{equation*}
         Q = I - \lambda (\lambda' \lambda)^{-1} \lambda'
     \end{equation*}
     The optimal weights are then given by $\Gamma^{*\prime} = S'Q$. \hyperlink{app:propositions}{\beamergotobutton{Propositions}}
+    \begin{itemize}
+        \item Intuitively, we want $\Gamma$ to be as close as possible to $S$ but satisfy $\Gamma \perp \lambda$. This is a standard projection problem: $\Gamma = S - \lambda (\lambda' \lambda)^{-1} \lambda' S$
+        \item In essence, we take the firm sizes and subtract the portion of size that is explained by macro-sensitivity. What remains is pure granular weight.
+    \end{itemize}
 
 \end{frame}
-
 
 
 % \begin{frame}
@@ -549,7 +555,41 @@
 
 \transitionslide{Appendix A}{Derivations}
 
-\begin{frame}[shrink]
+\begin{frame}{Assumptions}
+    \label{app:assumptions}
+    \vspace{-0.5em}
+    \begin{block}{The Central Identification Assumption}
+        Individual shocks $u_{it}$ are truly idiosyncratic—uncorrelated with aggregate shocks ($\eta_t, \epsilon_t$) and controls ($C_t^y, C_t^p$):
+        \begin{equation}
+            u_t \perp \eta_t, \epsilon_t, C_t^y, C_t^p
+        \end{equation}
+    \end{block}
+
+    \vfill
+
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \textbf{Baseline Simplifications}
+            \begin{description}
+                \item[A1] Factor loadings $\lambda_i$ are known (relaxed in §IV.B).
+                \item[A2] Controls have factor structure: $C_{it}^y = \lambda_i c_t^y$.
+            \end{description}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \textbf{Error Structure}
+            \begin{description}
+                \item[A3] Homoskedastic and uncorrelated across $i$: $\mathbb{E}[u_t u_t'] = \sigma_u^2 I$.
+                \item[A4] General heteroskedasticity $V^u$ (relaxed for optimality).
+            \end{description}
+        \end{column}
+    \end{columns}
+
+    \vfill
+    \footnotesize
+    \textit{Note: All random variables are assumed to have finite fourth moments and are i.i.d. across periods.}
+\end{frame}
+
+\begin{frame}
     \label{app:sqrtn}
     \frametitle{Aggregate volatility decays at $1/\sqrt{N}$ under equal weights}
 
