@@ -1,0 +1,131 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{ragged2e}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, backgrounds, decorations.pathreplacing, shadows, fadings}
+\pgfplotsset{compat=1.18}
+
+% --- Color Palette: Warm Professional ---
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+\definecolor{SoftPurple}{HTML}{9D4EDD}
+\definecolor{WarmGray}{HTML}{6C757D}
+\definecolor{LightGray}{HTML}{E9ECEF}
+\definecolor{Cream}{HTML}{FBF8F1}
+\definecolor{DeepRed}{HTML}{D62828}
+\definecolor{Gold}{HTML}{D4A03A}
+\definecolor{SoftWhite}{HTML}{FAFAFA}
+
+% Beamer colors
+\setbeamercolor{normal text}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{structure}{fg=DeepNavy}
+\setbeamercolor{alerted text}{fg=DeepRed}
+\setbeamercolor{example text}{fg=Teal}
+\setbeamercolor{frametitle}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{title}{fg=DeepNavy}
+\setbeamercolor{subtitle}{fg=WarmGray}
+\setbeamercolor{block title}{bg=DeepNavy, fg=SoftWhite}
+\setbeamercolor{block body}{bg=LightGray, fg=DeepNavy}
+\setbeamercolor{itemize item}{fg=WarmOrange}
+\setbeamercolor{itemize subitem}{fg=Gold}
+
+% Fonts
+\usefonttheme{professionalfonts}
+\setbeamerfont{title}{size=\huge, series=\bfseries}
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+
+% Strip chrome
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+
+% Minimal footline
+\setbeamertemplate{footline}{%
+    \hfill
+    \begin{beamercolorbox}[wd=3cm,ht=2.5ex,dp=1ex,right,rightskip=0.6cm]{page number}
+        \usebeamercolor[fg]{WarmGray}\scriptsize\insertframenumber
+    \end{beamercolorbox}
+    \vspace{0.3cm}
+}
+
+% Bullets
+\setbeamertemplate{itemize item}{\footnotesize\raisebox{0.3ex}{\tikz\fill[WarmOrange] (0,0) circle (0.45ex);}}
+\setbeamertemplate{itemize subitem}{\footnotesize\raisebox{0.3ex}{\tikz\fill[Gold] (0,0) circle (0.35ex);}}
+
+% Custom commands
+\newcommand{\transitionslide}[2]{%
+    {\setbeamercolor{normal text}{fg=SoftWhite,bg=DeepNavy}
+    \begin{frame}[plain]\vfill\begin{center}
+        {\huge\bfseries\textcolor{Gold}{#1}}\\[0.6cm]
+        {\large\textcolor{LightGray}{#2}}
+    \end{center}\vfill\end{frame}}
+}
+
+\begin{document}
+
+\transitionslide{Application}{GIV in the Israeli Labor Market}
+
+\begin{frame}
+    \frametitle{The Israeli Tech Sector is highly granular}
+
+    \vspace{0.5cm}
+    {\Large
+        The Israeli high-tech industry is dominated by a few massive multinational R\&D centers.
+    }
+
+    \vspace{1cm}
+    \begin{itemize}
+        \item \textbf{High Concentration:} Companies like Intel, Google, Microsoft, and NVIDIA account for a substantial, disproportionate share of tech employment.
+        \item \textbf{A Heavy Tail:} The size distribution of tech employers in Israel exhibits a strong power law, yielding a high \textbf{excess Herfindahl index ($h$)}.
+        \item \textbf{Macro vs. Micro:} It is difficult to separate general Israeli macroeconomic conditions (e.g., security shocks, interest rates) from the hiring dynamics of these specific giants.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Applying GIV to Israeli tech wages}
+
+    \vspace{0.5cm}
+    {\Large
+        How do we isolate the causal spillover of these tech giants on aggregate Israeli wages?
+    }
+
+    \vspace{1cm}
+    \begin{itemize}
+        \item \textbf{The Idiosyncratic Shocks ($u_{it}$):} We exploit global shocks specific to the multinationals that are arguably exogenous to the Israeli macroeconomy (e.g., global restructuring at Intel, a worldwide AI hiring boom at NVIDIA).
+        \item \textbf{The Instrument ($z_t$):} Construct the GIV by taking the size-weighted employment shocks of these giants and projecting out the common Israeli macroeconomic factor loadings.
+        \item \textbf{The 2SLS Estimation:} Regress aggregate Israeli wages on the component of labor demand driven \emph{only} by these isolated, granular tech shocks.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Takeaways: GIV unconfounds local macro dynamics}
+
+    \vspace{1cm}
+    {\Large
+        The GIV method solves the simultaneity problem in concentrated labor markets.
+    }
+
+    \vspace{1cm}
+    \begin{itemize}
+        \item \textbf{Causal Wage Spillovers:} We can measure exactly how much a hiring freeze at a major tech firm depresses aggregate local wages, separated from a general economic downturn.
+        \item \textbf{Beyond the US:} The method is perfectly suited for small, open economies like Israel, where granular actors often drive aggregate volatility.
+        \item \textbf{The Broad Lesson:} We don't need perfect natural experiments; the everyday idiosyncratic variance of the giants provides all the identifying variation we need.
+    \end{itemize}
+\end{frame}
+
+\end{document}

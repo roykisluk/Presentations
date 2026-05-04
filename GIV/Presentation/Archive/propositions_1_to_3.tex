@@ -1,0 +1,251 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{ragged2e}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, backgrounds, decorations.pathreplacing, shadows, fadings}
+\pgfplotsset{compat=1.18}
+
+% --- Color Palette: Warm Professional ---
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+\definecolor{SoftPurple}{HTML}{9D4EDD}
+\definecolor{WarmGray}{HTML}{6C757D}
+\definecolor{LightGray}{HTML}{E9ECEF}
+\definecolor{Cream}{HTML}{FBF8F1}
+
+\setbeamercolor{background canvas}{bg=Cream}
+\setbeamercolor{normal text}{fg=DeepNavy}
+\setbeamercolor{frametitle}{fg=Cream, bg=DeepNavy}
+\setbeamercolor{title}{fg=Cream, bg=DeepNavy}
+\setbeamercolor{item}{fg=Teal}
+
+\begin{document}
+
+\begin{frame}{Granular Instrumental Variables isolate idiosyncratic shocks}
+    \vspace{0.2cm}
+    \centering
+    The GIV $z_t$ is constructed from observables, $y_{it}$, using weights $\Gamma \in \mathbb{R}^N$ orthogonal to factor loadings:
+    
+    \vspace{0.1cm}
+    \begin{equation*}
+        z_t := \Gamma' y_t = \sum_{i=1}^{N} \Gamma_i y_{it}
+    \end{equation*}
+    
+    \vspace{0.1cm}
+    By construction, this isolates a linear combination of idiosyncratic shocks $u_t$:
+    
+    \vspace{0.1cm}
+    \begin{equation*}
+        z_t = \Gamma' u_t \quad \Rightarrow \quad \text{exogenous to aggregate shocks } \eta_t, \varepsilon_t
+    \end{equation*}
+
+    \vspace{0.2cm}
+    This allows us to construct the sample estimators:
+    \vspace{0.1cm}
+    
+    \adjustbox{max width=\textwidth}{%
+    $
+    \displaystyle
+    \hat{\psi}_T = \frac{\sum_{t=1}^T p_t z_t}{\sum_{t=1}^T y_{St} z_t} 
+    \hspace{2cm} 
+    \hat{\phi}^d_T = \frac{\sum_{t=1}^T y_{\tilde{E}t} z_t}{\sum_{t=1}^T p_t z_t}
+    $
+    }
+\end{frame}
+
+\begin{frame}{Moment conditions link structural equations to the GIV}
+    \vspace{0.5cm}
+    \centering
+    The estimators follow directly from the exogeneity of $z_t$ to structural shocks:
+    
+    \vspace{0.6cm}
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \textbf{Inverse Supply Elasticity}
+        
+        \vspace{0.2cm}
+        From $p_t = \psi y_{St} + \dots + \varepsilon_t$:
+        \begin{equation*}
+            \mathbb{E}[(p_t - \psi y_{St}) z_t] = 0
+        \end{equation*}
+        \vspace{0.1cm}
+        \begin{equation*}
+            \Rightarrow \quad \psi = \frac{\mathbb{E}[p_t z_t]}{\mathbb{E}[y_{St} z_t]}
+        \end{equation*}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \textbf{Demand Elasticity}
+        
+        \vspace{0.2cm}
+        For weights $\tilde{E}$ where $\mathbb{E}[u_{\tilde{E}t} u_{\Gamma t}] = 0$:
+        \begin{equation*}
+            \mathbb{E}[(y_{\tilde{E}t} - \phi^d p_t) z_t] = 0
+        \end{equation*}
+        \vspace{0.1cm}
+        \begin{equation*}
+            \Rightarrow \quad \phi^d = \frac{\mathbb{E}[y_{\tilde{E}t} z_t]}{\mathbb{E}[p_t z_t]}
+        \end{equation*}
+    \end{minipage}
+\end{frame}
+
+\begin{frame}{Proposition 1: The GIV estimator is asymptotically consistent}
+    \vspace{0.5cm}
+    \centering
+    Under standard regularity conditions, as the number of time periods $T \to \infty$:
+    
+    \vspace{0.8cm}
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \textbf{Inverse Supply Elasticity}
+        
+        \vspace{0.4cm}
+        $ \hat{\psi}_T \xrightarrow{\text{a.s.}} \psi $
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \textbf{Demand Elasticity}
+        
+        \vspace{0.4cm}
+        $ \hat{\phi}^d_T \xrightarrow{\text{a.s.}} \phi^d $ \quad (if $\psi \neq 0$)
+    \end{minipage}
+
+    \vspace{1cm}
+    \textbf{Intuition:} The orthogonal weighting $\Gamma$ ensures the instrument is uncorrelated with the structural error term, resolving simultaneity bias.
+\end{frame}
+
+\begin{frame}{Pass-through multipliers capture shock amplification}
+    \vspace{0.5cm}
+    \centering
+    To understand the variance of these estimators, we define two key multipliers:
+    
+    \vspace{0.8cm}
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \textbf{Quantity Pass-through}
+        
+        \vspace{0.3cm}
+        \begin{equation*}
+            M := \frac{1}{1 - \psi\phi^d}
+        \end{equation*}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \textbf{Price Pass-through}
+        
+        \vspace{0.3cm}
+        \begin{equation*}
+            \mu := \psi M
+        \end{equation*}
+    \end{minipage}
+
+    \vspace{1cm}
+    These represent the pass-through from idiosyncratic and aggregate shocks to the aggregate quantity and the price, respectively.
+\end{frame}
+
+\begin{frame}{Proposition 2: Asymptotic variance scales with aggregate noise}
+    \vspace{0.5cm}
+    \centering
+    The estimators converge in distribution to a normal distribution:
+    
+    \vspace{0.4cm}
+    \adjustbox{max width=\textwidth}{%
+    \begin{minipage}{0.8\textwidth}
+        \begin{equation*}
+            \sqrt{T}(\hat{\psi}_T - \psi) \xrightarrow{d} \mathcal{N}(0, \sigma^2_\psi), \quad \sigma_\psi = \frac{\mathbb{E}[u_{\Gamma t}^2]^{1/2}}{|\mathbb{E}[u_{St} u_{\Gamma t}]|} \frac{\sigma_{\varepsilon^\psi}}{|M|}
+        \end{equation*}
+    \end{minipage}
+    }
+    
+    \vspace{0.6cm}
+    \adjustbox{max width=\textwidth}{%
+    \begin{minipage}{0.8\textwidth}
+        \begin{equation*}
+            \sqrt{T}(\hat{\phi}^d_T - \phi^d) \xrightarrow{d} \mathcal{N}(0, \sigma^2_{\phi^d}), \quad \sigma_{\phi^d} = \frac{\mathbb{E}[u_{\Gamma t}^2]^{1/2}}{|\mathbb{E}[u_{St} u_{\Gamma t}]|} \frac{\sigma_{\varepsilon^\phi}}{|\mu|}
+        \end{equation*}
+    \end{minipage}
+    }
+\end{frame}
+
+\begin{frame}{High idiosyncratic volatility improves estimator precision}
+    \vspace{0.5cm}
+    \centering
+    The variance equations reveal the signal-to-noise ratio inherent to GIV:
+    
+    \vspace{0.8cm}
+    \begin{minipage}{0.3\textwidth}
+        \centering
+        \textcolor{Teal}{\textbf{Signal Strength}}
+        
+        \vspace{0.2cm}
+        $|\mathbb{E}[u_{St} u_{\Gamma t}]|$
+        
+        \vspace{0.2cm}
+        Larger granular shocks increase relevance.
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\textwidth}
+        \centering
+        \textcolor{WarmOrange}{\textbf{Instrument Noise}}
+        
+        \vspace{0.2cm}
+        $\mathbb{E}[u_{\Gamma t}^2]^{1/2}$
+        
+        \vspace{0.2cm}
+        Variance of the constructed GIV itself.
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\textwidth}
+        \centering
+        \textcolor{SoftPurple}{\textbf{Structural Noise}}
+        
+        \vspace{0.2cm}
+        $\sigma_{\varepsilon} / |M|$
+        
+        \vspace{0.2cm}
+        Unobserved aggregate shocks dampening precision.
+    \end{minipage}
+\end{frame}
+
+\begin{frame}{Proposition 3: Optimal weights use an orthogonal projection}
+    \vspace{0.5cm}
+    \centering
+    To minimize the asymptotic variances $\sigma^2_\psi$ and $\sigma^2_{\phi^d}$, we use the $N \times N$ projection matrix $Q$ that is orthogonal to the factor loadings $\lambda$:
+    
+    \vspace{0.3cm}
+    \begin{equation*}
+        Q := I - \lambda(\lambda'\lambda)^{-1}\lambda'
+    \end{equation*}
+
+    \vspace{0.5cm}
+    The optimal weights vector $\Gamma^*$ is the projection of the size vector $S$:
+    
+    \vspace{0.3cm}
+    \begin{equation*}
+        \Gamma^* = S'Q
+    \end{equation*}
+
+    \vspace{0.5cm}
+    \textbf{Result:} $\Gamma^*$ is the vector closest to $S$, while remaining orthogonal to the unobserved aggregate factor loadings.
+\end{frame}
+
+\end{document}

@@ -1,0 +1,59 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{xcolor}
+
+\geometry{a4paper, margin=1in}
+
+% --- Colors ---
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+
+\title{\bfseries Intuition: The ``Sum to Zero'' Constraint in GIV}
+\author{Granular Instrumental Variables}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+In the derivation of the optimal Granular Instrumental Variable (GIV) weights $\Gamma_i$, we solve a constrained optimization problem. The first and most fundamental constraint is:
+\begin{equation}
+    \sum_{i=1}^N \Gamma_i = 0 \tag{Constraint 1: Sum to Zero}
+\end{equation}
+This document explains the technical necessity and economic intuition behind this requirement.
+
+\section{Reason 1: Removing Endogenous Common Components}
+Consider the firm-level outcome equation:
+\begin{equation}
+    y_{it} = \phi^d p_t + \text{other factors}
+\end{equation}
+The GIV is constructed as a weighted average: $z_t = \sum \Gamma_i y_{it}$. If we substitute the outcome equation into the GIV definition:
+\begin{equation}
+    z_t = \sum_{i=1}^N \Gamma_i (\phi^d p_t + \dots) = \phi^d p_t \left( \sum_{i=1}^N \Gamma_i \right) + \dots
+\end{equation}
+If $\sum \Gamma_i \neq 0$, the instrument $z_t$ would be directly correlated with the aggregate price $p_t$. Since $p_t$ is endogenous in the supply equation we are trying to estimate, any instrument containing $p_t$ would violate the \textbf{exclusion restriction}. By forcing the weights to sum to zero, we ensure that the common price effect cancels out perfectly.
+
+\section{Reason 2: Demeaning and Isolating Idiosyncratic Shocks}
+The GIV is intended to capture the ``grain'' of the economy—the idiosyncratic luck of individual firms. In the simplest case where every firm is identical except for size, the GIV is the difference between a size-weighted average and an equal-weighted average:
+\begin{equation}
+    z_t = y_{St} - y_{Et} = \sum_{i=1}^N (S_i - 1/N) y_{it}
+\end{equation}
+The weights here are $\Gamma_i = S_i - 1/N$. Note that:
+\begin{equation}
+    \sum \Gamma_i = \sum S_i - \sum \frac{1}{N} = 1 - 1 = 0
+\end{equation}
+This summation to zero ensures that the GIV is a \textbf{differential} measure. It doesn't care about the absolute level of the economy (the common shocks hitting everyone); it only cares about the relative performance of the giants versus the average.
+
+\section{Reason 3: Orthogonality to the Constant Factor}
+In factor analysis, a common shock that hits every firm with the same intensity is represented by a loading $\lambda_i = 1$ for all $i$.
+Constraint 2 in the general derivation is $\sum \Gamma_i \lambda_i = 0$.
+If we have a common factor that affects everyone equally, Constraint 1 \textit{is} Constraint 2. It ensures the instrument is orthogonal to any aggregate level shift, protecting it from being ``leaked'' into by macroeconomic noise.
+
+\section{Summary}
+Constraint 1 is the \textbf{filter} that turns a standard weighted average into an instrument. It ensures the GIV is a pure measure of relative idiosyncratic variance, stripped of any endogenous aggregate price movements or common macroeconomic shocks.
+
+\end{document}
