@@ -14,7 +14,6 @@
 \usepackage{ragged2e}
 \usepackage{colortbl}
 \usepackage{array}
-\usepackage{hyperref}
 \usepackage{adjustbox}
 
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, backgrounds, decorations.pathreplacing, shadows, fadings}
@@ -112,7 +111,7 @@
 
 \end{frame}
 
-\begin{frame} \label{src_sqrtn}
+\begin{frame}[label=src_sqrtn]
     \frametitle{The Law of Large Numbers fails in modern economies}
     \begin{columns}[T]
         \begin{column}{0.55\textwidth}
@@ -153,12 +152,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % THE SIMPLE MODEL
 \transitionslide{A Simple Model}{}
-\begin{frame} \label{src_assumptions}
+\begin{frame}[shrink,label=src_assumptions]
     \frametitle{A simple model of aggregate and idiosyncratic shocks}
 
-    Consider an economy with $N$ firms. The system is given by:
+    Consider an economy with $N$ firms. \hyperlink{app_assumptions}{\beamergotobutton{Assumptions}}
 
-
+    \vspace{0.2cm}
+    The system is given by:
 
     \begin{align}
         w_t    & = \psi L_{St} + \varepsilon_t \tag{Supply}  \\[0.5cm]
@@ -171,7 +171,6 @@
         \item $L_{it}$ is the number of workers at firm $i$ (observed)
         \item $\eta_t$ and $\varepsilon_t$ are aggregate shocks (unobserved)
         \item $u_{it}$ is the idiosyncratic shock to firm $i$ (unobserved)
-        \item Main assumption: $u_{it}$ are uncorrelated with aggregate shocks ($\eta_t, \epsilon_t$) \hyperlink{app_assumptions}{\beamergotobutton{Assumptions}}
     \end{itemize}
     \vspace{0.2cm}
     We cannot estimate $\psi$ (labor supply elasticity) and $\phi^d$ (labor demand elasticity) by OLS, due to simultaneity.
@@ -227,7 +226,7 @@
 
 \end{frame}
 
-\begin{frame} \label{src_equal_weighted}
+\begin{frame}[label=src_equal_weighted]
     \frametitle{The GIV isolates purely idiosyncratic firm shocks}
 
     \vspace{0.5cm}
@@ -288,21 +287,17 @@
 
 \end{frame}
 
-\begin{frame} \label{src_psi_identification}
+\begin{frame}[label=src_psi_identification]
     \frametitle{The GIV yields both supply and demand elasticities}
 
     \vspace{0.5cm}
     By exogeneity, $\mathbb{E}[u_t \varepsilon_t] = 0 \implies \mathbb{E}[z_t \varepsilon_t] = 0$, where $u_t = (u_{it})_{i=1,\dots,N}$.
 
     \vspace{0.5cm}
-    Using the supply equation:
-    \begin{equation*}
-        w_t = \psi L_{St} + \varepsilon_t \quad \implies \quad \mathbb{E}[(w_t - \psi L_{St}) z_t] = 0
-    \end{equation*}
+    Using the supply equation, $\mathbb{E}[(w_t - \psi L_{St}) z_t] = 0$: \hyperlink{app_psi_identification}{\beamergotobutton{Proof}}
     \begin{equation*}
         \psi = \frac{\mathbb{E}[w_t z_t]}{\mathbb{E}[L_{St} z_t]} \tag{Supply Elasticity}
     \end{equation*}
-    \hyperlink{app_psi_identification}{\beamergotobutton{Proof}}
 
     \vspace{0.5cm}
     Using the equal-weighted demand equation, $\mathbb{E}[(L_{Et} - \phi^d w_t) z_t] = 0$:
@@ -317,7 +312,7 @@
 \transitionslide{The Full Model}{Handling heterogeneous factor loadings}
 
 
-\begin{frame} \label{src_simple_giv_fails}
+\begin{frame}[label=src_simple_giv_fails]
     \frametitle{The Full Factor Model for granular firms}
     We now allow for heterogeneous loadings $\lambda_i$:
     \begin{equation}
@@ -330,7 +325,7 @@
         z_t = (\lambda_S - \lambda_E) \eta_t + (u_{St} - u_{Et})
     \end{equation*}
     {
-    If $\lambda_S \neq \lambda_E$, the instrument is \textbf{invalid} ($\mathbb{E}[z_t \eta_t] \neq 0$, i.e., the Exclusion Restriction fails).
+    If $\lambda_S \neq \lambda_E$, the instrument is \textbf{invalid} ($\mathbb{E}[z_t \eta_t] \neq 0$).
     }
 \end{frame}
 
@@ -365,7 +360,7 @@
 
 \end{frame}
 
-\begin{frame} \label{src_propositions}
+\begin{frame}[label=src_propositions]
     \frametitle{Choosing Optimal Weights $\Gamma$}
     For this, we use the $N \times N$ projection matrix $Q$ that is orthogonal to the factor loadings—that is, $Q \lambda = 0$:
     \begin{equation*}
@@ -466,7 +461,7 @@
 
 % \end{frame}
 
-% \begin{frame}
+% \begin{frame}[shrink]
 %     \frametitle{GIV precision relies on concentrated labor markets and volatile micro-shocks}
 
 %     \begin{columns}[T]
@@ -560,8 +555,7 @@
 
 \transitionslide{Appendix A}{Derivations}
 
-\begin{frame}{Assumptions}
-    \label{app_assumptions}
+\begin{frame}[label=app_assumptions]{Assumptions}
     \vspace{-0.5em}
     \begin{block}{The Central Identification Assumption}
         Individual shocks $u_{it}$ are truly idiosyncratic—uncorrelated with aggregate shocks ($\eta_t, \epsilon_t$) and controls ($C_t^y, C_t^p$):
@@ -596,8 +590,7 @@
     \hfill \hyperlink{src_assumptions}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}
-    \label{app_sqrtn}
+\begin{frame}[shrink,label=app_sqrtn]
     \frametitle{Aggregate volatility decays at $1/\sqrt{N}$ under equal weights}
 
     \vspace{0.4cm}
@@ -628,7 +621,7 @@
     \hfill \hyperlink{src_sqrtn}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame} \label{app_size_weighted}
+\begin{frame}[shrink,label=app_size_weighted]
     \frametitle{Deriving the Size-Weighted Aggregate ($L_{St}$)}
     The size-weighted outcome is defined as $L_{St} = \sum_{i=1}^N S_i L_{it}$, where $S_i$ are weights such that $\sum S_i = 1$.
 
@@ -650,7 +643,7 @@
     \hfill \hyperlink{src_equal_weighted}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame} \label{app_equal_weighted}
+\begin{frame}[shrink,label=app_equal_weighted]
     \frametitle{Deriving the Equal-Weighted Aggregate ($L_{Et}$)}
     The equal-weighted outcome is defined as $L_{Et} = \frac{1}{N} \sum_{i=1}^N L_{it}$.
 
@@ -672,7 +665,7 @@
     \hfill \hyperlink{src_equal_weighted}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame} \label{app_psi_identification}
+\begin{frame}[shrink,label=app_psi_identification]
     \frametitle{Identifying Supply Elasticity ($\psi$)}
     To find $\psi$, we use $z_t$ as an instrument for $L_{St}$ in the supply equation. We take the expectation of the product of the supply equation and the instrument:
     \begin{align*}
@@ -688,7 +681,7 @@
     \hfill \hyperlink{src_psi_identification}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[shrink]
     \frametitle{Identifying Demand Elasticity ($\phi^d$)}
     To find $\phi^d$, we use the equal-weighted aggregate demand equation derived on slide 8:
     \begin{equation}
@@ -706,7 +699,7 @@
     \vspace{0.1cm}
     \hfill \hyperlink{src_psi_identification}{\beamerreturnbutton{Back}}
 \end{frame}
-\begin{frame}
+\begin{frame}[shrink]
     \frametitle{Identifying Demand Elasticity ($\phi^d$)}
     \begin{align*}
         \mathbb{E}[u_{Et} u_{St}] - \mathbb{E}[u_{Et}^2]    =
@@ -721,10 +714,10 @@
         \phi^d                 & = \frac{\mathbb{E}[L_{Et} z_t]}{\mathbb{E}[w_t z_t]}
     \end{align*}
     \vspace{0.1cm}
-    \hfill
+    \hfill \hyperlink{src_psi_identification}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame} \label{app_simple_giv_fails}
+\begin{frame}[shrink,label=app_simple_giv_fails]
     \frametitle{Derivation: Why the Simple GIV Fails}
     The simple GIV is defined as $z_t^{simple} = L_{St} - L_{Et}$. Let's derive its components:
 
@@ -741,7 +734,7 @@
                & = \phi w_t + \lambda_E \eta_t + u_{Et}
     \end{align*}
 
-    3. \textbf{The Resulting GIV:} \hyperlink{src_simple_giv_fails}{\beamerreturnbutton{Back}}
+    3. \textbf{The Resulting GIV:}
     \begin{equation}
         z_t^{simple} = L_{St} - L_{Et} = \mathbf{(\lambda_S - \lambda_E) \eta_t} + (u_{St} - u_{Et}) \notag
     \end{equation}
@@ -753,7 +746,7 @@
 
 \transitionslide{Appendix B}{Propositions}
 
-\begin{frame}{Granular Instrumental Variables isolate idiosyncratic shocks} \label{app_propositions}
+\begin{frame}[shrink,label=app_propositions]{Granular Instrumental Variables isolate idiosyncratic shocks}
     \vspace{0.2cm}
     \centering
     The GIV $z_t$ is constructed from observables, $L_{it}$, using weights $\Gamma \in \mathbb{R}^N$ orthogonal to factor loadings:
@@ -787,7 +780,7 @@
     \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}{Moment conditions link structural equations to the GIV}
+\begin{frame}[shrink]{Moment conditions link structural equations to the GIV}
     \vspace{0.5cm}
     \centering
     The estimators follow directly from the exogeneity of $z_t$ to structural shocks:
@@ -826,7 +819,7 @@
     \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}{Proposition 1: The GIV estimator is asymptotically consistent}
+\begin{frame}[shrink]{Proposition 1: The GIV estimator is asymptotically consistent}
     \vspace{0.5cm}
     \centering
     Under standard regularity conditions, as the number of time periods $T \to \infty$:
@@ -854,7 +847,7 @@
     \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}{Pass-through multipliers capture shock amplification}
+\begin{frame}[shrink]{Pass-through multipliers capture shock amplification}
     \vspace{0.5cm}
     \centering
     To understand the variance of these estimators, we define two key multipliers:
@@ -886,7 +879,7 @@
     \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}{Proposition 2: Asymptotic variance scales with aggregate noise}
+\begin{frame}[shrink]{Proposition 2: Asymptotic variance scales with aggregate noise}
     \vspace{0.5cm}
     \centering
     The estimators converge in distribution to a normal distribution:
@@ -912,7 +905,7 @@
     \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}{High idiosyncratic volatility improves estimator precision}
+\begin{frame}[shrink]{High idiosyncratic volatility improves estimator precision}
     \vspace{0.5cm}
     \centering
     The variance equations reveal the signal-to-noise ratio inherent to GIV:
@@ -954,7 +947,7 @@
     \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}{Proposition 3: Optimal weights use an orthogonal projection}
+\begin{frame}[shrink]{Proposition 3: Optimal weights use an orthogonal projection}
     \vspace{0.5cm}
     \centering
     To minimize the asymptotic variances $\sigma^2_\psi$ and $\sigma^2_{\phi^d}$, we use the $N \times N$ projection matrix $Q$ that is orthogonal to the factor loadings $\lambda$:

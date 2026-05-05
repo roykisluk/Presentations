@@ -1,0 +1,12 @@
+\hyperlink{app:assumptions
+\hyperlink{app:propositions
+\hyperlink{app:psi_identification
+\hyperlink{app:simple_giv_fails
+\hyperlink{app:size_weighted
+\hyperlink{app:sqrtn
+\hyperlink{src:assumptions
+\hyperlink{src:equal_weighted
+\hyperlink{src:propositions
+\hyperlink{src:psi_identification
+\hyperlink{src:simple_giv_fails
+\hyperlink{src:sqrtn

@@ -1,0 +1,71 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{Derivation: Why the Simple GIV Isolates Idiosyncratic Shocks}
+\author{Gemini CLI}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+In the \textbf{Simple Model} of Granular Instrumental Variables (Gabaix and Koijen, 2022), the instrument $z_t$ is defined as the difference between size-weighted and equal-weighted outcomes. This document derives why this difference isolates purely idiosyncratic shocks.
+
+\section{The Structural Equations}
+The firm-level demand equation is given by:
+\begin{equation}
+    L_{it} = \phi^d w_t + \eta_t + u_{it}
+\end{equation}
+where:
+\begin{itemize}
+    \item $\phi^d w_t$ is the common effect of aggregate wages.
+    \item $\eta_t$ is a common macro demand shock hitting all firms equally.
+    \item $u_{it}$ is the idiosyncratic shock to firm $i$.
+\end{itemize}
+
+\section{Averages and Weight Properties}
+The GIV is constructed using two types of averages. A critical property is that both sets of weights sum to 1.
+
+\subsection{Size-Weighted Average ($L_{St}$)}
+Defined with weights $S_i$ such that $\sum_{i=1}^N S_i = 1$:
+\begin{align}
+    L_{St} &= \sum_{i=1}^N S_i (\phi^d w_t + \eta_t + u_{it}) \\
+    &= (\phi^d w_t + \eta_t) \left( \sum_{i=1}^N S_i \right) + \sum_{i=1}^N S_i u_{it}
+\end{align}
+Substituting $\sum S_i = 1$:
+\begin{equation}
+    L_{St} = (\phi^d w_t + \eta_t) + u_{St}
+\end{equation}
+where $u_{St} = \sum S_i u_{it}$.
+
+\subsection{Equal-Weighted Average ($L_{Et}$)}
+Defined with weights $1/N$ such that $\sum_{i=1}^N \frac{1}{N} = 1$:
+\begin{align}
+    L_{Et} &= \frac{1}{N} \sum_{i=1}^N (\phi^d w_t + \eta_t + u_{it}) \\
+    &= (\phi^d w_t + \eta_t) \left( \frac{1}{N} \sum_{i=1}^N 1 \right) + \frac{1}{N} \sum_{i=1}^N u_{it}
+\end{align}
+Substituting $\frac{1}{N} \cdot N = 1$:
+\begin{equation}
+    L_{Et} = (\phi^d w_t + \eta_t) + u_{Et}
+\end{equation}
+where $u_{Et} = \frac{1}{N} \sum u_{it}$.
+
+\section{The GIV Construction}
+The GIV ($z_t$) is defined as the difference:
+\begin{align}
+    z_t &= L_{St} - L_{Et} \\
+    &= \left[ (\phi^d w_t + \eta_t) + u_{St} \right] - \left[ (\phi^d w_t + \eta_t) + u_{Et} \right]
+\end{align}
+The common components $(\phi^d w_t + \eta_t)$ cancel out perfectly:
+\begin{equation}
+    z_t = u_{St} - u_{Et}
+\end{equation}
+
+\section{Conclusion}
+Because both $S_i$ and $1/N$ sum to unity, and because the simple model assumes every firm $i$ has the same loading (implicitly 1) on the macro shock $\eta_t$ and the endogenous wage $w_t$, these aggregate components subtract to zero. The resulting instrument $z_t$ is composed \textit{only} of idiosyncratic shocks, making it a valid instrument for identifying structural elasticities.
+
+\end{document}
