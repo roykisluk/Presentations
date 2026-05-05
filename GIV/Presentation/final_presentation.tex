@@ -78,6 +78,8 @@
 
 \begin{document}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Granular Instrumental Variables
 \begin{frame}
     \title{Granular Instrumental Variables}
     \subtitle{Gabaix and Koijen (2022)}
@@ -86,16 +88,14 @@
     \titlepage
 \end{frame}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Introduction
-
+% Aggregate shocks confound firm effects
 \begin{frame}
-    \frametitle{Endogenous aggregate shocks confound the effect of large firms}
+    \frametitle{Aggregate shocks confound firm effects}
 
     \vspace{0.5cm}
     {\Large
-        The Goal: Estimate the causal elasticity of wages to labor demand.
+        \textbf{The Goal:} Estimate causal elasticity of wages to labor demand
     }
 
     \vspace{0.8cm}
@@ -105,15 +105,17 @@
 
     \vspace{0.4cm}
     \begin{itemize}
-        \item \textbf{Supply Equation:} Wages respond to labor demand and macro supply shocks.
-        \item \textbf{Demand Equation:} Labor demand responds to wages and macro demand shocks.
+        \item \textbf{Supply:} Wages respond to labor demand and macro supply shocks
+        \item \textbf{Demand:} Labor demand responds to wages and macro demand shocks
     \end{itemize}
 
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LLN fails in granular economies
 \begin{frame} \label{src_sqrtn}
-    \frametitle{The Law of Large Numbers fails in modern economies}
+    \frametitle{LLN fails in granular economies}
     \begin{columns}[T]
         \begin{column}{0.55\textwidth}
 
@@ -122,7 +124,7 @@
             \begin{enumerate}
                 \item {In a standard economy, micro-shocks cancel out at a rate of $1/\sqrt{N}$ \hyperlink{app_sqrtn}{\beamergotobutton{Proof}}
                       \vspace{0.4cm}}
-                \item {In a \textbf{granular} economy, where the size distribution of firms follows a power law (i.e., Zipf's Law: $\text{size} \propto \frac{1}{\text{rank}}$), a few firms are so large that their idiosyncratic luck drives aggregate volatility.}
+                \item {In a \textbf{granular} economy, size distribution of firms follows a power law (i.e., Zipf's Law: $\text{size} \propto \frac{1}{\text{rank}}$) $\implies$ large firms' idiosyncratic shocks drive aggregate outcomes}
             \end{enumerate}
         \end{column}
 
@@ -149,16 +151,16 @@
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A Simple Model
+\transitionslide{A Simple Model}{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% THE SIMPLE MODEL
-\transitionslide{A Simple Model}{}
+% Simultaneity prevents OLS estimation
 \begin{frame} \label{src_assumptions}
-    \frametitle{A simple model of aggregate and idiosyncratic shocks}
+    \frametitle{Simultaneity prevents OLS estimation}
 
-    Consider an economy with $N$ firms. The system is given by:
-
-
+    Economy with $N$ firms. System is given by:
 
     \begin{align}
         w_t    & = \psi L_{St} + \varepsilon_t \tag{Supply}  \\[0.5cm]
@@ -167,57 +169,57 @@
 
     Where:
     \begin{itemize}
-        \item $w_t$ is the wage (observed)
-        \item $L_{it}$ is the number of workers at firm $i$ (observed)
-        \item $\eta_t$ and $\varepsilon_t$ are aggregate shocks (unobserved)
-        \item $u_{it}$ is the idiosyncratic shock to firm $i$ (unobserved)
-        \item Main assumption: $u_{it}$ are uncorrelated with aggregate shocks ($\eta_t, \epsilon_t$) \hyperlink{app_assumptions}{\beamergotobutton{Assumptions}}
+        \item $w_t$ - wage (observed)
+        \item $L_{it}$ - number of workers at firm $i$ (observed)
+        \item $\eta_t$ and $\varepsilon_t$ - aggregate shocks (unobserved)
+        \item $u_{it}$ - idiosyncratic shock to firm $i$ (unobserved)
+        \item Main assumption: $corr(u_{it},\eta_t)=0,\ corr(u_{it},\varepsilon_t)=0$ \hyperlink{app_assumptions}{\beamergotobutton{Assumptions}}
     \end{itemize}
     \vspace{0.2cm}
     We cannot estimate $\psi$ (labor supply elasticity) and $\phi^d$ (labor demand elasticity) by OLS, due to simultaneity.
 \end{frame}
 
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GIV differences size and equal weights
 \begin{frame}
-    \frametitle{Constructing the Granular Instrumental Variable ($z_t$)}
-
-    {
-        The GIV exploits the difference between size-weighted and equal-weighted averages.
-    }
-
+    \frametitle{GIV differences size and equal weights}
+    GIV exploits difference between size-weighted and equal-weighted averages. \\
     \vspace{0.2cm}
-    Define the equal-weighted average outcome:
-    \begin{equation*}
-        L_{Et} = \frac{1}{N} \sum_{i=1}^N L_{it} \tag{Equal-Weighted Average}
-    \end{equation*}
-    Define the size-weighted average outcome:
-    \begin{equation*}
-        L_{St} = \sum_{i=1}^N S_i L_{it}, \quad \sum_{i=1}^N S_i = 1 \tag{Size-Weighted Average}
-    \end{equation*}
+    \begin{itemize}
+        \item Define equal-weighted average:
+              \begin{equation*}
+                  L_{Et} = \frac{1}{N} \sum_{i=1}^N L_{it} \notag
+              \end{equation*}
+        \item Define size-weighted average:
+              \begin{equation*}
+                  L_{St} = \sum_{i=1}^N S_i L_{it}, \quad \sum_{i=1}^N S_i = 1 \notag
+              \end{equation*}
+    \end{itemize}
 
     \vspace{0.5cm}
-    The GIV is the size-weighted outcome minus the equal-weighted outcome:
+    GIV is the difference between them:
     \begin{equation}
         z_t := L_{\Gamma t} = L_{St} - L_{Et} \tag{GIV}
     \end{equation}
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GIV isolates idiosyncratic shocks
 \begin{frame} \label{src_equal_weighted}
-    \frametitle{The GIV isolates purely idiosyncratic firm shocks}
+    \frametitle{GIV isolates idiosyncratic shocks}
 
     \vspace{0.5cm}
-    Substitute the demand equation into the aggregate definitions: \hyperlink{app_size_weighted}{\beamergotobutton{Proof}}
+    Substitute demand equation into averages: \hyperlink{app_size_weighted}{\beamergotobutton{Proof}}
     \begin{align}
         L_{St} & = \phi^d w_t + \eta_t + u_{St} \notag \\
         L_{Et} & = \phi^d w_t + \eta_t + u_{Et} \notag
     \end{align}
 
     \vspace{0.5cm}
-    The common components ($\phi^d w_t + \eta_t$) difference out:
+    Common components ($\phi^d w_t + \eta_t$) difference out:
     \begin{equation}
-        z_t = u_{\Gamma t} = u_{St} - u_{Et} = \sum_{i=1}^N S_i u_{it} - \frac{1}{N} \sum_{i=1}^N u_{it} = \sum_{i=1}^N (S_i - \frac{1}{N}) u_{it} \tag{GIV}
+        z_t = u_{St} - u_{Et} = \sum_{i=1}^N S_i u_{it} - \frac{1}{N} \sum_{i=1}^N u_{it} = \sum_{i=1}^N (S_i - \frac{1}{N}) u_{it} \tag{GIV}
     \end{equation}
 
     \vspace{0.5cm}
@@ -227,82 +229,66 @@
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GIV enables 2SLS estimation
 \begin{frame}
-    \frametitle{GIV estimates elasticities via 2SLS}
+    \frametitle{GIV enables 2SLS estimation}
+    \large{\textbf{IV Estimation:}}
     \begin{itemize}
-        \item \large{\textbf{First Stage:} Regress aggregate labor demand ($L_{St}$) on the granular instrument ($z_t$). This extracts $\widehat{L}_{St}$, the variation driven \emph{only} by the idiosyncratic shocks of firms.}
-              % \begin{equation*}
-              %     L_{St} = \beta z_t + \text{Controls} + \nu_t
-              % \end{equation*}
-              \vspace{0.5cm}
-        \item \large{\textbf{Second Stage:} Regress aggregate wages ($w_t$) on the predicted labor demand from the First Stage ($\widehat{L}_{St}$) to obtain an unbiased estimate of $\psi$.}
-              % \begin{equation*}
-              %     w_t = \psi \widehat{L}_{St} + \text{Controls} + \varepsilon_t
-              % \end{equation*}
+        \item {\textbf{First Stage:} Regress $L_{St}$ on $z_t$. Extracts $\widehat{L}_{St}$, the labor demand variation driven \emph{only} by idiosyncratic shocks.}
+        \item {\textbf{Second Stage:} Regress $w_t$ on $\widehat{L}_{St}$ to obtain unbiased $\psi$.}
     \end{itemize}
 
-\end{frame}
-
-\begin{frame}
-    \frametitle{Validating the Instrument: Relevance and Exclusion}
-
-    \vspace{0.3cm}
-    {\Large
-        For $z_t$ to be a valid instrument, two fundamental assumptions must hold in a granular economy.
+    {
+    \large{\textbf{Fundamental IV assumptions:}}
     }
-
-    \vspace{0.8cm}
     \begin{itemize}
-        \item \textbf{Relevance ($\text{Cov}(L_{St}, z_t) \neq 0$):}\\
-              \vspace{0.2cm}
-              The granular shocks must actually move the aggregate market. This requires a \emph{concentrated market} (e.g., high Herfindahl index) where the idiosyncratic shocks of the largest firms are volatile enough to shift total labor demand.
+        \item {\textbf{Relevance} ($\text{Cov}(L_{St}, z_t) \neq 0$):}\\
+              Idiosyncratic granular shocks must move aggregate market. This requires a concentrated market (e.g., high Herfindahl index).
 
-              \vspace{0.6cm}
-        \item \textbf{Exclusion Restriction ($\text{Cov}(z_t, \varepsilon_t) = 0$, $\text{Cov}(z_t, \eta_t) = 0$):}\\
-              \vspace{0.2cm}
-              The idiosyncratic shocks of large firms ($z_t$) must not directly affect aggregate wages ($w_t$) through any channel other than aggregate labor demand ($L_{St}$). They must be truly orthogonal to macro aggregate supply shocks ($z_t \perp \eta_t, \varepsilon_t$).
+        \item {\textbf{Exclusion Restriction} ($\text{Cov}(z_t, \varepsilon_t) = 0$, $\text{Cov}(z_t, \eta_t) = 0$):}\\
+              Idiosyncratic granular shocks must not directly affect aggregate wages through any channel, i.e. they are orthogonal to macro shocks ($z_t \perp \eta_t, \varepsilon_t$).
     \end{itemize}
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GIV yields both elasticities
 \begin{frame} \label{src_psi_identification}
-    \frametitle{The GIV yields both supply and demand elasticities}
+    \frametitle{GIV yields both elasticities}
 
     \vspace{0.5cm}
     By exogeneity, $\mathbb{E}[u_t \varepsilon_t] = 0 \implies \mathbb{E}[z_t \varepsilon_t] = 0$, where $u_t = (u_{it})_{i=1,\dots,N}$.
 
     \vspace{0.5cm}
-    Using the supply equation:
-    \begin{equation*}
-        w_t = \psi L_{St} + \varepsilon_t \quad \implies \quad \mathbb{E}[(w_t - \psi L_{St}) z_t] = 0
-    \end{equation*}
-    \begin{equation*}
-        \psi = \frac{\mathbb{E}[w_t z_t]}{\mathbb{E}[L_{St} z_t]} \tag{Supply Elasticity}
-    \end{equation*}
-    \hyperlink{app_psi_identification}{\beamergotobutton{Proof}}
+    Using supply equation:
+    \begin{align*}
+        w_t = \psi L_{St} + \varepsilon_t \implies \mathbb{E}[(w_t - \psi L_{St}) z_t] = 0 \implies \psi = \frac{\mathbb{E}[w_t z_t]}{\mathbb{E}[L_{St} z_t]} \notag
+    \end{align*}
 
     \vspace{0.5cm}
-    Using the equal-weighted demand equation, $\mathbb{E}[(L_{Et} - \phi^d w_t) z_t] = 0$:
-    \begin{equation*}
-        \phi^d = \frac{\mathbb{E}[L_{Et} z_t]}{\mathbb{E}[w_t z_t]} \tag{Demand Elasticity}
-    \end{equation*}
+    Using equal-weighted demand equation: \hyperlink{app_psi_identification}{\beamergotobutton{Proof}}
+    \begin{align*}
+        \mathbb{E}[(L_{Et} - \phi^d w_t) z_t] = 0 \implies \phi^d = \frac{\mathbb{E}[L_{Et} z_t]}{\mathbb{E}[w_t z_t]} \notag
+    \end{align*}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% THE FULL MODEL
+% The Full Model
 \transitionslide{The Full Model}{Handling heterogeneous factor loadings}
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Heterogeneous loadings bias simple GIV
 \begin{frame} \label{src_simple_giv_fails}
-    \frametitle{The Full Factor Model for granular firms}
+    \frametitle{Heterogeneous loadings bias simple GIV}
     We now allow for heterogeneous loadings $\lambda_i$:
     \begin{equation}
         L_{it} = \phi w_t + \lambda_i \eta_t + u_{it} \notag
     \end{equation}
-    The simple GIV ($L_{St} - L_{Et}$) assumes every firm has the same loading $\lambda_i = 1$.
-    If large firms are more sensitive to the Fed, the simple GIV is \textbf{"leaky"}—it correlates with $\eta_t$.\\[0.4cm]
-    The simple GIV becomes: \hyperlink{app_simple_giv_fails}{\beamergotobutton{Proof}}
+    The simple GIV assumes every firm has the same loading $\lambda_i = 1$. \\
+    \vspace{0.5cm}
+    If large firms are more sensitive to the Fed, the simple GIV becomes: \hyperlink{app_simple_giv_fails}{\beamergotobutton{Proof}}
     \begin{equation*}
         z_t = (\lambda_S - \lambda_E) \eta_t + (u_{St} - u_{Et})
     \end{equation*}
@@ -311,94 +297,90 @@
     }
 \end{frame}
 
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Orthogonal weights restore exclusion
 \begin{frame}
-    \frametitle{The Solution: Orthogonal Optimal Weights $\Gamma$}
-    Substitute Equation $L_{it} = \phi w_t + \lambda_i \eta_t + u_{it}$ into the definition of the weighted GIV:
+    \frametitle{Orthogonal weights restore exclusion}
+    Substitute demand equation into definition of weighted GIV:
     \begin{align*}
         z_t & = \sum \Gamma_i L_{it} = \sum \Gamma_i (\phi w_t + \lambda_i \eta_t + u_{it})        \\
             & = \phi w_t (\sum \Gamma_i) + \eta_t (\sum \Gamma_i \lambda_i) + \sum \Gamma_i u_{it}
     \end{align*}
     Where $\Gamma$ is the vector of weights that we want to find.\\
+    \vspace{0.5cm}
     To ensure $z_t$ contains \textit{only} idiosyncratic shocks ($u_{it}$), we must satisfy two conditions:
     \begin{enumerate}
-        \item $\sum \Gamma_i = 0$: This removes the endogenous wage $w_t$.
-        \item $\sum \Gamma_i \lambda_i = 0$: This removes the common macro shock $\eta_t$.
+        \item $\sum \Gamma_i = 0$
+        \item $\sum \Gamma_i \lambda_i = 0$
     \end{enumerate}
-    We need weights $\Gamma$ such that the factor components \textbf{cancel exactly}.
-    This ensures $z_t = \sum \Gamma_i u_{it}$ is purely idiosyncratic.
-
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Projection finds optimal weights
 \begin{frame} \label{src_propositions}
-    \frametitle{Choosing Optimal Weights $\Gamma$}
-    For this, we use the $N \times N$ projection matrix $Q$ that is orthogonal to the factor loadings—that is, $Q \lambda = 0$: \hyperlink{app_refresher}{\beamergotobutton{Refresher}}
+    \frametitle{Projection finds optimal weights}
+    For this, we use $N \times N$ projection matrix $Q$, orthogonal to factor loadings ($Q \lambda = 0$): \hyperlink{app_refresher}{\beamergotobutton{Refresher}}
     \begin{equation*}
         Q = I - \lambda (\lambda' \lambda)^{-1} \lambda'
     \end{equation*}
-    The optimal weights are then given by $\Gamma^{*\prime} = S'Q$. \hyperlink{app_propositions}{\beamergotobutton{Propositions}}
+    Optimal weights are then given by $\Gamma' = S'Q$.
     \begin{itemize}
-        \item Intuitively, we want $\Gamma$ to be as close as possible to $S$ but satisfy $\Gamma \perp \lambda$. This is a standard projection problem: $\Gamma = S - \lambda (\lambda' \lambda)^{-1} \lambda' S$
-        \item In essence, we take the firm sizes and subtract the portion of size that is explained by macro-sensitivity. What remains is pure granular weight.
+        \item Intuitively, we want $\Gamma$ to be as close as possible to $S$ but satisfy $\Gamma \perp \lambda$
+        \item This is a standard projection problem: $\Gamma = S - \lambda (\lambda' \lambda)^{-1} \lambda' S$
     \end{itemize}
+    \hyperlink{app_propositions}{\beamergotobutton{Propositions}}
 
 
 \end{frame}
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Application
 \transitionslide{Application}{GIV in the Israeli Labor Market}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Israeli tech is highly granular
 \begin{frame}
-    \frametitle{The Israeli Tech Sector is highly granular}
+    \frametitle{Israeli tech is highly granular}
 
     \vspace{0.5cm}
     {\Large
-        The Israeli high-tech industry is dominated by a few massive multinational R\&D centers.
+        Israeli high-tech industry is dominated by a few multinational R\&D centers.
     }
-
-    \vspace{1cm}
-    \begin{itemize}
-        \item \textbf{High Concentration:} Companies like Intel, Google, Microsoft, and NVIDIA account for a substantial, disproportionate share of tech employment.
-        \item \textbf{A Heavy Tail:} The size distribution of tech employers in Israel exhibits a strong power law, yielding a high \textbf{excess Herfindahl index ($h$)}.
-        \item \textbf{Macro vs. Micro:} It is difficult to separate general Israeli macroeconomic conditions (e.g., security shocks, interest rates) from the hiring dynamics of these specific giants.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Applying GIV to Israeli tech wages}
 
     \vspace{0.5cm}
-    {\Large
-        How do we isolate the causal spillover of these tech giants on aggregate Israeli wages?
-    }
-
-    \vspace{1cm}
     \begin{itemize}
-        \item \textbf{The Idiosyncratic Shocks ($u_{it}$):} We exploit global shocks specific to the multinationals that are arguably exogenous to the Israeli macroeconomy (e.g., global restructuring at Intel, a worldwide AI hiring boom at NVIDIA).
-        \item \textbf{The Instrument ($z_t$):} Construct the GIV by taking the size-weighted employment shocks of these giants and projecting out the common Israeli macroeconomic factor loadings.
-        \item \textbf{The 2SLS Estimation:} Regress aggregate Israeli wages on the component of labor demand driven \emph{only} by these isolated, granular tech shocks.
+        \item Intel, Google, Microsoft, NVIDIA account for disproportionate share of employment
+        \item Size distribution of tech in Israel exhibits strong power law (high Herfindahl index $h$)
+        \item Difficult to separate Israeli macro shocks (wars, interest rates) from hiring dynamics
     \end{itemize}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GIV unconfounds tech spillovers
 \begin{frame}
-    \frametitle{Takeaways: GIV unconfounds local macro dynamics}
+    \frametitle{GIV unconfounds tech spillovers}
 
-    \vspace{1cm}
     {\Large
-        The GIV method solves the simultaneity problem in concentrated labor markets.
+        How do we isolate causal spillover of tech giants on wages?
     }
 
-    \vspace{1cm}
+    \vspace{0.5cm}
     \begin{itemize}
-        \item \textbf{Causal Wage Spillovers:} We can measure exactly how much a hiring freeze at a major tech firm depresses aggregate local wages, separated from a general economic downturn.
-        \item \textbf{Beyond the US:} The method is perfectly suited for small, open economies like Israel, where granular actors often drive aggregate volatility.
+        \item Exploit global shocks specific to multinationals ($u_{it}$) that are exogenous to Israeli economy (global restructuring at Intel, worldwide AI hiring boom at NVIDIA).
+        \item Construct GIV by taking size-weighted employment shocks of tech giants and projecting out common Israeli macroeconomic factor loadings.
+        \item Regress aggregate Israeli wages on component of labor demand driven \emph{only} by these isolated, granular tech shocks.
+        \item Measure exactly how much a hiring freeze at a major tech firm depresses aggregate local wages, separated from general economic downturns.
+        \item This is perfectly suited for small, open economies like Israel, where granular actors often drive aggregate volatility.
     \end{itemize}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendix A
 \transitionslide{Appendix A}{Derivations}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Assumptions
 \begin{frame}{Assumptions}
     \label{app_assumptions}
     \vspace{-0.5em}
@@ -435,9 +417,11 @@
     \hfill \hyperlink{src_assumptions}{\beamerreturnbutton{Back}}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Equal weights decay at $1/\sqrt{N
 \begin{frame}
     \label{app_sqrtn}
-    \frametitle{Aggregate volatility decays at $1/\sqrt{N}$ under equal weights}
+    \frametitle{Equal weights decay at $1/\sqrt{N}$}
 
     \vspace{0.4cm}
     Suppose there are $N$ firms, each receiving an independent idiosyncratic shock $u_{it}$.
@@ -467,8 +451,10 @@
     \hfill \hyperlink{src_sqrtn}{\beamerreturnbutton{Back}}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Size-weighting aggregates shocks
 \begin{frame} \label{app_size_weighted}
-    \frametitle{Deriving the Size-Weighted Aggregate ($L_{St}$)}
+    \frametitle{Size-weighting aggregates shocks}
     The size-weighted outcome is defined as $L_{St} = \sum_{i=1}^N S_i L_{it}$, where $S_i$ are weights such that $\sum S_i = 1$.
 
     \begin{align*}
@@ -489,8 +475,10 @@
     \hfill \hyperlink{src_equal_weighted}{\beamerreturnbutton{Back}}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Equal-weighting averages shocks
 \begin{frame} \label{app_equal_weighted}
-    \frametitle{Deriving the Equal-Weighted Aggregate ($L_{Et}$)}
+    \frametitle{Equal-weighting averages shocks}
     The equal-weighted outcome is defined as $L_{Et} = \frac{1}{N} \sum_{i=1}^N L_{it}$.
 
     \begin{align*}
@@ -511,8 +499,10 @@
     \hfill \hyperlink{src_equal_weighted}{\beamerreturnbutton{Back}}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GIV identifies supply elasticity
 \begin{frame} \label{app_psi_identification}
-    \frametitle{Identifying Supply Elasticity ($\psi$)}
+    \frametitle{GIV identifies supply elasticity}
     To find $\psi$, we use $z_t$ as an instrument for $L_{St}$ in the supply equation. We take the expectation of the product of the supply equation and the instrument:
     \begin{align*}
         \mathbb{E}[w_t z_t] & = \mathbb{E}[(\psi L_{St} + \epsilon_t) z_t]               \\
@@ -527,8 +517,10 @@
     \hfill \hyperlink{src_psi_identification}{\beamerreturnbutton{Back}}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GIV identifies demand elasticity
 \begin{frame}
-    \frametitle{Identifying Demand Elasticity ($\phi^d$)}
+    \frametitle{GIV identifies demand elasticity}
     To find $\phi^d$, we use the equal-weighted aggregate demand equation derived on slide 8:
     \begin{equation}
         L_{Et} = \phi^d w_t + \eta_t + u_{Et} \tag{41}
@@ -545,8 +537,11 @@
     \vspace{0.1cm}
     \hfill \hyperlink{src_psi_identification}{\beamerreturnbutton{Back}}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GIV identifies demand elasticity
 \begin{frame}
-    \frametitle{Identifying Demand Elasticity ($\phi^d$)}
+    \frametitle{GIV identifies demand elasticity}
     \begin{align*}
         \mathbb{E}[u_{Et} u_{St}] - \mathbb{E}[u_{Et}^2]    =
         \\
@@ -563,8 +558,10 @@
     \hfill
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Simple GIV leaks macro shocks
 \begin{frame} \label{app_simple_giv_fails}
-    \frametitle{Derivation: Why the Simple GIV Fails}
+    \frametitle{Simple GIV leaks macro shocks}
     The simple GIV is defined as $z_t^{simple} = L_{St} - L_{Et}$. Let's derive its components:
 
     1. \textbf{Size-weighted average ($L_{St}$):}
@@ -589,6 +586,8 @@
     \hfill \hyperlink{src_simple_giv_fails}{\beamerreturnbutton{Back}}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Econometrics Refresher
 \begin{frame}{Econometrics Refresher} \label{app_refresher}
     \begin{block}{OLS and the Annihilator Matrix}
         Standard OLS projections decompose a vector $y$ into explained and unexplained parts:
@@ -607,10 +606,13 @@
     \end{block}
 \end{frame}
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendix B
 \transitionslide{Appendix B}{Propositions}
 
-\begin{frame}{Granular Instrumental Variables isolate idiosyncratic shocks} \label{app_propositions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Orthogonal weights isolate idiosyncratic shocks
+\begin{frame}{Orthogonal weights isolate idiosyncratic shocks} \label{app_propositions}
     \vspace{0.2cm}
     \centering
     The GIV $z_t$ is constructed from observables, $L_{it}$, using weights $\Gamma \in \mathbb{R}^N$ orthogonal to factor loadings:
@@ -644,7 +646,9 @@
     \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}{Moment conditions link structural equations to the GIV}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Moments identify elasticities
+\begin{frame}{Moments identify elasticities}
     \vspace{0.5cm}
     \centering
     The estimators follow directly from the exogeneity of $z_t$ to structural shocks:
@@ -683,7 +687,9 @@
     \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}{Proposition 1: The GIV estimator is asymptotically consistent}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Proposition 1
+\begin{frame}{Proposition 1}
     \vspace{0.5cm}
     \centering
     Under standard regularity conditions, as the number of time periods $T \to \infty$:
@@ -711,7 +717,9 @@
     \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}{Pass-through multipliers capture shock amplification}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Multipliers capture amplification
+\begin{frame}{Multipliers capture amplification}
     \vspace{0.5cm}
     \centering
     To understand the variance of these estimators, we define two key multipliers:
@@ -743,7 +751,9 @@
     \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}{Proposition 2: Asymptotic variance scales with aggregate noise}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Proposition 2
+\begin{frame}{Proposition 2}
     \vspace{0.5cm}
     \centering
     The estimators converge in distribution to a normal distribution:
@@ -769,7 +779,9 @@
     \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}{High idiosyncratic volatility improves estimator precision}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Volatility improves precision
+\begin{frame}{Volatility improves precision}
     \vspace{0.5cm}
     \centering
     The variance equations reveal the signal-to-noise ratio inherent to GIV:
@@ -811,7 +823,9 @@
     \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
 \end{frame}
 
-\begin{frame}{Proposition 3: Optimal weights use an orthogonal projection}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Proposition 3
+\begin{frame}{Proposition 3}
     \vspace{0.5cm}
     \centering
     To minimize the asymptotic variances $\sigma^2_\psi$ and $\sigma^2_{\phi^d}$, we use the $N \times N$ projection matrix $Q$ that is orthogonal to the factor loadings $\lambda$:
