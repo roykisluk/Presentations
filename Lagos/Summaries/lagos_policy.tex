@@ -1,0 +1,60 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Labour-Market Policies and the Level of TFP}
+\author{Gemini CLI Extraction}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+This section considers the effects of four labour-market policies on the level of Total Factor Productivity (TFP):
+\begin{itemize}
+    \item $\tau_h$: hiring subsidy
+    \item $\tau_e$: employment subsidy
+    \item $\tau_f$: firing tax
+    \item $\tau_b$: unemployment benefits
+\end{itemize}
+Subsidies are modeled as transfers from the government to the firm, and firing taxes as payments from the firm to the government. All payments are assumed to be proportional to the firm's size, as measured by capacity $k$.
+
+\section{Generalized Value Functions}
+The introduction of these policies generalizes the value functions for workers and firms:
+
+\begin{align}
+rU &= \tau_b + \theta q(\theta) \int \max[W_0(z) - U, 0] dG(z) \\
+rV &= -ck + q(\theta) \int \max[J_0(z) + \tau_h k - V, 0] dG(z) \\
+rJ(x) &= \pi(x) + \tau_e k + \lambda \int \max[J(z) - V + \tau_f k, 0] dG(z) - (\delta + \lambda)[J(x) - V + \tau_f k]
+\end{align}
+
+\section{Equilibrium Conditions with Policies}
+Assuming the distribution of idiosyncratic shocks $G(x)$ is Pareto with parameters $\varepsilon$ and $\alpha$, the job-destruction and job-creation conditions that determine the equilibrium pair $(\theta, R)$ are modified as follows:
+
+\subsection{Job-Destruction Condition}
+\begin{equation}
+R - \phi - c + \tau_e + r\tau_f - \left( \tau_b + \frac{\beta}{1-\beta} c \theta \right) + \frac{\lambda \varepsilon^\alpha R^{1-\alpha}}{(\alpha - 1)(r + \delta + \lambda)} = 0
+\end{equation}
+
+\subsection{Job-Creation Condition}
+\begin{equation}
+\frac{\varepsilon^\alpha R^{1-\alpha}}{(\alpha - 1)(r + \delta + \lambda)} + \left(\frac{\varepsilon}{R}\right)^\alpha (\tau_h - \tau_f) - \frac{c}{(1-\beta)q(\theta)} = 0
+\end{equation}
+
+\section{Effects of Policies on TFP}
+Since the TFP level $A$ is proportional to the reservation productivity $R$ (recall $A = \frac{R}{1-\gamma}$), policies have the same qualitative effect on TFP as they have on the job-destruction rate.
+
+\textbf{Proposition 2:} Employment subsidies ($\tau_e$) and firing taxes ($\tau_f$) reduce TFP ($A$). Hiring subsidies ($\tau_h$) and unemployment benefits ($\tau_b$) increase TFP ($A$).
+
+\subsection{Intuition}
+\begin{itemize}
+    \item \textbf{Employment subsidies:} Make firms more tolerant of low productivity realizations, lowering the average productivity of active firms. This reduces job-destruction, increases job-creation, and lowers measured TFP.
+    \item \textbf{Firing taxes:} Similar qualitative effect to employment subsidies, but reinforced by a relatively low rate of job creation (which reduces the reservation wage). Thus, firing restrictions reduce measured TFP, job-creation, and job-destruction rates.
+    \item \textbf{Hiring subsidies:} No direct effect on the destruction decision, but stimulate job creation. This increases market tightness, raising the worker's outside option, which in turn raises measured TFP, job creation, and job destruction.
+    \item \textbf{Unemployment benefits:} Cause $R$ to rise directly through an increase in the worker's reservation wage. Economies with high unemployment benefits tend to exhibit relatively high levels of TFP and unemployment.
+\end{itemize}
+
+\end{document}

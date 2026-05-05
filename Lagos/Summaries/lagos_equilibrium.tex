@@ -1,0 +1,79 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Equilibrium in the Lagos (2006) Model of TFP}
+\author{Gemini CLI Extraction}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Nash Bargaining}
+The wage $w(x)$ and labor supply $n$ are determined by maximizing the Nash product:
+\begin{equation}
+\max [W(x) - U]^\beta [J(x) - V]^{1-\beta}
+\end{equation}
+where $\beta \in [0, 1)$ is the bargaining power of the worker.
+
+\subsection{Optimal Hours}
+The optimal choice of hours $n(x)$ follows a simple rule:
+\begin{equation}
+n(x) = 
+\begin{cases} 
+k & \text{if } \phi < x \\
+0 & \text{if } x \le \phi 
+\end{cases}
+\end{equation}
+Substituting this into the flow profit gives $\pi(x) = (x - \phi - c)k - w(x)$ for all active matches.
+
+\section{Match Surplus}
+The total surplus from a match is $S(x) = J(x) + W(x) - U - V$. Nash bargaining implies:
+\begin{align}
+J(x) &= (1 - \beta)S(x) \\
+W(x) - U &= \beta S(x)
+\end{align}
+
+The value of the surplus satisfies:
+\begin{equation}
+(r + \delta + \lambda)S(x) = (x - \phi - c)k - rU + \lambda \int \max[S(z), 0] dG(z)
+\end{equation}
+where the worker's reservation wage is:
+\begin{equation}
+rU = b + \frac{\beta}{1-\beta} k c \theta
+\end{equation}
+
+\section{Equilibrium Conditions}
+The model is characterized by two key conditions determining the reservation productivity $R$ and market tightness $\theta$.
+
+\subsection{Job-Destruction (JD) Condition}
+Matches are dissolved if $x < R$. Evaluating the surplus at $R$ yields:
+\begin{equation}
+R - \phi - c - \left( \frac{b}{k} + \frac{\beta}{1-\beta} c \theta \right) + \frac{\lambda}{r + \delta + \lambda} \int_R (x - R) dG(x) = 0
+\end{equation}
+
+\subsection{Job-Creation (JC) Condition}
+Free entry of firms implies $V = 0$, leading to:
+\begin{equation}
+\frac{1-\beta}{r + \delta + \lambda} \int_R (x - R) dG(x) - \frac{c}{q(\theta)} = 0
+\end{equation}
+
+\section{Wages and Profits}
+The instantaneous wage and profit are:
+\begin{align}
+w(x) &= \beta(x - \phi - c)k + (1 - \beta)rU \\
+\pi(x) &= (1 - \beta)[(x - \phi - c)k - rU]
+\end{align}
+Note that at $x = R$, it is possible for $w(R) < rU$ and $\pi(R) < 0$. Agents tolerate temporary losses in anticipation of future productivity improvements.
+
+\section{Aggregation}
+The aggregate capital in place $K_e$ at firms with filled jobs is:
+\begin{equation}
+K_e = \frac{1 - u}{1 - (1 - \theta)u} K
+\end{equation}
+This accounts for capital used by both matched and unmatched searching firms.
+
+\end{document}

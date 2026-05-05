@@ -1,0 +1,98 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Summary of the Lagos (2006) Model of TFP}
+\author{Gemini CLI Extraction}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+The Lagos (2006) model analyzes Total Factor Productivity (TFP) in a framework with search frictions, capital, and endogenous labor hoarding. The model features risk-neutral workers and firms, with free entry of firms.
+
+\section{Environment and Technology}
+The economy consists of a unit mass of workers and an endogenous number of firms. Each firm has a single job. Capital $k$ is rented at a flow rate $c$.
+
+\subsection{Technology}
+A match between a firm and a worker produces output using match-specific productivity $x$, hours $n$, and capital $k$:
+\begin{equation}
+f(x, n, k) = x \min(n, k)
+\end{equation}
+Capital $k$ represents capacity. Output is linear in hours up to capacity $k$.
+
+\subsection{Productivity Shocks}
+Match productivity $x$ changes according to a Poisson process with arrival rate $\lambda$. Upon a change, a new productivity $x'$ is drawn from a fixed distribution $G(\cdot)$. There is also an exogenous separation rate $\delta$.
+
+\section{Search and Matching}
+Frictions are represented by a constant-returns-to-scale matching function $m(u, v)$, where $u$ is the number of unemployed workers and $v$ is the number of vacancies.
+\begin{itemize}
+    \item Market tightness: $\theta = v/u$.
+    \item Vacancy contact rate: $q(\theta) = m(1/\theta, 1)$.
+    \item Worker contact rate: $\theta q(\theta)$.
+\end{itemize}
+
+\section{Laws of Motion and Steady State}
+The time path of $(1 - u_t)H_t(x)$, the mass of matches producing at productivities $x$ or lower at time $t$, is given by:
+\begin{multline}
+\frac{d}{dt} [(1 - u_t)H_t(x)] = \lambda(1 - u_t)[1 - H_t(x)][G(x) - G(R_t)] + \theta q(\theta)u_t[G(x) - G(R_t)] \\
+- \lambda(1 - u_t)H_t(x)G(R_t) - \lambda(1 - u_t)H_t(x)[1 - G(x)] - \delta(1 - u_t)H_t(x)
+\end{multline}
+The first term accounts for matches with productivities above $x$ that receive innovations below $x$ but above $R_t$. The second term represents newly formed matches. The third and fourth terms represent matches in the interval $[R_t, x]$ that get shocks below $R_t$ or above $x$. The last term accounts for exogenous separations.
+
+\subsection{Unemployment}
+In steady state, the unemployment rate $u$ is given by:
+\begin{equation}
+u = \frac{\delta + \lambda G(R)}{\delta + \lambda G(R) + \theta q(\theta)[1 - G(R)]}
+\end{equation}
+
+\subsection{Productivity Distribution}
+The cross-sectional distribution of productivity $H(x)$ for active matches ($x \ge R$) is:
+\begin{equation}
+H(x) = \frac{G(x) - G(R)}{1 - G(R)}
+\end{equation}
+
+\section{Asset Values}
+Let $r$ be the discount rate and $b$ the flow income of the unemployed.
+
+\subsection{Worker Values}
+The value of unemployment $U$ and the value of employment $W(x)$ satisfy:
+\begin{equation}
+rU = b + \theta q(\theta) \int \max[W(z) - U, 0] dG(z)
+\end{equation}
+\begin{equation}
+rW(x) = w(x) + \lambda \int \max[W(z) - U, 0] dG(z) - (\delta + \lambda)[W(x) - U]
+\end{equation}
+where $w(x)$ is the wage.
+
+\subsection{Firm Values}
+The value of a vacancy $V$ and the value of a filled job $J(x)$ satisfy:
+\begin{equation}
+rV = -ck + q(\theta) \int \max[J(z) - V, 0] dG(z)
+\end{equation}
+\begin{equation}
+rJ(x) = \pi(x) + \lambda \int \max[J(z) - V, 0] dG(z) - (\delta + \lambda)[J(x) - V]
+\end{equation}
+
+\section{Flow Profits and Costs}
+Flow profit $\pi(x)$ is defined as residual output:
+\begin{equation}
+\pi(x) = x \min(n, k) - w(x) - ck - \phi n - C(x, \phi)k
+\end{equation}
+where:
+\begin{itemize}
+    \item $ck$: Rental cost of capital.
+    \item $\phi n$: Variable cost (e.g., electricity or worker disutility).
+    \item $C(x, \phi)k$: Fixed cost per unit of capital.
+\end{itemize}
+A convenient specification for the fixed cost is:
+\begin{equation}
+C(x, \phi) = \max(\phi - x, 0)
+\end{equation}
+This specification helps model labor hoarding and avoids "flat spots" in the flow profit.
+
+\end{document}

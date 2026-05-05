@@ -1,0 +1,15 @@
+DMP model with endogenous separation based on Mortensen-Pissarides 1994 and Lagos 2006
+•⁠  ⁠Core mechanism: matches are created when worker-firm pairs are "good enough" based on quality thresholds
+•⁠  ⁠Model examines two sectors (high-tech and non-high-tech) with quality sorting of workers
+•⁠  ⁠Workers have two sets of skills (fixed ability); they choose where to work based on where they will find a job faster with more money
+
+Key Propositions
+•⁠  ⁠*Proposition 1*: Higher productivity in high-tech attracts lower quality workers
+•⁠  ⁠*Proposition 2*: Rising high-tech productivity generates wage gains for workers outside high-tech sector
+•⁠  ⁠*Proposition 3*: Entire labor market becomes tighter
+•⁠  ⁠The mechanism works through increased competition for workers as high-tech productivity rises
+
+Model Structure and Paper Plan
+•⁠  ⁠Proposed simplified model with 6 levels (3 in each sector) to demonstrate effects analytically without simulations
+•⁠  ⁠Planned paper structure: stylized facts, stylized model explanation, implications
+

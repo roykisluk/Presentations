@@ -1,0 +1,77 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Aggregation in the Lagos (2006) Model of TFP}
+\author{Gemini CLI Extraction}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Aggregate Capital}
+Let $K_e$ denote the capital in place at all the firms with filled jobs. This aggregate capital is given by:
+\begin{equation}
+K_e = \frac{1-u}{1-(1-\theta)u} K
+\end{equation}
+where $u$ is the unemployment rate, $\theta$ is market tightness, and $K$ is the aggregate supply of capital.
+
+\section{Aggregate Output and Hours Worked}
+Aggregate output, $Y$, and the total number of hours worked, $N$, are given by:
+\begin{align}
+Y &= (1 - u) \int_\mu f[x, n(x), k] dH(x) \\
+N &= (1 - u) \int_\mu n(x) dH(x)
+\end{align}
+with $\mu \equiv \max(R, \phi)$, where $R$ is the reservation productivity and $\phi$ relates to variable costs.
+
+Since every firm-worker pair sets hours either to 0 or to full capacity $k$, these expressions simplify to:
+\begin{align}
+Y(K_e, \mu) &= [1 - H(\mu)] K_e E_H(x \mid x \ge \mu) \label{eq:Y} \\
+N &= [1 - H(\mu)] K_e \label{eq:N}
+\end{align}
+where $E_H(x \mid x \ge \mu) = [1 - H(\mu)]^{-1} \int_\mu x dH(x)$. 
+
+Intuitively, the aggregate number of hours worked is equal to the fraction of firm-worker pairs who engage in production times the total capital stock in filled jobs. Aggregate output equals the number of active units of capital, $[1 - H(\mu)] K_e$, weighted by their average productivity.
+
+Following Houthakker (1955--1956), we can solve \eqref{eq:N} for the ``aggregate labour demand'' by active firms, $\mu(K_e, N)$, and substitute it into \eqref{eq:Y} to obtain the economy's aggregate production function $F(K_e, N) \equiv Y[K_e, \mu(K_e, N)]$. This aggregate production function exhibits constant returns to scale.
+
+\section{Pareto Distribution of Idiosyncratic Shocks}
+Suppose idiosyncratic shocks are draws from a Pareto distribution:
+\begin{equation}
+G(x) = 
+\begin{cases} 
+0 & \text{if } x < \varepsilon \\ 
+1 - \left(\frac{\varepsilon}{x}\right)^\alpha & \text{if } \varepsilon \le x 
+\end{cases}
+\end{equation}
+where $\varepsilon > 0$ and $\alpha > 1$. Provided $R \ge \varepsilon$, the steady-state productivity distribution of active matches follows a Pareto distribution with parameters $R$ and $\alpha$:
+\begin{equation}
+H(x) = 
+\begin{cases} 
+0 & \text{if } x < R \\ 
+1 - \left(\frac{R}{x}\right)^\alpha & \text{if } R \le x 
+\end{cases}
+\end{equation}
+
+\section{Aggregate Production Function and TFP}
+Using the Pareto distribution, we have $1 - H(\mu) = (\frac{R}{\mu})^\alpha$ and $E_H(x \mid x \ge \mu) = \frac{\alpha}{\alpha-1} \mu$. The aggregates specialize to:
+\begin{align}
+Y(K_e, \mu) &= \frac{\alpha}{\alpha-1} R^\alpha \mu^{1-\alpha} K_e \\
+N &= \left(\frac{R}{\mu}\right)^\alpha K_e
+\end{align}
+
+Inverting the expression for $N$ yields $\mu = (K_e/N)^{1/\alpha} R$. Substituting this into the output equation yields the aggregate production function:
+\begin{equation}
+F(K_e, N) = A K_e^\gamma N^{1-\gamma}
+\end{equation}
+where $\gamma \equiv 1/\alpha$, and Total Factor Productivity (TFP), $A$, is given by:
+\begin{equation}
+A = \frac{R}{1-\gamma}
+\end{equation}
+
+The level of TFP depends on $\alpha$ (a parameter of the primitive distribution of productivity shocks) and $R$ (which summarizes the characteristics of the labor market via the destruction decision).
+
+\end{document}
