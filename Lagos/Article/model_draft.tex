@@ -4,7 +4,7 @@
 \usepackage{geometry}
 \geometry{margin=1in}
 
-\title{Two-Sector DMP Model with Quality Sorting}
+\title{Two-Sector DMP Model with Continuous Quality Sorting}
 \author{Based on Mortensen-Pissarides (1994) and Lagos (2006)}
 \date{\today}
 
@@ -16,110 +16,125 @@
 \begin{itemize}
     \item \textbf{Time:} Continuous.
     \item \textbf{Sectors:} $j \in \{H, L\}$ denoting High-tech and Low-tech (non-high-tech). Sector-specific productivity factors are $p_H$ and $p_L$.
-    \item \textbf{Workers:} Unit mass of risk-neutral workers. There are 3 global worker types (abilities) indexed by $i \in \{1, 2, 3\}$, where ability scalars are $a_1 < a_2 < a_3$.
-    \item \textbf{Labor Force:} The total mass of type $i$ workers is $m_i$. Workers discount the future at rate $r$. Unemployed workers receive a flow benefit $b$.
+    \item \textbf{Workers:} Unit mass of risk-neutral workers. Workers are heterogeneous in ability $a$, which is distributed continuously according to a CDF $F(a)$ with density $f(a)$ on support $[a_{\min}, a_{\max}]$.
+    \item \textbf{Labor Force:} The total mass of workers with ability $a$ is $f(a)$. Workers discount the future at rate $r$. Unemployed workers with ability $a$ receive a flow benefit proportional to their ability, $b \cdot a$.
     \item \textbf{Firms:} Large pool of risk-neutral potential firms. A firm can open a vacancy in sector $j$ at a flow cost $c_j$.
 \end{itemize}
 
 \section{Search and Matching}
 Workers direct their search to a specific sector based on expected utility, but match randomly with firms within that sector.
 \begin{itemize}
-    \item \textbf{Sector Choice:} Let $\phi_{iH} \in [0, 1]$ be the probability/fraction of unemployed type $i$ workers who choose to search in sector $H$, and $\phi_{iL} = 1 - \phi_{iH}$ for sector $L$.
-    \item \textbf{Sector Pools:} The total mass of unemployed workers searching in sector $j$ is $u_j = \sum_{i=1}^3 \phi_{ij} u_i$, where $u_i$ is the number of unemployed type $i$ workers.
+    \item \textbf{Sector Choice:} Let $\phi_{j}(a) \in [0, 1]$ be the probability/fraction of unemployed workers of ability $a$ who choose to search in sector $j \in \{H, L\}$.
+    \item \textbf{Sector Pools:} The mass of unemployed workers searching in sector $j$ is $u_j = \int \phi_{j}(a) u(a) da$, where $u(a)$ is the density of unemployed workers of ability $a$.
     \item \textbf{Market Tightness:} Let $v_j$ be the number of vacancies in sector $j$. Market tightness is $\theta_j = v_j / u_j$.
     \item \textbf{Contact Rates:} The matching function is $M(u_j, v_j)$. The worker job-finding rate is $\lambda(\theta_j) = M(u_j, v_j) / u_j$. The firm vacancy-filling rate is $q(\theta_j) = M(u_j, v_j) / v_j$.
-    \item \textbf{Pool Composition:} Conditional on a firm in sector $j$ meeting a worker, the probability the worker is of type $i$ is $\pi_{ij} = (\phi_{ij} u_i) / u_j$.
+    \item \textbf{Pool Composition:} Conditional on a firm in sector $j$ meeting a worker, the density of the worker's ability is $\pi_{j}(a) = (\phi_{j}(a) u(a)) / u_j$.
 \end{itemize}
 
 \section{Production and Endogenous Separation}
 \begin{itemize}
-    \item \textbf{Match Quality:} Upon meeting, the firm and worker draw a match-specific idiosyncratic quality shock $x \sim G(x)$.
-    \item \textbf{Output:} A producing match between a sector $j$ firm and a type $i$ worker with shock $x$ yields flow output $y_{ij}(x) = p_j a_i x$.
-    \item \textbf{Shocks:} New idiosyncratic shocks $x'$ arrive at Poisson rate $\delta$, drawn from the same distribution $G(\cdot)$.
+    \item \textbf{Match Quality:} Upon meeting, the firm and worker draw a match-specific idiosyncratic quality shock $x \sim U[0, 1]$. The uniform distribution has mean $0.5$, density $g(x) = 1$, and CDF $G(x) = x$.
+    \item \textbf{Output:} A producing match between a sector $j$ firm and a worker of ability $a$ with shock $x$ yields flow output $y_j(a, x) = p_j a x$.
+    \item \textbf{Shocks:} New idiosyncratic shocks $x'$ arrive at Poisson rate $\delta$, drawn from the same uniform distribution $U[0, 1]$.
     \item \textbf{Exogenous Separation:} Matches are destroyed for exogenous reasons at rate $s$.
-    \item \textbf{Endogenous Separation:} A match is formed (and continued) if and only if the joint surplus is non-negative, which defines a reservation match quality $R_{ij}$. If $x < R_{ij}$, the match separates (or is not formed).
+    \item \textbf{Endogenous Separation:} A match is continued if and only if the joint surplus is non-negative, defining a reservation match quality $R_{j}(a)$. If $x < R_{j}(a)$, the match separates.
 \end{itemize}
 
 \section{Value Functions}
 
 \subsection{Workers}
-The value of unemployment for a worker of type $i$ searching in sector $j$ is $U_{ij}$:
+The value of unemployment for a worker of ability $a$ searching in sector $j$ is $U_j(a)$:
 \begin{equation}
-r U_{ij} = b + \lambda(\theta_j) \int_{R_{ij}}^\infty [W_{ij}(x) - U_{ij}] dG(x)
+r U_j(a) = b a + \lambda(\theta_j) \int_{R_j(a)}^1 [W_j(a, x) - U_j(a)] dx
 \end{equation}
 
-The value of employment $W_{ij}(x)$ satisfies:
+The value of employment $W_j(a, x)$ satisfies:
 \begin{equation}
-r W_{ij}(x) = w_{ij}(x) + \delta \int_{R_{ij}}^\infty [W_{ij}(x') - W_{ij}(x)] dG(x') - (\delta G(R_{ij}) + s) [W_{ij}(x) - U_{ij}]
+r W_j(a, x) = w_j(a, x) + \delta \int_{R_j(a)}^1 [W_j(a, x') - W_j(a, x)] dx' - (\delta R_j(a) + s) [W_j(a, x) - U_j(a)]
 \end{equation}
 
 \textbf{Optimal Sorting:} Workers choose the sector that maximizes their value:
 \begin{equation}
-U_i = \max \{ U_{iH}, U_{iL} \}
+U(a) = \max \{ U_H(a), U_L(a) \}
 \end{equation}
-\begin{itemize}
-    \item If $U_{iH} > U_{iL}$, then $\phi_{iH} = 1$.
-    \item If $U_{iH} < U_{iL}$, then $\phi_{iH} = 0$.
-    \item If $U_{iH} = U_{iL}$, $\phi_{iH} \in [0, 1]$ (indifferent).
-\end{itemize}
 
 \subsection{Firms}
 The value of a vacancy in sector $j$ is $V_j$:
 \begin{equation}
-r V_j = -c_j + q(\theta_j) \sum_{i=1}^3 \pi_{ij} \int_{R_{ij}}^\infty [J_{ij}(x) - V_j] dG(x)
+r V_j = -c_j + q(\theta_j) \int \pi_j(a) \int_{R_j(a)}^1 [J_j(a, x) - V_j] dx da
 \end{equation}
 Free entry implies $V_j = 0$ for all active sectors.
 
-The value of a filled job $J_{ij}(x)$ satisfies:
+The value of a filled job $J_j(a, x)$ satisfies:
 \begin{equation}
-r J_{ij}(x) = p_j a_i x - w_{ij}(x) + \delta \int_{R_{ij}}^\infty [J_{ij}(x') - J_{ij}(x)] dG(x') - (\delta G(R_{ij}) + s) J_{ij}(x)
+r J_j(a, x) = p_j a x - w_j(a, x) + \delta \int_{R_j(a)}^1 [J_j(a, x') - J_j(a, x)] dx' - (\delta R_j(a) + s) J_j(a, x)
 \end{equation}
 
 \section{Surplus and Equilibrium Conditions}
-Wages are determined by continuous Nash Bargaining, where workers have bargaining power $\beta$:
+Wages are determined by continuous Nash Bargaining with worker bargaining power $\beta$:
 \begin{equation}
-W_{ij}(x) - U_{ij} = \beta S_{ij}(x) \quad \text{and} \quad J_{ij}(x) - V_j = (1-\beta) S_{ij}(x)
+W_j(a, x) - U_j(a) = \beta S_j(a, x) \quad \text{and} \quad J_j(a, x) - V_j = (1-\beta) S_j(a, x)
 \end{equation}
 
-The total match surplus $S_{ij}(x) = W_{ij}(x) - U_{ij} + J_{ij}(x) - V_j$ satisfies:
-\begin{equation}
-(r + s + \delta) S_{ij}(x) = p_j a_i x - r U_{ij} + \delta \int_{R_{ij}}^\infty S_{ij}(x') dG(x')
+The total match surplus $S_j(a, x) = W_j(a, x) - U_j(a) + J_j(a, x) - V_j$ satisfies:
+\begin{equation} \label{eq:surplus}
+(r + s + \delta) S_j(a, x) = p_j a x - r U_j(a) + \delta \int_{R_j(a)}^1 S_j(a, x') dx'
 \end{equation}
 
 \subsection{Job Destruction (Reservation Quality)}
-The reservation quality $R_{ij}$ is defined by $S_{ij}(R_{ij}) = 0$:
+The reservation quality $R_j(a)$ is defined by $S_j(a, R_j(a)) = 0$:
+\begin{equation} \label{eq:reservation}
+p_j a R_j(a) - r U_j(a) + \delta \int_{R_j(a)}^1 S_j(a, x') dx' = 0
+\end{equation}
+
+Subtracting \eqref{eq:reservation} from \eqref{eq:surplus}, we can express the surplus linearly in $x$:
+\begin{equation} \label{eq:surplus_linear}
+S_j(a, x) = \frac{p_j a (x - R_j(a))}{r + s + \delta}
+\end{equation}
+
+Substituting \eqref{eq:surplus_linear} into \eqref{eq:reservation} and evaluating the integral over the uniform distribution $x \sim U[0,1]$ yields:
+\begin{equation} \label{eq:reservation_explicit}
+p_j a R_j(a) - r U_j(a) + \frac{\delta p_j a}{r + s + \delta} \frac{(1 - R_j(a))^2}{2} = 0
+\end{equation}
+
+\subsection{Derivatives of the Surplus Function}
+Using \eqref{eq:surplus_linear}, we can derive the partial derivatives of the surplus $S_j(a, x)$ with respect to match quality $x$ and ability $a$.
+
+Differentiating with respect to $x$:
 \begin{equation}
-p_j a_i R_{ij} - r U_{ij} + \frac{\delta}{r + s + \delta} \int_{R_{ij}}^\infty p_j a_i (x' - R_{ij}) dG(x') = 0
+\frac{\partial S_j(a, x)}{\partial x} = \frac{p_j a}{r + s + \delta}
+\end{equation}
+
+Differentiating with respect to $a$:
+\begin{equation} \label{eq:ds_da_full}
+\frac{\partial S_j(a, x)}{\partial a} = \frac{p_j (x - R_j(a)) - p_j a R'_j(a)}{r + s + \delta}
+\end{equation}
+
+\textit{Note on proportionality:} Using the Nash bargaining solution, the value of unemployment can be written as:
+\begin{equation} \label{eq:unemp_value}
+r U_j(a) = b a + \lambda(\theta_j) \beta \int_{R_j(a)}^1 \frac{p_j a (x - R_j(a))}{r + s + \delta} dx = b a + \lambda(\theta_j) \beta \frac{p_j a (1 - R_j(a))^2}{2(r + s + \delta)}
+\end{equation}
+Equating \eqref{eq:unemp_value} with the expression for $r U_j(a)$ from \eqref{eq:reservation_explicit} shows that $a$ cancels out entirely from the equation determining $R_j(a)$. Therefore, $R_j(a) = R_j$ is independent of ability $a$, which implies $R'_j(a) = 0$.
+
+Consequently, the partial derivative with respect to $a$ from \eqref{eq:ds_da_full} simplifies to:
+\begin{equation}
+\frac{\partial S_j(a, x)}{\partial a} = \frac{p_j (x - R_j)}{r + s + \delta}
 \end{equation}
 
 \subsection{Job Creation (Free Entry)}
 Imposing $V_j = 0$ yields the job creation condition for sector $j$:
 \begin{equation}
-\frac{c_j}{q(\theta_j)} = (1-\beta) \sum_{i=1}^3 \pi_{ij} \int_{R_{ij}}^\infty S_{ij}(x) dG(x)
+\frac{c_j}{q(\theta_j)} = (1-\beta) \int \pi_j(a) \int_{R_j(a)}^1 S_j(a, x) dx da = (1-\beta) \int \pi_j(a) \frac{p_j a (1 - R_j(a))^2}{2(r + s + \delta)} da
 \end{equation}
 
 \subsection{Steady-State Flow Equations}
-To close the model, one formulates the steady-state unemployment equations for each type $i$, equating flows into and out of unemployment. Let $e_i$ be the number of employed type $i$ workers.
+Let $e_j(a)$ be the density of employed workers of ability $a$ in sector $j$.
 \begin{equation}
-u_i + e_i = m_i
+u(a) + e_H(a) + e_L(a) = f(a)
 \end{equation}
-The flow into employment must equal the flow out of employment:
+The flow into employment in sector $j$ must equal the flow out:
 \begin{equation}
-\lambda(\theta_j) \phi_{ij} u_i (1 - G(R_{ij})) = e_{ij} (\delta G(R_{ij}) + s)
+\lambda(\theta_j) \phi_j(a) u(a) (1 - R_j(a)) = e_j(a) (\delta R_j(a) + s)
 \end{equation}
-where $e_{ij}$ is the mass of type $i$ workers employed in sector $j$.
-
-\section{Verification of Key Propositions (Analytical Sketch)}
-
-\textbf{Initial Sorting Assumption:} Suppose initially $p_H > p_L$ such that Type 3 workers strictly prefer H ($U_{3H} > U_{3L}$), Type 2 workers are on the margin or prefer L ($U_{2H} < U_{2L}$), and Type 1 prefer L ($U_{1H} < U_{1L}$).
-
-\textbf{Proposition 1: Higher productivity in H attracts lower quality workers.}\\
-As $p_H$ increases, the surplus $S_{iH}(x)$ increases for all $i$, causing $U_{iH}$ to rise. Eventually, $U_{2H}$ exceeds $U_{2L}$. Type 2 workers (who are lower quality than the incumbent Type 3 workers) now switch their search to Sector H. The average quality of workers in Sector H drops because it now includes the lower-ability Type 2 cohort.
-
-\textbf{Proposition 2: Rising H-tech productivity generates wage gains outside H-tech.}\\
-When Type 2 workers leave Sector L to search in Sector H, the unemployment pool in Sector L ($u_L$) shrinks. The Job Creation condition in L depends on the expected surplus of meeting a worker. Since Type 1 remains in L, the firm composition $\pi_{1L}$ shifts. Even holding vacancies fixed, a drop in $u_L$ increases market tightness $\theta_L = v_L / u_L$. A higher $\theta_L$ increases the job finding rate $\lambda(\theta_L)$ for the remaining Type 1 workers. This increases their outside option $U_{1L}$, which, via Nash bargaining ($w_{ij}(x) = \beta p_j a_i x + (1-\beta)r U_{ij}$), directly drives up the wages for the non-high-tech workers.
-
-\textbf{Proposition 3: Entire labor market becomes tighter.}\\
-In Sector H, higher $p_H$ directly increases expected firm surplus, incentivizing a massive entry of vacancies $v_H$. This pushes $\theta_H$ up. In Sector L, the outflow of Type 2 workers directly reduces the denominator $u_L$, pushing $\theta_L$ up. Consequently, job finding rates rise across both sectors, making the entire economy tighter.
 
 \end{document}

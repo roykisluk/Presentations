@@ -103,11 +103,10 @@
         The Identification Challenge: \textbf{Simultaneity}
     }
 
-    \vspace{0.4cm}
-    \begin{itemize}
-        \item \textbf{Supply:} Wages respond to labor demand and macro supply shocks
-        \item \textbf{Demand:} Labor demand responds to wages and macro demand shocks
-    \end{itemize}
+    \vspace{0.8cm}
+    {\Large
+        Quantities and prices are jointly determined in equilibrium.
+    }
 
 
 \end{frame}
@@ -124,9 +123,15 @@
             \begin{enumerate}
                 \item {In a standard economy, micro-shocks cancel out at a rate of $1/\sqrt{N}$ \hyperlink{app_sqrtn}{\beamergotobutton{Proof}}
                       \vspace{0.4cm}}
-                \item {In a \textbf{granular} economy, size distribution of firms follows a power law (i.e., Zipf's Law: $\text{size} \propto \frac{1}{\text{rank}}$) $\implies$ large firms' idiosyncratic shocks drive aggregate outcomes}
+                \item {In a \textbf{granular} economy, size distribution of firms follows a power law: $size=\frac{1}{rank^{\frac{1}{\alpha}}}$
+                      \begin{itemize}
+                          \item \textbf{Zipf's Law}: $\alpha=1 \implies \text{size} \propto \frac{1}{\text{rank}}$. First firm is x2 the second, x3 the third, and so on.
+                          \item \textbf{Israel}: $\alpha=1.2$. First firm is x1.8 the second, and x2.6 the third.
+                          \item Large firms' idiosyncratic shocks drive aggregate outcomes
+                      \end{itemize}}
             \end{enumerate}
         \end{column}
+
 
         \begin{column}{0.45\textwidth}
             \begin{tikzpicture}
@@ -163,14 +168,14 @@
     Economy with $N$ firms. System is given by:
 
     \begin{align}
-        w_t    & = \psi L_{St} + \varepsilon_t \tag{Supply}  \\[0.5cm]
-        L_{it} & = \phi^d w_t + \eta_t + u_{it} \tag{Demand}
+        w_t    & = \psi L_{St} + \varepsilon_t \tag{Aggregate Supply}      \\[0.5cm]
+        L_{it} & = \phi^d w_t + \eta_t + u_{it} \tag{Firm-specific Demand}
     \end{align}
 
     Where:
     \begin{itemize}
         \item $w_t$ - wage (observed)
-        \item $L_{it}$ - number of workers at firm $i$ (observed)
+        \item $L_{it}$ - number of workers at firm $i$ (observed) \footnote{D}
         \item $\eta_t$ and $\varepsilon_t$ - aggregate shocks (unobserved)
         \item $u_{it}$ - idiosyncratic shock to firm $i$ (unobserved)
         \item Main assumption: $corr(u_{it},\eta_t)=0,\ corr(u_{it},\varepsilon_t)=0$ \hyperlink{app_assumptions}{\beamergotobutton{Assumptions}}
@@ -257,13 +262,13 @@
 \begin{frame} \label{src_psi_identification}
     \frametitle{GIV yields both elasticities}
 
-    \vspace{0.5cm}
-    By exogeneity, $\mathbb{E}[u_t \varepsilon_t] = 0 \implies \mathbb{E}[z_t \varepsilon_t] = 0$, where $u_t = (u_{it})_{i=1,\dots,N}$.
+    % \vspace{0.5cm}
+    % By exogeneity, $\mathbb{E}[u_t \varepsilon_t] = 0 \implies \mathbb{E}[z_t \varepsilon_t] = 0$, where $u_t = (u_{it})_{i=1,\dots,N}$.
 
     \vspace{0.5cm}
     Using supply equation:
     \begin{align*}
-        w_t = \psi L_{St} + \varepsilon_t \implies \mathbb{E}[(w_t - \psi L_{St}) z_t] = 0 \implies \psi = \frac{\mathbb{E}[w_t z_t]}{\mathbb{E}[L_{St} z_t]} \notag
+        \mathbb{E}[z_t \varepsilon_t] = 0, \quad w_t = \psi L_{St} + \varepsilon_t \implies \mathbb{E}[(w_t - \psi L_{St}) z_t] = 0 \implies \psi = \frac{\mathbb{E}[w_t z_t]}{\mathbb{E}[L_{St} z_t]} \notag
     \end{align*}
 
     \vspace{0.5cm}
@@ -350,8 +355,11 @@
 
     \vspace{0.5cm}
     \begin{itemize}
-        \item Intel, Google, Microsoft, NVIDIA account for disproportionate share of employment
-        \item Size distribution of tech in Israel exhibits strong power law (high Herfindahl index $h$)
+        \item Largest firms account for disproportionate share of employment: \\ top 10 = 15\%, top 50 = 30\%
+        \item Size distribution of tech in Israel exhibits strong power law:
+              \begin{equation*}
+                  \frac{Q(\bar{q_i})}{Q(\bar{q_1})} = \frac{1}{i^{\frac{1}{\zeta}}}, \quad \zeta \approx 1.2
+              \end{equation*}
         \item Difficult to separate Israeli macro shocks (wars, interest rates) from hiring dynamics
     \end{itemize}
 \end{frame}
@@ -362,16 +370,12 @@
     \frametitle{GIV unconfounds tech spillovers}
 
     {\Large
-        How do we isolate causal spillover of tech giants on wages?
+
     }
 
     \vspace{0.5cm}
     \begin{itemize}
-        \item Exploit global shocks specific to multinationals ($u_{it}$) that are exogenous to Israeli economy (global restructuring at Intel, worldwide AI hiring boom at NVIDIA).
-        \item Construct GIV by taking size-weighted employment shocks of tech giants and projecting out common Israeli macroeconomic factor loadings.
-        \item Regress aggregate Israeli wages on component of labor demand driven \emph{only} by these isolated, granular tech shocks.
-        \item Measure exactly how much a hiring freeze at a major tech firm depresses aggregate local wages, separated from general economic downturns.
-        \item This is perfectly suited for small, open economies like Israel, where granular actors often drive aggregate volatility.
+        \item
     \end{itemize}
 \end{frame}
 
@@ -397,7 +401,7 @@
         \begin{column}{0.48\textwidth}
             \textbf{Baseline Simplifications}
             \begin{description}
-                \item[A1] Factor loadings $\lambda_i$ are known (relaxed in §IV.B).
+                \item[A1] Factor loadings $\lambda_i$ are known (relaxed in §IV.B, estimated using GMM / PCA).
                 \item[A2] Controls have factor structure: $C_{it}^y = \lambda_i c_t^y$.
             \end{description}
         \end{column}
@@ -446,8 +450,6 @@
     {
     The aggregate volatility is therefore: { $\sigma_{agg} = \frac{\sigma}{\sqrt{N}}$}
     }
-
-    \vspace{0.1cm}
     \hfill \hyperlink{src_sqrtn}{\beamerreturnbutton{Back}}
 \end{frame}
 
@@ -602,7 +604,7 @@
         Slide $\lambda \equiv$ Standard $X$ (Regressors/Factors) \\
         Slide $Q \equiv$ Standard $M$ (Residual Maker Matrix) \\
         Slide $S \equiv$ Standard $y$ (Data Vector) \\
-        Slide $\Gamma \equiv$ Standard $e$ (Residuals/Granular Weights) \hyperlink{src_refresher}{\beamerreturnbutton{Back}}
+        Slide $\Gamma \equiv$ Standard $e$ (Residuals/Granular Weights) \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
     \end{block}
 \end{frame}
 
