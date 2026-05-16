@@ -175,7 +175,7 @@
     Where:
     \begin{itemize}
         \item $w_t$ - wage (observed)
-        \item $L_{it}$ - number of workers at firm $i$ (observed) \footnote{D}
+        \item $L_{it}$ - number of workers at firm $i$ (observed) \hyperlink{app_aggregate_demand}{\beamergotobutton{Aggregation}}
         \item $\eta_t$ and $\varepsilon_t$ - aggregate shocks (unobserved)
         \item $u_{it}$ - idiosyncratic shock to firm $i$ (unobserved)
         \item Main assumption: $corr(u_{it},\eta_t)=0,\ corr(u_{it},\varepsilon_t)=0$ \hyperlink{app_assumptions}{\beamergotobutton{Assumptions}}
@@ -266,7 +266,7 @@
     % By exogeneity, $\mathbb{E}[u_t \varepsilon_t] = 0 \implies \mathbb{E}[z_t \varepsilon_t] = 0$, where $u_t = (u_{it})_{i=1,\dots,N}$.
 
     \vspace{0.5cm}
-    Using supply equation:
+    Using supply equation, this is what we get from the second stage:
     \begin{align*}
         \mathbb{E}[z_t \varepsilon_t] = 0, \quad w_t = \psi L_{St} + \varepsilon_t \implies \mathbb{E}[(w_t - \psi L_{St}) z_t] = 0 \implies \psi = \frac{\mathbb{E}[w_t z_t]}{\mathbb{E}[L_{St} z_t]} \notag
     \end{align*}
@@ -293,12 +293,12 @@
     \end{equation}
     The simple GIV assumes every firm has the same loading $\lambda_i = 1$. \\
     \vspace{0.5cm}
-    If large firms are more sensitive to the Fed, the simple GIV becomes: \hyperlink{app_simple_giv_fails}{\beamergotobutton{Proof}}
+    If size is correlated with the macro shock, the simple GIV becomes: \hyperlink{app_simple_giv_fails}{\beamergotobutton{Proof}}
     \begin{equation*}
         z_t = (\lambda_S - \lambda_E) \eta_t + (u_{St} - u_{Et})
     \end{equation*}
     {
-    If $\lambda_S \neq \lambda_E$, the instrument is \textbf{invalid} ($\mathbb{E}[z_t \eta_t] \neq 0$, i.e., the Exclusion Restriction fails).
+    If $\lambda_S \neq \lambda_E$, the instrument is \textbf{invalid} ($\mathbb{E}[z_t \eta_t] \neq 0$, i.e., the exclusion restriction is violated).
     }
 \end{frame}
 
@@ -382,6 +382,40 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Appendix A
 \transitionslide{Appendix A}{Derivations}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% From Firm to Aggregate Demand
+\begin{frame} \label{app_aggregate_demand}
+    \frametitle{Aggregate Demand}
+    
+    Let $\bar{E}$ be the steady-state aggregate employment. Firm $i$'s labor demand in levels is given by:
+    \begin{equation*}
+        E_{it} = \bar{E} S_i (1 + L_{it}), \quad \text{with} \quad L_{it} = \phi^d w_t + \eta_t + u_{it}
+    \end{equation*}
+    where $S_i$ is the firm's steady-state employment share ($\sum_{i=1}^N S_i = 1$), and $L_{it}$ is the fractional change in employment.
+    
+    \vspace{0.4cm}
+    Aggregate labor demand in levels ($E_t$) is the sum of firm-level demands:
+    \begin{align*}
+        E_t & = \sum_{i=1}^N E_{it} = \sum_{i=1}^N \bar{E} S_i (1 + L_{it}) \\
+            & = \bar{E} \sum_{i=1}^N S_i + \bar{E} \sum_{i=1}^N S_i L_{it}
+    \end{align*}
+    
+    \vspace{0.4cm}
+    Defining the size-weighted average $L_{St} := \sum_{i=1}^N S_i L_{it}$, and since $\sum_{i=1}^N S_i = 1$, we get:
+    \begin{equation*}
+        E_t = \bar{E} (1 + L_{St})
+    \end{equation*}
+    
+    \vspace{0.2cm}
+    {
+    \large
+    \textbf{Conclusion:} The size-weighted average $L_{St}$ captures the aggregate variation in labor demand.
+    }
+    
+    \vspace{0.1cm}
+    \hfill \hyperlink{src_assumptions}{\beamerreturnbutton{Back}}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Assumptions
@@ -809,6 +843,52 @@
 
         \vspace{0.2cm}
         Variance of the constructed GIV itself.
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\textwidth}
+        \centering
+        \textcolor{SoftPurple}{\textbf{Structural Noise}}
+
+        \vspace{0.2cm}
+        $\sigma_{\varepsilon} / |M|$
+
+        \vspace{0.2cm}
+        Unobserved shocks dampening precision.
+    \end{minipage}
+    \vspace{0.1cm}
+    \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Proposition 3
+\begin{frame}{Proposition 3}
+    \vspace{0.5cm}
+    \centering
+    To minimize the asymptotic variances $\sigma^2_\psi$ and $\sigma^2_{\phi^d}$, we use the $N \times N$ projection matrix $Q$ that is orthogonal to the factor loadings $\lambda$:
+
+    \vspace{0.3cm}
+    \begin{equation*}
+        Q := I - \lambda(\lambda'\lambda)^{-1}\lambda'
+    \end{equation*}
+
+    \vspace{0.5cm}
+    The optimal weights vector $\Gamma^*$ is the projection of the size vector $S$:
+
+    \vspace{0.3cm}
+    \begin{equation*}
+        \Gamma^* = S'Q
+    \end{equation*}
+
+    \vspace{0.5cm}
+    \textbf{Result:} $\Gamma^*$ is the vector closest to $S$, while remaining orthogonal to the unobserved aggregate factor loadings.
+    \vfill
+    \hfill \hyperlink{src_propositions}{\beamerreturnbutton{Back}}
+\end{frame}
+
+\end{document}
+
+
+tself.
     \end{minipage}
     \hfill
     \begin{minipage}{0.3\textwidth}
