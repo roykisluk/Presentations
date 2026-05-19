@@ -1,0 +1,130 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+
+\geometry{a4paper, margin=1in}
+
+% --- Color Palette (Matching Presentation) ---
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+\definecolor{WarmGray}{HTML}{6C757D}
+
+\title{\color{DeepNavy}\huge Estimating Factor Loadings with PCA\\ \large Mathematical Deep Dive for the GIV Labor Market}
+\author{GIV Methodology Notes}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This document explains how Principal Component Analysis (PCA) is mathematically derived and applied to recover latent factor loadings ($\lambda_i$) in the context of the Granular Instrumental Variables (GIV) labor market model. We use the notation from the main presentation to demonstrate the underlying linear algebra, specifically constrained optimization via Lagrange multipliers, eigenvalues, and eigenvectors.
+\end{abstract}
+
+\section{The Labor Market Setting}
+Recall the firm-specific labor demand equation from the presentation:
+\begin{equation}
+    L_{it} = \phi^d w_t + \lambda_i \eta_t + u_{it} \label{eq:demand}
+\end{equation}
+Where:
+\begin{itemize}
+    \item $L_{it}$: Variation in labor demand at firm $i$.
+    \item $w_t$: Aggregate wage.
+    \item $\eta_t$: Unobserved aggregate macro shock.
+    \item $\lambda_i$: \textbf{Factor loading} (firm $i$'s sensitivity to the macro shock).
+    \item $u_{it}$: Idiosyncratic shock to firm $i$.
+\end{itemize}
+
+\textbf{The Problem:} To construct the optimal GIV ($z_t = \sum \Gamma_i L_{it}$) that satisfies the exclusion restriction, we need weights $\Gamma$ such that $\sum \Gamma_i \lambda_i = 0$. However, the factor loadings $\lambda_i$ are unobserved. We must estimate them from the data.
+
+\section{Data Preparation: The Residual Matrix}
+To isolate the macro shock, we assume that the common wage effect $\phi^d w_t$ is either partialled out (e.g., via fixed effects or an initial iterative guess in GMM) or subsumed into the dominant factor. Let $Y_{it}$ be the residual labor variation driven purely by macro and idiosyncratic shocks:
+\begin{equation}
+    Y_{it} = \lambda_i \eta_t + u_{it}
+\end{equation}
+Let $Y$ be the $T \times N$ matrix of these observations, where rows are time periods $t$ and columns are firms $i$. If idiosyncratic shocks $u_{it}$ are sufficiently small and $T$ is large, the variance of $Y$ is dominated by the common macro shock $\eta_t$.
+
+\section{The Mathematics of PCA}
+
+PCA finds the direction (a vector of weights) that captures the maximum variance in the data matrix $Y$. This direction will represent our best estimate of the factor loadings, $\lambda$.
+
+\subsection{The Covariance Matrix}
+Assuming $Y$ is demeaned, the $N \times N$ sample covariance matrix across firms is:
+\begin{equation}
+    \Sigma = \frac{1}{T} Y'Y
+\end{equation}
+The entry $\Sigma_{ij}$ represents the covariance between firm $i$'s labor demand and firm $j$'s labor demand over time. Because firms are primarily correlated through the common macro shock $\eta_t$, this matrix contains the signal of $\lambda$.
+
+\subsection{The Optimization Problem}
+We seek a unit vector $v \in \mathbb{R}^N$ such that the variance of the data projected onto $v$ is maximized. The projection of $Y$ onto $v$ is $Yv$, and its variance is proportional to:
+\begin{equation}
+    \text{Var}(Yv) = v' \Sigma v
+\end{equation}
+We want to maximize $v' \Sigma v$ subject to the constraint that $v$ has a length of 1 ($v'v = 1$). If we don't constrain the length, we could make the variance infinite simply by scaling up $v$.
+
+\subsection{The Lagrangian}
+To solve this constrained optimization problem, we construct the Lagrangian $\mathcal{L}$. We introduce a Lagrange multiplier, $\alpha$, for the constraint $v'v - 1 = 0$:
+\begin{equation}
+    \mathcal{L}(v, \alpha) = v' \Sigma v - \alpha (v'v - 1)
+\end{equation}
+
+To find the maximum, we take the derivative of $\mathcal{L}$ with respect to the vector $v$ and set it to zero. Using matrix calculus rules ($\frac{\partial (v' A v)}{\partial v} = 2Av$ for symmetric $A$):
+\begin{align}
+    \frac{\partial \mathcal{L}}{\partial v} = 2 \Sigma v - 2 \alpha v &= 0 \notag \\
+    \Sigma v &= \alpha v \label{eq:eigen}
+\end{align}
+
+\subsection{Eigenvalues and Eigenvectors}
+Equation \ref{eq:eigen} is the fundamental \textbf{Eigenvalue Equation}. 
+\begin{itemize}
+    \item Any vector $v$ that satisfies this equation is an \textbf{eigenvector} of the covariance matrix $\Sigma$.
+    \item The scalar $\alpha$ is the corresponding \textbf{eigenvalue}.
+\end{itemize}
+
+To see what $\alpha$ represents, pre-multiply Equation \ref{eq:eigen} by $v'$:
+\begin{align}
+    v' \Sigma v &= v' (\alpha v) \notag \\
+    v' \Sigma v &= \alpha (v'v) \notag \\
+    v' \Sigma v &= \alpha \quad \text{(since } v'v = 1 \text{)}
+\end{align}
+This proves that the eigenvalue $\alpha$ is exactly equal to the variance captured by the eigenvector $v$. 
+
+Because our goal was to \textit{maximize} the variance $v' \Sigma v$, we must choose the eigenvector associated with the \textbf{largest} eigenvalue. Let's call this principal eigenvector $v_1$ and its eigenvalue $\alpha_1$.
+
+\section{Connecting PCA back to the GIV Framework}
+
+\subsection{Recovering $\lambda_i$}
+In our labor market model, the dominant source of variance across all firms is the macroeconomic shock $\eta_t$. Therefore, the principal eigenvector $v_1$ that captures this maximum variance is our empirical estimate of the factor loadings:
+\begin{equation}
+    \hat{\lambda} = v_1
+\end{equation}
+The specific value $\hat{\lambda}_i$ (the $i$-th element of $v_1$) is firm $i$'s estimated sensitivity to the macroeconomy.
+
+\subsection{Recovering the Macro Shock $\eta_t$}
+The unobserved macro shock $\eta_t$ itself (up to a scaling constant) is simply the data projected onto these loadings, known as the Principal Component Score:
+\begin{equation}
+    \hat{\eta} = Y \hat{\lambda}
+\end{equation}
+
+\subsection{Constructing the Optimal GIV}
+With $\hat{\lambda}$ in hand, we return to the core mechanics of the GIV presentation. We construct the $N \times N$ projection (annihilator) matrix $Q$ that is orthogonal to these factor loadings:
+\begin{equation}
+    \hat{Q} = I - \hat{\lambda}(\hat{\lambda}'\hat{\lambda})^{-1}\hat{\lambda}'
+\end{equation}
+We then calculate the optimal weights $\Gamma^*$ by projecting the firm sizes $S$:
+\begin{equation}
+    \hat{\Gamma}^* = S'\hat{Q}
+\end{equation}
+Finally, the valid Granular Instrumental Variable is constructed:
+\begin{equation}
+    z_t = \sum_{i=1}^N \hat{\Gamma}^*_i L_{it}
+\end{equation}
+Because $\hat{\Gamma}^*$ is orthogonal to $\hat{\lambda}$ by construction, $z_t$ is purged of the macro shock $\eta_t$, satisfying the exclusion restriction.
+
+\end{document}

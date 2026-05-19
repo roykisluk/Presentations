@@ -1,0 +1,112 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+
+\geometry{a4paper, margin=1in}
+
+% --- Color Palette (Matching Presentation) ---
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+\definecolor{WarmGray}{HTML}{6C757D}
+
+\title{\color{DeepNavy}\huge Joint Estimation via GMM\\ \large Mathematical Deep Dive for the GIV Labor Market}
+\author{GIV Methodology Notes}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This document explains the application of the Generalized Method of Moments (GMM) as formulated by Gabaix and Koijen (2022) to the labor market setting. It details how GMM overcomes the simultaneity problem by jointly estimating the structural elasticities ($\psi, \phi^d$) and the latent factor loadings ($\lambda_i$) through a system of structural moment conditions.
+\end{abstract}
+
+\section{The Identification Problem}
+We operate within the structural equations of the labor market:
+\begin{align}
+    w_t &= \psi L_{St} + \varepsilon_t \tag{Supply} \label{eq:supply} \\
+    L_{it} &= \phi^d w_t + \lambda_i \eta_t + u_{it} \tag{Demand} \label{eq:demand}
+\end{align}
+Where:
+\begin{itemize}
+    \item $\psi$: Inverse labor supply elasticity.
+    \item $\phi^d$: Labor demand elasticity.
+    \item $\lambda_i$: Unobserved factor loadings for the macro shock $\eta_t$.
+\end{itemize}
+
+\textbf{The Challenge:} In the PCA deep-dive, we assumed we could isolate the macro shock $\eta_t$ by analyzing the outcomes $L_{it}$. However, the endogenous wage $w_t$ is inside the demand equation. We cannot perfectly extract $\lambda_i$ via simple PCA on $L_{it}$ without first knowing the demand elasticity $\phi^d$, and we cannot know $\phi^d$ without a valid instrument $z_t$, which requires knowing $\lambda_i$. This circularity requires joint estimation.
+
+\section{The Moment Conditions}
+GMM identifies parameters by matching theoretical population moments to sample moments. Let $\theta = (\psi, \phi^d)$ be our vector of structural parameters. 
+
+A valid Granular Instrument $z_t(\lambda)$, constructed using optimal weights $\Gamma(\lambda)$, must be orthogonal to the aggregate structural shocks. This provides our core moment conditions:
+
+\subsection{1. The Supply Moment (Identifying $\psi$)}
+The idiosyncratic granular instrument must be uncorrelated with the aggregate supply shock $\varepsilon_t$:
+\begin{equation}
+    \mathbb{E}[\varepsilon_t z_t(\lambda)] = 0
+\end{equation}
+Substituting the supply equation \ref{eq:supply}, we define the first sample moment:
+\begin{equation}
+    g_{1,T}(\theta, \lambda) = \frac{1}{T} \sum_{t=1}^T (w_t - \psi L_{St}) z_t(\lambda)
+\end{equation}
+
+\subsection{2. The Demand Moment (Identifying $\phi^d$)}
+Similarly, the instrument must be uncorrelated with the aggregate demand shock $\eta_t$. By taking the equal-weighted average of equation \ref{eq:demand}, we obtain $L_{Et} = \phi^d w_t + \eta_t + u_{Et}$. Because $z_t \perp \eta_t$ and $z_t \perp u_{Et}$ (as proven in the presentation), we have:
+\begin{equation}
+    \mathbb{E}[(L_{Et} - \phi^d w_t) z_t(\lambda)] = 0
+\end{equation}
+This yields the second sample moment:
+\begin{equation}
+    g_{2,T}(\theta, \lambda) = \frac{1}{T} \sum_{t=1}^T (L_{Et} - \phi^d w_t) z_t(\lambda)
+\end{equation}
+
+\section{The GMM Objective Function}
+Let $g_T(\theta, \lambda) = \begin{bmatrix} g_{1,T} \\ g_{2,T} \end{bmatrix}$. The GMM estimator seeks the parameters $(\theta, \lambda)$ that minimize the distance of these moments from zero:
+\begin{equation}
+    J(\theta, \lambda) = g_T(\theta, \lambda)' W g_T(\theta, \lambda)
+\end{equation}
+Where $W$ is a positive definite weighting matrix (often the inverse of the covariance matrix of the moments for efficiency).
+
+\section{Concentrated GMM: The Practical Algorithm}
+Minimizing $J(\theta, \lambda)$ simultaneously over $2$ elasticities and $N$ factor loadings is computationally difficult. Gabaix and Koijen (2022) utilize a \textbf{Concentrated GMM} (or Iterative IV) approach, exploiting the fact that conditional on $\theta$, extracting $\lambda$ is a simple PCA problem.
+
+\subsection{The Iterative Loop}
+\begin{enumerate}
+    \item \textbf{Initialize:} Start with an initial guess for the elasticities, $\theta^{(0)} = (\psi^{(0)}, \phi^{d(0)})$. Simple OLS estimates or $\theta^{(0)} = (0,0)$ can serve as starting points.
+    
+    \item \textbf{Profile out the Endogeneity:} Given the guess $\phi^{d(k)}$, compute the "partialled-out" labor demand residuals for every firm:
+    \begin{equation}
+        \tilde{L}_{it}^{(k)} = L_{it} - \phi^{d(k)} w_t = \lambda_i \eta_t + u_{it}
+    \end{equation}
+    
+    \item \textbf{Extract Loadings via PCA:} The matrix $\tilde{L}^{(k)}$ now has a pure factor structure. We apply PCA to the covariance matrix of $\tilde{L}^{(k)}$ to extract the principal eigenvector. This yields our updated factor loadings $\lambda^{(k+1)}$.
+    
+    \item \textbf{Construct the Instrument:} Using $\lambda^{(k+1)}$, compute the orthogonal projection matrix $Q$ and the optimal weights $\Gamma^{(k+1)} = S'Q$. Form the updated instrument:
+    \begin{equation}
+        z_t^{(k+1)} = \sum_{i=1}^N \Gamma_i^{(k+1)} L_{it}
+    \end{equation}
+    
+    \item \textbf{Update Structural Parameters via IV:} We now have a valid instrument $z_t^{(k+1)}$. We update our structural parameters by setting the sample moments to zero (which is equivalent to running 2SLS):
+    \begin{align}
+        \psi^{(k+1)} &= \frac{\sum w_t z_t^{(k+1)}}{\sum L_{St} z_t^{(k+1)}} \\[0.5cm]
+        \phi^{d(k+1)} &= \frac{\sum L_{Et} z_t^{(k+1)}}{\sum w_t z_t^{(k+1)}}
+    \end{align}
+    
+    \item \textbf{Iterate:} Repeat steps 2 through 5 until the parameter vector $\theta^{(k)}$ and loadings $\lambda^{(k)}$ converge.
+\end{enumerate}
+
+\section{Summary for Researchers}
+When explaining this to an audience:
+\begin{itemize}
+    \item \textbf{Why PCA alone is insufficient:} If wages ($w_t$) affect labor demand ($L_{it}$), running PCA directly on $L_{it}$ will mix the endogenous wage response with the exogenous macro shock ($\eta_t$).
+    \item \textbf{The GMM Solution:} GMM acts as an iterative filter. It guesses the wage effect, subtracts it out, runs PCA to find the clean macro shock, builds the instrument, and then checks if the instrument gives the same wage effect back. It loops until the system perfectly balances.
+\end{itemize}
+
+\end{document}

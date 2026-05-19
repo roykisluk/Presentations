@@ -1,0 +1,163 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{ragged2e}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, backgrounds, decorations.pathreplacing, shadows, fadings}
+\pgfplotsset{compat=1.18}
+
+% --- Color Palette: Warm Professional ---
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+\definecolor{SoftPurple}{HTML}{9D4EDD}
+\definecolor{WarmGray}{HTML}{6C757D}
+\definecolor{LightGray}{HTML}{E9ECEF}
+\definecolor{Cream}{HTML}{FBF8F1}
+\definecolor{DeepRed}{HTML}{D62828}
+\definecolor{Gold}{HTML}{D4A03A}
+\definecolor{SoftWhite}{HTML}{FAFAFA}
+
+% Beamer colors
+\setbeamercolor{normal text}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{structure}{fg=DeepNavy}
+\setbeamercolor{alerted text}{fg=DeepRed}
+\setbeamercolor{example text}{fg=Teal}
+\setbeamercolor{frametitle}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{title}{fg=DeepNavy}
+\setbeamercolor{subtitle}{fg=WarmGray}
+\setbeamercolor{block title}{bg=DeepNavy, fg=SoftWhite}
+\setbeamercolor{block body}{bg=LightGray, fg=DeepNavy}
+\setbeamercolor{itemize item}{fg=WarmOrange}
+\setbeamercolor{itemize subitem}{fg=Gold}
+
+% Fonts
+\usefonttheme{professionalfonts}
+\setbeamerfont{title}{size=\huge, series=\bfseries}
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+
+% Strip chrome
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+
+% Minimal footline
+\setbeamertemplate{footline}{%
+    \hfill
+    \begin{beamercolorbox}[wd=3cm,ht=2.5ex,dp=1ex,right,rightskip=0.6cm]{page number}
+        \usebeamercolor[fg]{WarmGray}\scriptsize\insertframenumber
+    \end{beamercolorbox}
+    \vspace{0.3cm}
+}
+
+% Bullets
+\setbeamertemplate{itemize item}{\footnotesize\raisebox{0.3ex}{\tikz\fill[WarmOrange] (0,0) circle (0.45ex);}}
+\setbeamertemplate{itemize subitem}{\footnotesize\raisebox{0.3ex}{\tikz\fill[Gold] (0,0) circle (0.35ex);}}
+
+\begin{document}
+
+\begin{frame}
+    \title{Appendix}
+    \subtitle{GIV in Practice: PCA and GMM Implementation}
+    \author{Roy Kisluk}
+    \date{}
+    \titlepage
+\end{frame}
+
+% --- SLIDE 1: RECAP ---
+\begin{frame}
+    \frametitle{The Need for $\Gamma$: Leaky Instruments}
+    
+    \vspace{0.5cm}
+    {\Large
+        If large firms respond differently to macro trends, the simple GIV fails.
+    }
+    
+    \vspace{1cm}
+    \begin{itemize}
+        \item \textbf{The Problem:} If big firms are more sensitive to macro shocks ($\eta_t$), then $y_{St} - y_{Et}$ is correlated with the error term.
+        \item \textbf{The Solution:} We need weights $\Gamma$ such that $\sum \Gamma_i = 0$ AND $\sum \Gamma_i \lambda_i = 0$.
+        \item \textbf{The Formula:} $\Gamma = S - \lambda (\lambda' \lambda)^{-1} \lambda' S$ (the residual of $S$ on $\lambda$).
+    \end{itemize}
+\end{frame}
+
+% --- SLIDE 2: PCA METHOD ---
+\begin{frame}
+    \frametitle{Implementation 1: PCA (The Two-Step Approach)}
+    
+    {\large
+        Simplest when you have a long panel and common factors dominate.
+    }
+    
+    \vspace{0.5cm}
+    \textbf{Algorithm:}
+    \begin{enumerate}
+        \item \textbf{De-mean:} Center the outcome matrix $Y$ (firm-by-time).
+        \item \textbf{Factorize:} Run PCA on $Y$ and extract the first few loadings $\hat{\lambda}_i$.
+        \item \textbf{Project:} Calculate $\Gamma_i$ as the residuals of regressing size $S_i$ on $\hat{\lambda}_i$.
+        \item \textbf{Instrument:} Construct $z_t = \sum \Gamma_i y_{it}$ and use in standard 2SLS.
+    \end{enumerate}
+    
+    \vspace{0.5cm}
+    \textit{Pro: Computationally cheap. Con: Ignores the endogenous variable's impact on factors.}
+\end{frame}
+
+% --- SLIDE 3: GMM METHOD ---
+\begin{frame}
+    \frametitle{Implementation 2: Iterative GMM (The Robust Approach)}
+    
+    {\large
+        Simultaneously identifies the elasticity ($\psi$) and the loadings ($\lambda_i$).
+    }
+    
+    \vspace{0.5cm}
+    \textbf{Iterative Algorithm:}
+    \begin{itemize}
+        \item \textbf{Start:} Assume $\psi^{(0)} = 0$ and $\lambda_i^{(0)} = 1$.
+        \item \textbf{Loop:}
+        \begin{enumerate}
+            \item \textbf{Residuals:} Calculate $e_{it} = y_{it} - \psi^{(k)} x_{it}$.
+            \item \textbf{Loadings:} Extract $\lambda_i^{(k+1)}$ from $e_{it}$ (e.g., via PCA on residuals).
+            \item \textbf{GIV:} Update $z_t = \sum \Gamma(\lambda^{(k+1)}) y_{it}$.
+            \item \textbf{Estimate:} Update $\psi^{(k+1)}$ via IV regression of $y$ on $x$ using $z_t$.
+        \end{enumerate}
+        \item \textbf{Converge:} Stop when $\psi$ and $\lambda$ stabilize.
+    \end{itemize}
+\end{frame}
+
+% --- SLIDE 4: SUMMARY ---
+\begin{frame}
+    \frametitle{Summary: When to use which?}
+    
+    \vspace{0.5cm}
+    \begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{l l l}
+        \toprule
+        \textbf{Method} & \textbf{Complexity} & \textbf{Ideal Use Case} \\
+        \midrule
+        Simple GIV & Low & Homogeneous firms ($\lambda_i \approx \bar{\lambda}$) \\
+        \rowcolor{Teal!10} PCA GIV & Medium & High Signal-to-Noise, $T$ is large \\
+        \rowcolor{WarmOrange!10} GMM GIV & High & Endogeneity in factor structure \\
+        \bottomrule
+    \end{tabular}
+    \end{center}
+    
+    \vspace{0.5cm}
+    \textbf{Bottom Line:} In granular economies, \textbf{always} check if results are robust to using $\Gamma$ (the "Purified" GIV weights).
+\end{frame}
+
+\end{document}

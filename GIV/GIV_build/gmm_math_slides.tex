@@ -1,0 +1,206 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{ragged2e}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, backgrounds, decorations.pathreplacing, shadows, fadings}
+\pgfplotsset{compat=1.18}
+
+% --- Color Palette: Warm Professional ---
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+\definecolor{SoftPurple}{HTML}{9D4EDD}
+\definecolor{WarmGray}{HTML}{6C757D}
+\definecolor{LightGray}{HTML}{E9ECEF}
+\definecolor{Cream}{HTML}{FBF8F1}
+\definecolor{DeepRed}{HTML}{D62828}
+\definecolor{Gold}{HTML}{D4A03A}
+\definecolor{SoftWhite}{HTML}{FAFAFA}
+
+% Beamer colors
+\setbeamercolor{normal text}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{structure}{fg=DeepNavy}
+\setbeamercolor{alerted text}{fg=DeepRed}
+\setbeamercolor{example text}{fg=Teal}
+\setbeamercolor{frametitle}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{title}{fg=DeepNavy}
+\setbeamercolor{subtitle}{fg=WarmGray}
+\setbeamercolor{block title}{bg=DeepNavy, fg=SoftWhite}
+\setbeamercolor{block body}{bg=LightGray, fg=DeepNavy}
+\setbeamercolor{itemize item}{fg=WarmOrange}
+\setbeamercolor{itemize subitem}{fg=Gold}
+
+% Fonts
+\usefonttheme{professionalfonts}
+\setbeamerfont{title}{size=\huge, series=\bfseries}
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+
+% Strip chrome
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+
+% Minimal footline
+\setbeamertemplate{footline}{%
+    \hfill
+    \begin{beamercolorbox}[wd=3cm,ht=2.5ex,dp=1ex,right,rightskip=0.6cm]{page number}
+        \usebeamercolor[fg]{WarmGray}\scriptsize\insertframenumber
+    \end{beamercolorbox}
+    \vspace{0.3cm}
+}
+
+% Bullets
+\setbeamertemplate{itemize item}{\footnotesize\raisebox{0.3ex}{\tikz\fill[WarmOrange] (0,0) circle (0.45ex);}}
+\setbeamertemplate{itemize subitem}{\footnotesize\raisebox{0.3ex}{\tikz\fill[Gold] (0,0) circle (0.35ex);}}
+
+% Custom commands
+\newcommand{\transitionslide}[2]{%
+    {\setbeamercolor{normal text}{fg=SoftWhite,bg=DeepNavy}
+    \begin{frame}[plain]\vfill\begin{center}
+        {\huge\bfseries\textcolor{Gold}{#1}}\\[0.6cm]
+        {\large\textcolor{LightGray}{#2}}
+    \end{center}\vfill\end{frame}}
+}
+
+\begin{document}
+
+\transitionslide{Technical Supplement}{Joint Estimation via GMM}
+
+% --- SLIDE 1 ---
+\begin{frame}
+    \frametitle{The Identification Problem: Circularity}
+    
+    \vspace{0.3cm}
+    Recall the structural equations:
+    \begin{align*}
+        w_t &= \psi L_{St} + \varepsilon_t \tag{Supply} \\
+        L_{it} &= \phi^d w_t + \lambda_i \eta_t + u_{it} \tag{Demand}
+    \end{align*}
+    
+    \vspace{0.3cm}
+    \begin{itemize}
+        \item \textbf{The Challenge with PCA:} We cannot perfectly extract $\lambda_i$ via PCA on $L_{it}$ without first knowing the wage effect $\phi^d w_t$. 
+        \item \textbf{The Circularity:} We cannot know $\phi^d$ without a valid instrument $z_t$. But constructing $z_t$ requires knowing $\lambda_i$.
+        \item \textbf{The Solution:} We must estimate the structural elasticities ($\psi, \phi^d$) and the latent factor loadings ($\lambda_i$) \textbf{jointly}.
+    \end{itemize}
+\end{frame}
+
+% --- SLIDE 2 ---
+\begin{frame}
+    \frametitle{The Core Moment Conditions}
+    
+    \vspace{0.5cm}
+    GMM identifies parameters by matching theoretical moments to sample moments. The core idea is that a valid instrument $z_t(\lambda)$ must be orthogonal to aggregate shocks.
+    
+    \vspace{0.8cm}
+    \textbf{1. Supply Moment (Identifying $\psi$):} \\
+    The instrument must be uncorrelated with the supply shock $\varepsilon_t$.
+    \begin{equation*}
+        \mathbb{E}[(w_t - \psi L_{St}) z_t(\lambda)] = 0
+    \end{equation*}
+    
+    \vspace{0.5cm}
+    \textbf{2. Demand Moment (Identifying $\phi^d$):} \\
+    The instrument must be uncorrelated with the demand shock $\eta_t$. Using the equal-weighted average demand:
+    \begin{equation*}
+        \mathbb{E}[(L_{Et} - \phi^d w_t) z_t(\lambda)] = 0
+    \end{equation*}
+\end{frame}
+
+% --- SLIDE 3 ---
+\begin{frame}
+    \frametitle{The GMM Objective Function}
+    
+    \vspace{0.5cm}
+    Let $\theta = (\psi, \phi^d)$ be the structural parameters, and let the sample moments be:
+    \begin{align*}
+        g_{1,T}(\theta, \lambda) &= \frac{1}{T} \sum (w_t - \psi L_{St}) z_t(\lambda) \\
+        g_{2,T}(\theta, \lambda) &= \frac{1}{T} \sum (L_{Et} - \phi^d w_t) z_t(\lambda)
+    \end{align*}
+    
+    \vspace{0.5cm}
+    Let $g_T(\theta, \lambda) = [g_{1,T}, g_{2,T}]'$. The GMM estimator seeks $(\theta, \lambda)$ to minimize:
+    \begin{equation*}
+        J(\theta, \lambda) = g_T(\theta, \lambda)' W g_T(\theta, \lambda)
+    \end{equation*}
+    where $W$ is a positive definite weighting matrix.
+\end{frame}
+
+% --- SLIDE 4 ---
+\begin{frame}[shrink=10]
+    \frametitle{Concentrated GMM: The Iterative Loop (Part 1)}
+    
+    \vspace{0.3cm}
+    Simultaneous optimization over elasticities and $N$ loadings is difficult. Gabaix and Koijen (2022) use \textbf{Concentrated GMM} (Iterative IV).
+    
+    \vspace{0.5cm}
+    \begin{enumerate}
+        \item \textbf{Initialize:} Start with an initial guess for the elasticities, $\theta^{(0)} = (\psi^{(0)}, \phi^{d(0)})$ (e.g., from OLS).
+        
+        \vspace{0.3cm}
+        \item \textbf{Profile out Endogeneity:} Given $\phi^{d(k)}$, compute partialled-out labor demand:
+        \begin{equation*}
+            \tilde{L}_{it}^{(k)} = L_{it} - \phi^{d(k)} w_t = \lambda_i \eta_t + u_{it}
+        \end{equation*}
+        
+        \vspace{0.3cm}
+        \item \textbf{Extract Loadings via PCA:} The matrix $\tilde{L}^{(k)}$ now has a pure factor structure. Extract principal eigenvector to get updated loadings $\lambda^{(k+1)}$.
+    \end{enumerate}
+\end{frame}
+
+% --- SLIDE 5 ---
+\begin{frame}
+    \frametitle{Concentrated GMM: The Iterative Loop (Part 2)}
+    
+    \vspace{0.5cm}
+    \begin{enumerate}
+        \setcounter{enumi}{3}
+        \item \textbf{Construct Instrument:} Using $\lambda^{(k+1)}$, compute the projection matrix $Q$, the optimal weights $\Gamma^{(k+1)} = S'Q$, and the instrument:
+        \begin{equation*}
+            z_t^{(k+1)} = \sum \Gamma_i^{(k+1)} L_{it}
+        \end{equation*}
+        
+        \vspace{0.3cm}
+        \item \textbf{Update Parameters (IV):} Update elasticities by setting sample moments to zero (equivalent to 2SLS using the new instrument):
+        \begin{align*}
+            \psi^{(k+1)} = \frac{\sum w_t z_t^{(k+1)}}{\sum L_{St} z_t^{(k+1)}}, \quad \phi^{d(k+1)} = \frac{\sum L_{Et} z_t^{(k+1)}}{\sum w_t z_t^{(k+1)}}
+        \end{align*}
+        
+        \vspace{0.3cm}
+        \item \textbf{Iterate:} Repeat steps 2--5 until parameters converge.
+    \end{enumerate}
+\end{frame}
+
+% --- SLIDE 6 ---
+\begin{frame}
+    \frametitle{Why GMM?}
+    
+    \vspace{1cm}
+    \begin{itemize}
+        \item \textbf{PCA alone is insufficient:} If wages affect labor demand, running PCA directly on raw outcomes mixes the endogenous response with the exogenous macro shock.
+        \item \textbf{The GMM Solution:} It acts as an iterative filter.
+        \begin{itemize}
+            \item Guesses the wage effect and subtracts it.
+            \item Runs PCA to find the clean macro shock.
+            \item Builds the optimal instrument.
+            \item Checks if the instrument gives the same wage effect back.
+        \end{itemize}
+        \item It loops until the system perfectly balances.
+    \end{itemize}
+\end{frame}
+
+\end{document}

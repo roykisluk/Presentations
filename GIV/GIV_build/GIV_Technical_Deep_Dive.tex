@@ -1,0 +1,172 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{graphicx}
+
+\geometry{a4paper, margin=1in}
+
+% --- Colors ---
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+\definecolor{CodeGray}{rgb}{0.95,0.95,0.95}
+
+% --- Listings Style ---
+\lstset{
+    backgroundcolor=\color{CodeGray},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    commentstyle=\color{gray},
+    keywordstyle=\color{Teal},
+    stringstyle=\color{WarmOrange},
+    frame=single,
+    language=Python
+}
+
+\title{\color{DeepNavy}\huge Technical Deep-Dive: PCA and GMM in GIV\\ \large Intuition, Mathematics, and Implementation}
+\author{Granular Instrumental Variables Research Group}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This document provides a comprehensive technical overview of Principal Component Analysis (PCA) and the Generalized Method of Moments (GMM), focusing on their application within the Granular Instrumental Variables (GIV) framework (Gabaix and Koijen, 2022). We bridge the gap between general statistical theory and practical granular identification.
+\end{abstract}
+
+\tableofcontents
+
+\newpage
+
+\section{The Core Challenge: Latent Factor Loadings}
+In the simplest GIV model, we assume all entities $i$ have identical sensitivity to macro shocks $\eta_t$. However, if large entities are systematically more sensitive to aggregate shocks than small ones, the simple GIV instrument $z_t = y_{St} - y_{Et}$ becomes \textit{leaky}---it inadvertently instruments with aggregate shocks.
+
+To fix this, we need the \textbf{Optimal Weights} $\Gamma$:
+\begin{equation}
+    \Gamma = S - \lambda (\lambda' \lambda)^{-1} \lambda' S
+\end{equation}
+The challenge is that the factor loadings $\lambda_i$ are typically \textbf{unobserved (latent)}. We use PCA and GMM to recover them.
+
+\section{Principal Component Analysis (PCA)}
+
+\subsection{General Theory and Intuition}
+\textbf{Intuition:} PCA is a dimension-reduction technique. Imagine a swarm of data points in $N$ dimensions (e.g., $N$ firms' returns over time). PCA finds the "axis of maximum variance"--- the direction in which the data stretches the most. This first axis represents the dominant common factor (e.g., the "market" or "macroeconomy").
+
+\textbf{Mathematical Setup:}
+Given a $T \times N$ matrix $Y$, we seek a linear combination of columns $Y w$ that maximizes variance:
+\begin{equation}
+    \max_{w} \text{Var}(Y w) \quad \text{s.t.} \quad \|w\| = 1
+\end{equation}
+This is equivalent to finding the eigenvectors of the covariance matrix $\Sigma = \frac{1}{T} Y'Y$. The first eigenvector (associated with the largest eigenvalue) provides the weights for the first Principal Component (PC1).
+
+\subsection{PCA in the Context of GIV}
+In GIV, we assume the outcomes $y_{it}$ follow a factor structure:
+\begin{equation}
+    y_{it} = \phi x_{it} + \lambda_i \eta_t + u_{it}
+\end{equation}
+If the idiosyncratic shocks $u_{it}$ are small relative to the macro shock $\eta_t$, then PCA on the matrix of outcomes $Y$ will "pull out" the latent macro shock $\hat{\eta}_t$ as the first principal component.
+
+\textbf{Practical Steps:}
+\begin{enumerate}
+    \item \textbf{De-mean}: Center each firm's time series.
+    \item \textbf{Factor Extraction}: Apply PCA to the $T \times N$ outcome matrix.
+    \item \textbf{Loadings}: The coefficients of firm $i$ on the first PC are the estimated loadings $\hat{\lambda}_i$.
+    \item \textbf{Orthogonalization}: Use $\hat{\lambda}_i$ to calculate $\Gamma_i$.
+\end{enumerate}
+
+\section{Generalized Method of Moments (GMM)}
+
+\subsection{General Theory and Intuition}
+\textbf{Intuition:} OLS minimizes residuals. GMM "matches moments." If a theory says "the average error should be zero" and "the error should be uncorrelated with $Z$", GMM finds the parameters that make these sample moments as close to zero as possible.
+
+\textbf{Mathematical Setup:}
+Define a vector of moment conditions $g(\theta)$:
+\begin{equation}
+    E[g(y_t, x_t, \theta)] = 0
+\end{equation}
+The GMM estimator $\hat{\theta}$ minimizes the quadratic form:
+\begin{equation}
+    J(\theta) = \left( \frac{1}{T} \sum g_t(\theta) \right)' W \left( \frac{1}{T} \sum g_t(\theta) \right)
+\end{equation}
+where $W$ is a weighting matrix.
+
+\subsection{GMM in the Context of GIV}
+GMM is more robust than PCA because it handles the endogeneity of $x_{it}$ and the factor structure simultaneously. Gabaix and Koijen (2022) use an \textbf{Iterative GMM} approach.
+
+\textbf{The Moments:}
+\begin{enumerate}
+    \item $E[(y_{it} - \psi x_{it} - \lambda_i \eta_t) z_t] = 0$ (Instrument validity)
+    \item $E[(y_{it} - \psi x_{it} - \lambda_i \eta_t) \mathbf{1}] = 0$ (Unbiasedness)
+\end{enumerate}
+
+\textbf{Practical Steps (Iterative Algorithm):}
+\begin{enumerate}
+    \item Start with $\psi^{(0)}$ (e.g., from OLS).
+    \item Calculate residuals: $e_{it} = y_{it} - \psi^{(0)} x_{it}$.
+    \item Estimate $\lambda_i$ from $e_{it}$ using PCA.
+    \item Construct the GIV $z_t$ using these $\lambda_i$.
+    \item Re-estimate $\psi^{(1)}$ via IV using $z_t$.
+    \item Repeat until $\psi$ and $\lambda$ converge.
+\end{enumerate}
+
+\newpage
+\section{Sample Data and Code}
+
+\subsection{Data Generation (Intuition)}
+We simulate a granular economy where:
+\begin{itemize}
+    \item $N=5$ firms, with sizes $S = [0.5, 0.2, 0.15, 0.1, 0.05]$.
+    \item Large firms are \textbf{more sensitive} to the macro shock ($\lambda_1 = 2.0$, while $\lambda_5 = 0.5$).
+    \item This creates a "leaky" simple GIV.
+\end{itemize}
+
+\subsection{Python Implementation}
+\begin{lstlisting}[language=Python, caption=GIV Implementation with PCA-estimated loadings]
+import numpy as np
+import pandas as pd
+from sklearn.decomposition import PCA
+
+# 1. Generate Sample Data
+T, N = 100, 5
+S = np.array([0.5, 0.2, 0.15, 0.1, 0.05])
+lambdas = np.array([2.0, 1.5, 1.0, 0.8, 0.5]) # Large firms more sensitive
+
+eta = np.random.normal(0, 1, T) # Macro shock
+u = np.random.normal(0, 1, (T, N)) # Idiosyncratic shocks
+Y = np.outer(eta, lambdas) + u # Outcomes
+
+# 2. PCA Approach to estimate Lambda
+pca = PCA(n_components=1)
+pca.fit(Y)
+lambda_hat = pca.components_[0] # Estimated loadings
+
+# 3. Construct Gamma (Optimal Weights)
+# Project S orthogonal to lambda_hat and a constant (1)
+X = np.column_stack([np.ones(N), lambda_hat])
+Gamma = S - X @ np.linalg.inv(X.T @ X) @ X.T @ S
+
+# 4. Construct the GIV
+z_t = Y @ Gamma
+
+print("First 5 GIV realizations:", z_t[:5])
+\end{lstlisting}
+
+\section{Summary for Researchers}
+When presenting GIV, emphasize:
+\begin{itemize}
+    \item \textbf{PCA} is the tool for \textit{discovery}: it finds the latent macro patterns that we must filter out.
+    \item \textbf{GMM} is the tool for \textit{consistency}: it ensures our structural parameters (like elasticities) are identified even when the factor structure is complex.
+    \item \textbf{Validity} comes from orthogonality: if your weights $\Gamma$ aren't perpendicular to $\lambda$, your instrument isn't clean.
+\end{itemize}
+
+\end{document}

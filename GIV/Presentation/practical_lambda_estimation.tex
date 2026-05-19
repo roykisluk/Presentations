@@ -1,0 +1,145 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% Packages (Matching final_presentation.tex)
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{ragged2e}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc,
+                backgrounds, decorations.pathreplacing, shadows, fadings}
+\pgfplotsset{compat=1.18}
+
+% --- Color Palette: Warm Professional ---
+\definecolor{DeepNavy}{HTML}{2E4057}
+\definecolor{Teal}{HTML}{048A81}
+\definecolor{WarmOrange}{HTML}{E85D04}
+\definecolor{SoftPurple}{HTML}{9D4EDD}
+\definecolor{WarmGray}{HTML}{6C757D}
+\definecolor{LightGray}{HTML}{E9ECEF}
+\definecolor{Cream}{HTML}{FBF8F1}
+\definecolor{DeepRed}{HTML}{D62828}
+\definecolor{Gold}{HTML}{D4A03A}
+\definecolor{SoftWhite}{HTML}{FAFAFA}
+
+% Beamer colors
+\setbeamercolor{normal text}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{structure}{fg=DeepNavy}
+\setbeamercolor{alerted text}{fg=DeepRed}
+\setbeamercolor{example text}{fg=Teal}
+\setbeamercolor{frametitle}{fg=DeepNavy, bg=SoftWhite}
+\setbeamercolor{title}{fg=DeepNavy}
+\setbeamercolor{subtitle}{fg=WarmGray}
+\setbeamercolor{block title}{bg=DeepNavy, fg=SoftWhite}
+\setbeamercolor{block body}{bg=LightGray, fg=DeepNavy}
+\setbeamercolor{itemize item}{fg=WarmOrange}
+\setbeamercolor{itemize subitem}{fg=Gold}
+
+% Fonts
+\usefonttheme{professionalfonts}
+\setbeamerfont{title}{size=\huge, series=\bfseries}
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+
+% Minimal Templates
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{%
+    \hfill
+    \begin{beamercolorbox}[wd=3cm,ht=2.5ex,dp=1ex,right,rightskip=0.6cm]{page number}
+        \usebeamercolor[fg]{WarmGray}\scriptsize Supplemental Slide
+    \end{beamercolorbox}
+    \vspace{0.3cm}
+}
+
+\begin{document}
+
+% --- SLIDE 1: THE PRACTICAL CHALLENGE ---
+\begin{frame}
+    \frametitle{Latent macro-sensitivity creates "leaky" instruments}
+    
+    \vspace{0.5cm}
+    {\Large
+        In practice, we rarely know the true factor loadings ($\lambda_i$)—how each firm responds to the macroeconomy.
+    }
+    
+    \vspace{0.8cm}
+    \begin{itemize}
+        \item \textbf{The Risk:} If we assume $\lambda_i = 1$ (Simple GIV) when large firms are systematically more sensitive to macro shocks, the instrument becomes correlated with $\eta_t$.
+        \item \textbf{The Consequence:} The exclusion restriction is violated, and IV estimates of elasticities are biased.
+        \item \textbf{The Solution:} We must estimate the loadings ($\hat{\lambda}_i$) from the panel data to construct the orthogonal weights $\Gamma$.
+    \end{itemize}
+\end{frame}
+
+% --- SLIDE 2: PCA METHOD ---
+\begin{frame}
+    \frametitle{PCA extracts factor loadings from firm-level outcomes}
+    
+    \vspace{0.5cm}
+    {\Large
+        If we assume idiosyncratic shocks are small relative to common factors, we can use \textbf{Principal Component Analysis}.
+    }
+    
+    \vspace{0.8cm}
+    \begin{enumerate}
+        \item \textbf{Panel Analysis:} Apply PCA to the $T \times N$ matrix of outcomes ($L_{it}$).
+        \item \textbf{Factor Extraction:} The first $K$ principal components represent the latent macro shocks ($\hat{\eta}_t$).
+        \item \textbf{Loadings:} The coefficients of the firm outcomes on these components are the estimated loadings ($\hat{\lambda}_i$).
+        \item \textbf{Weighting:} Construct $\Gamma$ by projecting firm sizes $S$ orthogonal to $\hat{\lambda}$ and a constant.
+    \end{enumerate}
+\end{frame}
+
+% --- SLIDE 3: GMM METHOD ---
+\begin{frame}
+    \frametitle{Iterative GMM identifies parameters and loadings simultaneously}
+    
+    \vspace{0.3cm}
+    {\Large
+        For a more robust approach, Gabaix and Koijen (2022) suggest joint estimation via the \textbf{Generalized Method of Moments}.
+    }
+    
+    \vspace{0.5cm}
+    \textbf{The Iterative Logic:}
+    \begin{itemize}
+        \item \textbf{Step 1:} Start with an initial guess for the elasticity $\psi^{(0)}$.
+        \item \textbf{Step 2:} Extract the "macro-contaminated" residuals from the demand equation.
+        \item \textbf{Step 3:} Estimate $\lambda_i$ from these residuals (e.g., via the first principal component).
+        \item \textbf{Step 4:} Update the GIV instrument $z_t$ using the new loadings and re-estimate $\psi^{(1)}$.
+    \end{itemize}
+    \vspace{0.3cm}
+    \textit{This process continues until the elasticity and factor loadings converge.}
+\end{frame}
+
+% --- SLIDE 4: SUMMARY TABLE ---
+\begin{frame}
+    \frametitle{Choosing the estimation strategy in practice}
+    
+    \vspace{0.5cm}
+    \begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{l l l}
+        \toprule
+        \textbf{Assumption} & \textbf{Approach} & \textbf{Estimation Method} \\
+        \midrule
+        \rowcolor{Teal!10} Homogeneous Loadings & Simple GIV & 2SLS (Difference-in-Averages) \\
+        Known Factor Loadings & Optimal GIV & 2SLS with Analytical $\Gamma$ \\
+        \rowcolor{WarmOrange!10} \textbf{Unknown Loadings} & \textbf{Latent GIV} & \textbf{PCA or Iterative GMM} \\
+        \bottomrule
+    \end{tabular}
+    \end{center}
+    
+    \vspace{0.8cm}
+    \textbf{Practical Note:} When using estimated loadings ($\hat{\lambda}$), standard errors should ideally be bootstrapped or adjusted to account for the "generated regressor" variance.
+\end{frame}
+
+\end{document}
